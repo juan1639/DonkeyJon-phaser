@@ -6,6 +6,7 @@ import { loader } from './loader.js';
 import { Jugador } from '../components/jugador.js';
 import { Marcador } from '../components/marcador.js';
 import { Plataforma } from '../components/plataforma.js';
+import { Barril } from '../components/barril.js';
 
 const WIDTH = 800;
 const HEIGHT = 550;
@@ -20,6 +21,7 @@ export class Game extends Phaser.Scene {
   init() {
     this.plataforma = new Plataforma(this);
     this.jugador = new Jugador(this);
+    this.barril = new Barril(this);
     this.marcador = new Marcador(this);
   }
 
@@ -42,12 +44,18 @@ export class Game extends Phaser.Scene {
 
     this.plataforma.create();
     this.jugador.create();
+    this.barril.create();
     this.marcador.create();
 
     this.cameras.main.startFollow(this.jugador.get());
     // this.cameras.main.followOffset.set(0, 0);
 
+    this.physics.add.collider(this.barril.get(), this.plataforma.get(), (barril, plataforma) => {
+      barril.setAccelerationX(-100);
+    }, null, this);
+
     this.physics.add.collider(this.jugador.get(), this.plataforma.get());
+
     // this.physics.add.collider(this.jugador.get(), this.laberinto.get(), (jug, plat) => {console.log(jug.body.touching.right);});
     /* this.physics.add.collider(this.jugador.get(), this.laberinto.get(), (jugador, laberinto) => {
       console.log(jugador.touching.up);
@@ -57,13 +65,11 @@ export class Game extends Phaser.Scene {
   // ================================================================
   update() {
 
-    this.jugador.update();
+    // this.jugador.update();
+    // this.barril.update();
     this.marcador.update(this.jugador.get().x, this.jugador.get().y);
   }
 
   // ================================================================
-  /* comePuntito(jugador, puntito) {
 
-    puntito.disableBody(true, true);
-  } */
 }

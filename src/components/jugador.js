@@ -3,7 +3,7 @@ import { Plataforma } from "./plataforma.js";
 // =======================================================================
 export class Jugador {
 
-    static XY_INI = [Plataforma.WIDTH / 9, Plataforma.HEIGHT / 2];
+    static XY_INI = [Math.floor(Plataforma.WIDTH / 4), Math.floor(Plataforma.HEIGHT / 2)];
     static VEL = 4;
 
     // ------------------------------------------------------------

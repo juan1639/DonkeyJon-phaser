@@ -15,20 +15,28 @@ export class Plataforma {
 
     create() {
 
+        const plantilla = [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3];
+        let tiles = [];
+
+        for (let i = 0; i < plantilla.length; i ++) {
+            tiles.push(plantilla[i].toString());
+        }
+
         this.plataforma = this.relatedScene.physics.add.group({
-            key: 'tile1',
+            key: tiles,
             frame: 0,
-            quantity: 9,
+            quantity: 1,
             setXY:
             {
                 x: 100,
                 y: 400,
                 stepX: 64,
-                stepY: 0
+                stepY: -1
             }
         });
 
         this.plataforma.getChildren().forEach(tile => {
+            // tile.setScale(0.5);
             tile.body.setImmovable(true);
             tile.body.setAllowGravity(false);
         });
