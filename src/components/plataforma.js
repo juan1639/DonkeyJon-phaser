@@ -9,11 +9,13 @@ export class Plataforma {
     static SCALE = 0.5;
 
     static array_plataformas = [
-        [0, 1080, 64, -1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3],
-        [0, 800, 64, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3],
-        [200, 550, 64, -1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3],
-        [0, 300, 64, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3],
-        [900, 300, 64, -1, 1, 2, 2, 2, 2, 2, 2, 2, 3]
+        [0, Plataforma.HEIGHT * 3 - 5, 64, -1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3],
+        [0, Plataforma.HEIGHT * 3 - 300, 64, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3],
+        [200, Plataforma.HEIGHT * 3 - 600, 64, -1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3],
+        [0, Plataforma.HEIGHT * 2 - 300, 64, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3],
+        [200, Plataforma.HEIGHT, 64, -1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3],
+        [0, Plataforma.HEIGHT - 200, 64, 0, 1, 2, 2, 2, 3],
+        // [900, 300, 64, -1, 1, 2, 2, 2, 2, 2, 2, 2, 3]
     ];
 
     // -----------------------------------------------------------
@@ -57,16 +59,10 @@ export class Plataforma {
                 // tile.setScale(0.5);
                 tile.body.setImmovable(true);
                 tile.body.setAllowGravity(false);
+                tile.setData('id', Plataforma.array_plataformas[i][3]);
             });
         }
-
-        // this.plataforma.setGravityY(false);
-
-        // this.plataforma = this.relatedScene.physics.add.staticGroup();
-
-        // this.plataforma.create(100, 1000, 'tile1').setScale(Plataforma.SCALE).refreshBody();
-        // this.plataforma.create(200, 1000, 'tile1').setScale(Plataforma.SCALE).refreshBody();
-
+        
         console.log(this.plataforma);
         console.log(this.plataforma[0].getChildren());
     }

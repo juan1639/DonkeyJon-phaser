@@ -3,9 +3,9 @@ import { Plataforma } from "./plataforma.js";
 // =======================================================================
 export class Jugador {
 
-    static XY_INI = [Math.floor(Plataforma.WIDTH / 4), Math.floor(Plataforma.HEIGHT / 8)];
+    static XY_INI = [Math.floor(Plataforma.WIDTH / 4), 150];
     static XY_INI = [0, Math.floor(Plataforma.HEIGHT / 8)];
-    static VEL_X = 300;
+    static VEL_X = 500;
     static VEL_SALTO = 800;
 
     // ------------------------------------------------------------
@@ -17,7 +17,7 @@ export class Jugador {
 
         this.jugador = this.relatedScene.physics.add.sprite(Jugador.XY_INI[0], Jugador.XY_INI[1], 'jugador');
 
-        this.jugador.angle = 0;
+        this.jugador.setAngle(0);
         this.jugador.setCollideWorldBounds(true);
         // this.jugador.setBounce(0.2);
 
@@ -49,6 +49,8 @@ export class Jugador {
     }
 
     update() {
+
+        if (this.jugador.body.velocity.y < 0) console.log('---');
 
         if (this.controles.left.isDown) {
             this.jugador.setFlipX(true);

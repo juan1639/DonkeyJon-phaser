@@ -31,16 +31,23 @@ export class Game extends Phaser.Scene {
 
   create() {
 
-    this.add.image(WIDTH / 2, HEIGHT / 2, 'fondo0');
-    this.add.image(WIDTH / 2 + WIDTH, HEIGHT / 2, 'fondo1');
-    this.add.image(WIDTH / 2, HEIGHT / 2 + HEIGHT, 'fondo2');
-    this.add.image(WIDTH / 2 + WIDTH, HEIGHT / 2 + HEIGHT, 'fondo3');
+    const yBounds = 3;
+
+    for (let i = 0; i < yBounds; i ++) {
+
+      let iFondo = '';
+
+      if (i % 2 === 0) {iFondo = '01';} else {iFondo = '23';}
+
+      this.add.image(WIDTH / 2, HEIGHT / 2 + i * HEIGHT, 'fondo' + iFondo[0]);
+      this.add.image(WIDTH / 2 + WIDTH, HEIGHT / 2 + i * HEIGHT, 'fondo' + iFondo[1]);
+    }
 
     // this.gameoverImage = this.add.image(400, 90, 'gameover');
     // this.gameoverImage.visible = false;
     
-    this.cameras.main.setBounds(0, 0, Math.floor(WIDTH * 2), Math.floor(HEIGHT * 2));
-    this.physics.world.setBounds(0, 0, Math.floor(WIDTH * 2), Math.floor(HEIGHT * 2));
+    this.cameras.main.setBounds(0, 0, Math.floor(WIDTH * 2), Math.floor(HEIGHT * yBounds));
+    this.physics.world.setBounds(0, 0, Math.floor(WIDTH * 2), Math.floor(HEIGHT * yBounds));
 
     this.plataforma.create();
     this.jugador.create();
@@ -51,10 +58,19 @@ export class Game extends Phaser.Scene {
     // this.cameras.main.followOffset.set(0, 0);
 
     this.physics.add.collider(this.barril.get(), this.plataforma.get(), (barril, plataforma) => {
-      barril.setAccelerationX(-100);
+
+      barril.setAcceleration(barril.getData('acel') * plataforma.getData('id'));
+      // barril.setVelocity(100 * plataforma.getData('id'));
+      barril.setData('rotacion', plataforma.getData('id'));
+
     }, null, this);
 
-    this.physics.add.collider(this.jugador.get(), this.plataforma.get());
+    this.physics.add.collider(this.jugador.get(), this.plataforma.get(), () => {return;}, (jugador) => {
+
+      if (jugador.body.velocity.y < 0) return false;
+      return true;
+      
+    }, this);
 
     // this.physics.add.collider(this.jugador.get(), this.laberinto.get(), (jug, plat) => {console.log(jug.body.touching.right);});
     /* this.physics.add.collider(this.jugador.get(), this.laberinto.get(), (jugador, laberinto) => {
@@ -66,7 +82,7 @@ export class Game extends Phaser.Scene {
   update() {
 
     this.jugador.update();
-    // this.barril.update();
+    this.barril.update();
     this.marcador.update(this.jugador.get().x, this.jugador.get().y);
   }
 
