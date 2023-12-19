@@ -32,16 +32,7 @@ export class Game extends Phaser.Scene {
   create() {
 
     const yBounds = 3;
-
-    for (let i = 0; i < yBounds; i ++) {
-
-      let iFondo = '';
-
-      if (i % 2 === 0) {iFondo = '01';} else {iFondo = '23';}
-
-      this.add.image(WIDTH / 2, HEIGHT / 2 + i * HEIGHT, 'fondo' + iFondo[0]);
-      this.add.image(WIDTH / 2 + WIDTH, HEIGHT / 2 + i * HEIGHT, 'fondo' + iFondo[1]);
-    }
+    this.imagenes_fondo(WIDTH, HEIGHT, yBounds);
 
     // this.gameoverImage = this.add.image(400, 90, 'gameover');
     // this.gameoverImage.visible = false;
@@ -54,13 +45,12 @@ export class Game extends Phaser.Scene {
     this.barril.create();
     this.marcador.create();
 
-    this.cameras.main.startFollow(this.jugador.get());
+    this.cameras.main.startFollow(this.barril.get());
     // this.cameras.main.followOffset.set(0, 0);
 
     this.physics.add.collider(this.barril.get(), this.plataforma.get(), (barril, plataforma) => {
 
       barril.setAcceleration(barril.getData('acel') * plataforma.getData('id'));
-      // barril.setVelocity(100 * plataforma.getData('id'));
       barril.setData('rotacion', plataforma.getData('id'));
 
     }, null, this);
@@ -87,5 +77,16 @@ export class Game extends Phaser.Scene {
   }
 
   // ================================================================
+  imagenes_fondo(WIDTH, HEIGHT, yBounds) {
 
+    for (let i = 0; i < yBounds; i ++) {
+
+      let iFondo = '';
+
+      if (i % 2 === 0) {iFondo = '01';} else {iFondo = '23';}
+
+      this.add.image(WIDTH / 2, HEIGHT / 2 + i * HEIGHT, 'fondo' + iFondo[0]);
+      this.add.image(WIDTH / 2 + WIDTH, HEIGHT / 2 + i * HEIGHT, 'fondo' + iFondo[1]);
+    }
+  }
 }

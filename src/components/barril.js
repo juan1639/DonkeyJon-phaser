@@ -1,6 +1,9 @@
 // =======================================================================
 export class Barril {
 
+    static INI_X = 100;
+    static INI_Y = 50;
+
     static SCALE = 1;
 
     // --------------------------------------------------
@@ -10,7 +13,7 @@ export class Barril {
 
     create() {
 
-        this.barril = this.relatedScene.physics.add.sprite(650, 100, 'barril2');
+        this.barril = this.relatedScene.physics.add.sprite(Barril.INI_X, Barril.INI_Y, 'barril2');
 
         this.barril.setCollideWorldBounds(true);
         this.barril.setBounceY(0.5);

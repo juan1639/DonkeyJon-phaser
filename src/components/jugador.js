@@ -49,9 +49,7 @@ export class Jugador {
     }
 
     update() {
-
-        if (this.jugador.body.velocity.y < 0) console.log('---');
-
+        
         if (this.controles.left.isDown) {
             this.jugador.setFlipX(true);
             this.jugador.setVelocityX(-Jugador.VEL_X);
