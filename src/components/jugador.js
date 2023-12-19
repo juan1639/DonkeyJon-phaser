@@ -3,8 +3,10 @@ import { Plataforma } from "./plataforma.js";
 // =======================================================================
 export class Jugador {
 
-    static XY_INI = [Math.floor(Plataforma.WIDTH / 4), Math.floor(Plataforma.HEIGHT / 2)];
-    static VEL = 4;
+    static XY_INI = [Math.floor(Plataforma.WIDTH / 4), Math.floor(Plataforma.HEIGHT / 8)];
+    static XY_INI = [0, Math.floor(Plataforma.HEIGHT / 8)];
+    static VEL_X = 300;
+    static VEL_SALTO = 800;
 
     // ------------------------------------------------------------
     constructor(scene) {
@@ -14,23 +16,23 @@ export class Jugador {
     create() {
 
         this.jugador = this.relatedScene.physics.add.sprite(Jugador.XY_INI[0], Jugador.XY_INI[1], 'jugador');
-        this.jugador.angle = 0;
 
-        // this.jugador.setCollideWorldBounds(true);
+        this.jugador.angle = 0;
+        this.jugador.setCollideWorldBounds(true);
         // this.jugador.setBounce(0.2);
 
         this.relatedScene.anims.create({
             key: 'left', 
-            frames: this.relatedScene.anims.generateFrameNumbers('jugador', {start: 1, end: 3}),
-            frameRate: 30,
+            frames: this.relatedScene.anims.generateFrameNumbers('jugador', {start: 9, end: 10}),
+            frameRate: 10,
             yoyo: true,
             repeat: -1
         });
 
         this.relatedScene.anims.create({
             key: 'right', 
-            frames: this.relatedScene.anims.generateFrameNumbers('jugador', {start: 4, end: 6}),
-            frameRate: 30,
+            frames: this.relatedScene.anims.generateFrameNumbers('jugador', {start: 9, end: 10}),
+            frameRate: 10,
             yoyo: true,
             repeat: -1
         });
@@ -47,6 +49,25 @@ export class Jugador {
     }
 
     update() {
+
+        if (this.controles.left.isDown) {
+            this.jugador.setFlipX(true);
+            this.jugador.setVelocityX(-Jugador.VEL_X);
+            this.jugador.anims.play('left', true);
+            
+        } else if (this.controles.right.isDown) {
+            this.jugador.setFlipX(false);
+            this.jugador.setVelocityX(Jugador.VEL_X);
+            this.jugador.anims.play('right', true);
+            
+        } else {
+            this.jugador.setVelocityX(0);
+            this.jugador.anims.play('turn');
+        }
+        
+        if (this.controles.up.isDown && this.jugador.body.touching.down) {
+            this.jugador.setVelocityY(-Jugador.VEL_SALTO);
+        }
     }
 
     get() {

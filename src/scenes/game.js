@@ -65,7 +65,7 @@ export class Game extends Phaser.Scene {
   // ================================================================
   update() {
 
-    // this.jugador.update();
+    this.jugador.update();
     // this.barril.update();
     this.marcador.update(this.jugador.get().x, this.jugador.get().y);
   }
