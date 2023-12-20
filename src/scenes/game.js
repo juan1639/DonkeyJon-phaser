@@ -7,6 +7,7 @@ import { Jugador } from '../components/jugador.js';
 import { Enemigo } from '../components/enemigo.js';
 import { Marcador } from '../components/marcador.js';
 import { Plataforma } from '../components/plataforma.js';
+import { Escalera } from '../components/escalera.js';
 import { Barril } from '../components/barril.js';
 
 const WIDTH = 800;
@@ -25,6 +26,7 @@ export class Game extends Phaser.Scene {
     this.barrilIndex = 0;
     
     this.plataforma = new Plataforma(this);
+    this.escalera = new Escalera(this);
     this.jugador = new Jugador(this);
     this.enemigo = new Enemigo(this);
     this.array_barril.push(new Barril(this));
@@ -50,19 +52,30 @@ export class Game extends Phaser.Scene {
     this.physics.world.setBounds(0, 0, Math.floor(WIDTH * 2), Math.floor(HEIGHT * yBounds));
 
     this.plataforma.create();
+    this.escalera.create();
     this.jugador.create();
     this.enemigo.create();
     this.array_barril[this.barrilIndex].create(this.barrilIndex, this.plataforma, this.enemigo);
     this.marcador.create();
 
-    this.cameras.main.startFollow(this.enemigo.get());
-    // this.cameras.main.followOffset.set(0, 0);
+    this.text1 = this.add.text(this.jugador.get().x, this.jugador.get().y - 100, '.', { fill: '#aa3000' });
 
+    this.cameras.main.startFollow(this.jugador.get());
+    // this.cameras.main.followOffset.set(0, 0);
+    
     this.crear_colliders();
   }
-
+  
   // ================================================================
   update() {
+
+    // const pointer = this.input.activePointer;
+    // console.log(pointer.worldX, pointer.worldY);
+
+    /* this.text1.setText([
+      `x: ${pointer.worldX}`,
+      `y: ${pointer.worldY}`
+    ]); */
 
     this.crear_nuevoBarril();
 
@@ -84,9 +97,10 @@ export class Game extends Phaser.Scene {
       return true;
       
     }, this);
-
+    
     this.physics.add.collider(this.enemigo.get(), this.plataforma.get(), (enemigo, plataforma) => {
-      console.log(plataforma.getData('index'), plataforma.getData('ultima'));
+
+      //console.log(plataforma.getData('index'), plataforma.getData('ultima'));
 
       if (plataforma.getData('index') !== plataforma.getData('ultima')) {
 

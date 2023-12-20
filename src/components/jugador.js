@@ -4,8 +4,9 @@ import { Plataforma } from "./plataforma.js";
 export class Jugador {
 
     static XY_INI = [0, Math.floor(Plataforma.HEIGHT * 3) - 200];
-    static VEL_X = 500;
-    static VEL_SALTO = 800;
+    static VEL_X = 300;
+    static VEL_ESCALERA = 200;
+    static VEL_SALTO = 640;
 
     // ------------------------------------------------------------
     constructor(scene) {
@@ -16,6 +17,9 @@ export class Jugador {
 
         this.jugador = this.relatedScene.physics.add.sprite(Jugador.XY_INI[0], Jugador.XY_INI[1], 'jugador');
 
+        this.jugador.setData('vel-x', Jugador.VEL_X);
+        this.jugador.setData('vel-escalera', Jugador.VEL_ESCALERA);
+        this.jugador.setData('vel-salto', Jugador.VEL_SALTO);
         this.jugador.setAngle(0);
         this.jugador.setCollideWorldBounds(true);
         // this.jugador.setBounce(0.2);
@@ -37,12 +41,29 @@ export class Jugador {
         });
 
         this.relatedScene.anims.create({
+            key: 'stairs', 
+            frames: this.relatedScene.anims.generateFrameNumbers('jugador', {start: 5, end: 6}),
+            frameRate: 10,
+            yoyo: true,
+            repeat: -1
+        });
+
+        this.relatedScene.anims.create({
             key: 'turn',
             frames: [{key: 'jugador', frame: 0}],
             frameRate: 20,
         });
 
         this.controles = this.relatedScene.input.keyboard.createCursorKeys();
+
+        this.relatedScene.physics.add.overlap(this.jugador, this.relatedScene.escalera.get(), (jugador) => {
+
+            if (this.controles.up.isDown) {
+                
+                jugador.setVelocityY(-this.jugador.getData('vel-escalera'));
+                jugador.anims.play('stairs', true);
+            }
+        }, null, this);
 
         console.log(this.jugador);
     }
@@ -51,21 +72,21 @@ export class Jugador {
         
         if (this.controles.left.isDown) {
             this.jugador.setFlipX(true);
-            this.jugador.setVelocityX(-Jugador.VEL_X);
+            this.jugador.setVelocityX(-this.jugador.getData('vel-x'));
             this.jugador.anims.play('left', true);
             
         } else if (this.controles.right.isDown) {
             this.jugador.setFlipX(false);
-            this.jugador.setVelocityX(Jugador.VEL_X);
+            this.jugador.setVelocityX(this.jugador.getData('vel-x'));
             this.jugador.anims.play('right', true);
             
-        } else {
+        } else if (!this.controles.up.isDown) {
             this.jugador.setVelocityX(0);
             this.jugador.anims.play('turn');
         }
         
         if (this.controles.up.isDown && this.jugador.body.touching.down) {
-            this.jugador.setVelocityY(-Jugador.VEL_SALTO);
+            this.jugador.setVelocityY(-this.jugador.getData('vel-salto'));
         }
     }
 

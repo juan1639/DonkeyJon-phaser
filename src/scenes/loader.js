@@ -11,6 +11,8 @@ export function loader(scene) {
   scene.load.image('2', './src/img/tile2.png');
   scene.load.image('3', './src/img/tile3.png');
 
+  scene.load.image('9', './src/img/escalera.png');
+
   scene.load.image('barril1', './src/img/barril1.png');
   scene.load.image('barril2', './src/img/barril2.png');
 

@@ -34,7 +34,6 @@ export class Plataforma {
             for (let i = 0; i < plantilla.length; i ++) {
 
                 if (i < 4) coor.push(plantilla[i]);
-
                 if (i >= 4) tiles.push(plantilla[i].toString());
             }
 
