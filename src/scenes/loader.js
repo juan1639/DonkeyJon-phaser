@@ -19,4 +19,5 @@ export function loader(scene) {
   scene.load.image('switch2', './src/img/switchRed_right.png');
 
   scene.load.spritesheet('jugador', './src/img/Ssheet_jugador.png', {frameWidth: 80, frameHeight: 110});
+  scene.load.spritesheet('enemigo', './src/img/Ssheet_enemigo.png', {frameWidth: 80, frameHeight: 110});
 }
