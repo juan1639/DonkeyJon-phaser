@@ -6,7 +6,7 @@ export class Plataforma {
 
     static tileXY = [64, 64];
 
-    static SCALE = 0.5;
+    static SCALE = 1;
 
     static array_plataformas = [
         [0, Plataforma.HEIGHT * 3 - 5, Plataforma.tileXY[0], -1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3],
@@ -15,7 +15,6 @@ export class Plataforma {
         [0, Plataforma.HEIGHT * 2 - 300, Plataforma.tileXY[0], 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3],
         [200, Plataforma.HEIGHT, Plataforma.tileXY[0], -1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3],
         [0, Plataforma.HEIGHT - 200, Plataforma.tileXY[0], 1, 1, 2, 2, 2, 3],
-        // [900, 300, 64, -1, 1, 2, 2, 2, 2, 2, 2, 2, 3]
     ];
 
     // -----------------------------------------------------------
@@ -60,6 +59,8 @@ export class Plataforma {
                 tile.body.setImmovable(true);
                 tile.body.setAllowGravity(false);
                 tile.setData('id', Plataforma.array_plataformas[i][3]);
+                tile.setData('index', i);
+                tile.setData('ultima', this.plataforma.length - 1);
             });
         }
         

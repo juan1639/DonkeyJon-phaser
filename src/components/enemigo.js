@@ -18,7 +18,7 @@ export class Enemigo {
         this.enemigo.setAngle(0);
         this.enemigo.setCollideWorldBounds(true);
         this.enemigo.setFlip(false);
-        this.enemigo.setBounceX(1);
+        this.enemigo.setBounce(1, 0.3);
         this.enemigo.setVelocityX(this.enemigo.getData('vel-x'));
 
 
