@@ -14,7 +14,7 @@ export class Enemigo {
 
         this.enemigo = this.relatedScene.physics.add.sprite(Enemigo.XY_INI[0], Enemigo.XY_INI[1], 'enemigo');
 
-        this.enemigo.setData('vel-x', 40);
+        this.enemigo.setData('vel-x', 120);//40
         this.enemigo.setAngle(0);
         this.enemigo.setCollideWorldBounds(true);
         this.enemigo.setFlip(false);

@@ -1,3 +1,4 @@
+
 // =======================================================================
 export class Escalera {
 
@@ -9,11 +10,11 @@ export class Escalera {
     static SCALE = 1;
 
     static array_escaleras = [
-        [Escalera.WIDTH + 280, Escalera.HEIGHT * 3 - 50, Escalera.tileXY[1], 0, 9, 9, 9, 9],
-        [340, 1324, Escalera.tileXY[1], 0, 9, 9, 9, 9, 9],
-        [Escalera.WIDTH + 300, 1008, Escalera.tileXY[1], 0, 9, 9, 9],
-        [310, 774, Escalera.tileXY[1], 0, 9, 9, 9, 9],
-        [Escalera.WIDTH + 100, 508, Escalera.tileXY[1], 0, 9, 9, 9, 9]
+        [Escalera.WIDTH + 280, Escalera.HEIGHT * 3 - 50, Escalera.tileXY[1], 0, 9, 9, 9, 9, 9],
+        [380, 1324, Escalera.tileXY[1], 0, 9, 9, 9, 9, 9, 9],
+        [Escalera.WIDTH + 300, 1008, Escalera.tileXY[1], 0, 9, 9, 9, 9],
+        [310, 774, Escalera.tileXY[1], 0, 9, 9, 9, 9, 9],
+        [Escalera.WIDTH + 100, 508, Escalera.tileXY[1], 0, 9, 9, 9, 9, 9]
     ];
 
     // -----------------------------------------------------------

@@ -10,8 +10,10 @@ import { Plataforma } from '../components/plataforma.js';
 import { Escalera } from '../components/escalera.js';
 import { Barril } from '../components/barril.js';
 
-const WIDTH = 800;
-const HEIGHT = 550;
+import {
+  crear_nuevoBarril,
+  imagen_grupoBarriles
+} from '../functions/functions.js';
 
 // --------------------------------------------------------------
 export class Game extends Phaser.Scene {
@@ -40,16 +42,13 @@ export class Game extends Phaser.Scene {
   create() {
 
     const yBounds = 3;
-    this.imagenes_fondo(WIDTH, HEIGHT, yBounds);
+    this.imagenes_fondo(this.sys.game.config.width, this.sys.game.config.height, yBounds);
 
     this.grupoBarriles = [];
-    this.imagen_grupoBarriles();
+    imagen_grupoBarriles(this);
 
-    // this.gameoverImage = this.add.image(400, 90, 'gameover');
-    // this.gameoverImage.visible = false;
-    
-    this.cameras.main.setBounds(0, 0, Math.floor(WIDTH * 2), Math.floor(HEIGHT * yBounds));
-    this.physics.world.setBounds(0, 0, Math.floor(WIDTH * 2), Math.floor(HEIGHT * yBounds));
+    this.cameras.main.setBounds(0, 0, Math.floor(this.sys.game.config.width * 2), Math.floor(this.sys.game.config.height * yBounds));
+    this.physics.world.setBounds(0, 0, Math.floor(this.sys.game.config.width * 2), Math.floor(this.sys.game.config.height * yBounds));
 
     this.plataforma.create();
     this.escalera.create();
@@ -77,7 +76,7 @@ export class Game extends Phaser.Scene {
       `y: ${pointer.worldY}`
     ]); */
 
-    this.crear_nuevoBarril();
+    crear_nuevoBarril(this);
 
     this.jugador.update();
     this.enemigo.update();
@@ -91,7 +90,7 @@ export class Game extends Phaser.Scene {
 
     this.physics.add.collider(this.grupoBarriles, this.plataforma.get());
 
-    this.physics.add.collider(this.jugador.get(), this.plataforma.get(), () => {return;}, (jugador) => {
+    this.physics.add.collider(this.jugador.get(), this.plataforma.get(), () => {return}, (jugador) => {
 
       if (jugador.body.velocity.y < 0) return false;
       return true;
@@ -111,19 +110,6 @@ export class Game extends Phaser.Scene {
   }
 
   // ================================================================
-  crear_nuevoBarril() {
-
-    if (this.crearNuevoBarril) {
-
-      this.crearNuevoBarril = false;
-      this.barrilIndex ++;
-
-      this.array_barril.push(new Barril(this));
-      this.array_barril[this.barrilIndex].create(this.barrilIndex, this.plataforma, this.enemigo);
-    }
-  }
-
-  // ================================================================
   imagenes_fondo(WIDTH, HEIGHT, yBounds) {
     
     for (let i = 0; i < yBounds; i ++) {
@@ -135,22 +121,5 @@ export class Game extends Phaser.Scene {
       this.add.image(WIDTH / 2, HEIGHT / 2 + i * HEIGHT, 'fondo' + iFondo[0]);
       this.add.image(WIDTH / 2 + WIDTH, HEIGHT / 2 + i * HEIGHT, 'fondo' + iFondo[1]);
     }
-  }
-
-  // ================================================================
-  imagen_grupoBarriles() {
-    
-    this.grupoBarriles.push(this.physics.add.group({
-      key: 'barril1',
-      frame: 0,
-      quantity: 7,
-      setXY:
-      {
-        x: 0,
-        y: 0,
-        stepX: 32,
-        stepY: 0
-      }
-    }));
   }
 }

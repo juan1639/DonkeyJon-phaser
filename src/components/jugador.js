@@ -56,14 +56,20 @@ export class Jugador {
 
         this.controles = this.relatedScene.input.keyboard.createCursorKeys();
 
-        this.relatedScene.physics.add.overlap(this.jugador, this.relatedScene.escalera.get(), (jugador) => {
+        this.relatedScene.physics.add.overlap(this.jugador, this.relatedScene.escalera.get(), (jugador, escalera) => {
 
             if (this.controles.up.isDown) {
                 
                 jugador.setVelocityY(-this.jugador.getData('vel-escalera'));
                 jugador.anims.play('stairs', true);
+                console.log(jugador.x, escalera.x);
             }
-        }, null, this);
+        
+        }, (jugador, escalera) => {
+
+            if (jugador.x < escalera.x) return false;
+
+        }, this);
 
         console.log(this.jugador);
     }
@@ -85,7 +91,7 @@ export class Jugador {
             this.jugador.anims.play('turn');
         }
         
-        if (this.controles.up.isDown && this.jugador.body.touching.down) {
+        if ((this.controles.shift.isDown || this.controles.space.isDown) && this.jugador.body.touching.down && this.jugador.body.velocity.y === 0) {
             this.jugador.setVelocityY(-this.jugador.getData('vel-salto'));
         }
     }

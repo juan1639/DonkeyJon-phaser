@@ -1,3 +1,4 @@
+
 // =======================================================================
 export class Barril {
 
@@ -19,10 +20,8 @@ export class Barril {
         this.barril.setData('rotacion', -1);
         this.barril.setData('acel', 130);
         this.barril.setData('id', index);
-        this.barril.setCollideWorldBounds(true);
-        this.barril.setBounceY(0.5);
-        this.barril.setAngle(120);
-        this.barril.setActive(false);
+
+        this.barril.setCollideWorldBounds(true).setBounceY(0.5).setAngle(120).setActive(false);
 
         this.relatedScene.physics.add.collider(this.barril, plataforma.get(), (barril, plataforma) => {
 
@@ -42,7 +41,7 @@ export class Barril {
               enemigo.setVelocityX(-enemigo.getData('vel-x'));
               enemigo.anims.play('enemy-left', true);
               this.relatedScene.crearNuevoBarril = true;
-            }, 3000);
+            }, 1000);//3000
         }, null, this);
         
         console.log(this.barril);
@@ -51,6 +50,7 @@ export class Barril {
     
     update() {
         if (this.barril.getData('activo')) this.barril.rotation += 0.1 * this.barril.getData('rotacion');
+        console.log(this.barril.x);
     }
 
     get() {
