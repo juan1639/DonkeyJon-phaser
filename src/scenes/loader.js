@@ -1,5 +1,7 @@
 export function loader(scene) {
 
+  // scene.load.json('settings', '../src/json/settings.json');
+
   scene.load.image('fondo0', './src/img/fondo_cielo102.png');
   scene.load.image('fondo1', './src/img/fondo_cielo104.png');
   scene.load.image('fondo2', './src/img/fondo_cielo101.png');

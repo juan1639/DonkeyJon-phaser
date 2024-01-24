@@ -1,4 +1,3 @@
-import { Plataforma } from "./plataforma.js";
 
 // =======================================================================
 export class Enemigo {

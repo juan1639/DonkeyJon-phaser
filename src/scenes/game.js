@@ -12,7 +12,8 @@ import { Barril } from '../components/barril.js';
 
 import {
   crear_nuevoBarril,
-  imagen_grupoBarriles
+  imagen_grupoBarriles,
+  getSettings_json
 } from '../functions/functions.js';
 
 // --------------------------------------------------------------
@@ -41,6 +42,8 @@ export class Game extends Phaser.Scene {
 
   create() {
 
+    //getSettings_json(this);
+
     const yBounds = 3;
     this.imagenes_fondo(this.sys.game.config.width, this.sys.game.config.height, yBounds);
 
@@ -57,7 +60,10 @@ export class Game extends Phaser.Scene {
     this.array_barril[this.barrilIndex].create(this.barrilIndex, this.plataforma, this.enemigo);
     this.marcador.create();
 
-    this.text1 = this.add.text(this.jugador.get().x, this.jugador.get().y - 100, '.', { fill: '#aa3000' });
+    this.mouse_showXY = {
+      create: this.add.text(this.jugador.get().x, this.jugador.get().y - 100, '.', { fill: '#111' }),
+      show_mouseXY: true
+    }
 
     this.cameras.main.startFollow(this.jugador.get());
     // this.cameras.main.followOffset.set(0, 0);
@@ -68,13 +74,7 @@ export class Game extends Phaser.Scene {
   // ================================================================
   update() {
 
-    // const pointer = this.input.activePointer;
-    // console.log(pointer.worldX, pointer.worldY);
-
-    /* this.text1.setText([
-      `x: ${pointer.worldX}`,
-      `y: ${pointer.worldY}`
-    ]); */
+    this.pointer_showXY(this.mouse_showXY);
 
     crear_nuevoBarril(this);
 
@@ -121,5 +121,19 @@ export class Game extends Phaser.Scene {
       this.add.image(WIDTH / 2, HEIGHT / 2 + i * HEIGHT, 'fondo' + iFondo[0]);
       this.add.image(WIDTH / 2 + WIDTH, HEIGHT / 2 + i * HEIGHT, 'fondo' + iFondo[1]);
     }
+  }
+
+  // ================================================================
+  pointer_showXY({create, show_mouseXY}) {
+    
+    if (!show_mouseXY) return;
+    
+    const pointer = this.input.activePointer;
+    // console.log(pointer.worldX, pointer.worldY);
+    
+    create.setText([
+      `x: ${pointer.worldX}`,
+      `y: ${pointer.worldY}`
+    ]).setX(this.jugador.get().x).setY(this.jugador.get().y - 170);
   }
 }

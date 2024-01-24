@@ -50,7 +50,7 @@ export class Barril {
     
     update() {
         if (this.barril.getData('activo')) this.barril.rotation += 0.1 * this.barril.getData('rotacion');
-        console.log(this.barril.x);
+        // console.log(this.barril.x);
     }
 
     get() {

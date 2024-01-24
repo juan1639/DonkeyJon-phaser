@@ -1,0 +1,32 @@
+{
+    "constants": {
+        "WIDTH": 800,
+        "HEIGHT": 550,
+        "tileXY": [64, 64]
+    },
+    "image": {
+        "fondo0": "./src/img/fondo_cielo102.png",
+        "fondo1": "./src/img/fondo_cielo104.png",
+        "fondo2": "./src/img/fondo_cielo101.png",
+        "fondo3": "./src/img/fondo_cielo103.png",
+
+        "gameover": "./src/img/gameover.png",
+
+        "1": "./src/img/tile1.png",
+        "2": "./src/img/tile2.png",
+        "3": "./src/img/tile3.png",
+
+        "9": "./src/img/escalera.png",
+
+        "barril1": "./src/img/barril1.png",
+        "barril2": "./src/img/barril2.png",
+
+        "switch0": "./src/img/switchRed_left.png",
+        "switch1": "./src/img/switchRed_mid.png",
+        "switch2": "./src/img/switchRed_right.png"
+    },
+    "spriteSheet": {
+        "jugador": ["./src/img/Ssheet_jugador.png", {"frameWidth": 80, "frameHeight": 110}],
+        "enemigo": ["./src/img/Ssheet_enemigo.png", {"frameWidth": 80, "frameHeight": 110}]
+    }
+}

@@ -30,7 +30,37 @@ function imagen_grupoBarriles(scene) {
     }));
 }
 
+// ================================================================
+function getSettings_json(scene) {
+
+  const data = scene.cache.json.get('settings');
+  console.log(data);
+
+  Object.keys(data).forEach(key => {
+
+    Object.entries(data[key]).forEach(valores => {
+
+      if (key === 'image') {
+
+        scene.load.image(valores[0].toString(), valores[1].toString());
+        console.log(valores[0].toString(), valores[1].toString());
+      }
+
+      if (key === 'spriteSheet') {
+
+        scene.load.spritesheet(
+          valores[0].toString(),
+          valores[1][0].toString(),
+          {frameWidth: 80, frameHeight: 110}
+        );
+        console.log(valores[0].toString(), valores[1][0], valores[1][1]);
+      }
+    });
+  });
+}
+
 export {
     crear_nuevoBarril,
-    imagen_grupoBarriles
+    imagen_grupoBarriles,
+    getSettings_json
 };
