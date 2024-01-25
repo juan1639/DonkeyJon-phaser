@@ -13,6 +13,7 @@ import { Barril } from '../components/barril.js';
 import {
   crear_nuevoBarril,
   imagen_grupoBarriles,
+  imagenes_fondo,
   getSettings_json
 } from '../functions/functions.js';
 
@@ -41,11 +42,10 @@ export class Game extends Phaser.Scene {
   }
 
   create() {
-
     //getSettings_json(this);
 
     const yBounds = 3;
-    this.imagenes_fondo(this.sys.game.config.width, this.sys.game.config.height, yBounds);
+    imagenes_fondo(this.sys.game.config.width, this.sys.game.config.height, yBounds, this);
 
     this.grupoBarriles = [];
     imagen_grupoBarriles(this);
@@ -74,7 +74,7 @@ export class Game extends Phaser.Scene {
   // ================================================================
   update() {
 
-    this.pointer_showXY(this.mouse_showXY);
+    // this.pointer_showXY(this.mouse_showXY);
 
     crear_nuevoBarril(this);
 
@@ -107,20 +107,6 @@ export class Game extends Phaser.Scene {
         enemigo.setFlip(enemigo.body.velocity.x < 0 ? true : false);
       }
     }, null, this);
-  }
-
-  // ================================================================
-  imagenes_fondo(WIDTH, HEIGHT, yBounds) {
-    
-    for (let i = 0; i < yBounds; i ++) {
-      
-      let iFondo = '';
-      
-      if (i % 2 === 0) {iFondo = '01';} else {iFondo = '23';}
-      
-      this.add.image(WIDTH / 2, HEIGHT / 2 + i * HEIGHT, 'fondo' + iFondo[0]);
-      this.add.image(WIDTH / 2 + WIDTH, HEIGHT / 2 + i * HEIGHT, 'fondo' + iFondo[1]);
-    }
   }
 
   // ================================================================

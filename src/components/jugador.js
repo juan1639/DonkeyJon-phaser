@@ -20,10 +20,10 @@ export class Jugador {
         this.jugador.setData('vel-x', Jugador.VEL_X);
         this.jugador.setData('vel-escalera', Jugador.VEL_ESCALERA);
         this.jugador.setData('vel-salto', Jugador.VEL_SALTO);
-        this.jugador.setAngle(0);
-        this.jugador.setCollideWorldBounds(true);
-        // this.jugador.setBounce(0.2);
 
+        this.jugador.setAngle(0).setCollideWorldBounds(true);
+        // this.jugador.setBounce(0.2);
+        
         this.relatedScene.anims.create({
             key: 'left', 
             frames: this.relatedScene.anims.generateFrameNumbers('jugador', {start: 9, end: 10}),

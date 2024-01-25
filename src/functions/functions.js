@@ -31,6 +31,20 @@ function imagen_grupoBarriles(scene) {
 }
 
 // ================================================================
+function imagenes_fondo(WIDTH, HEIGHT, yBounds, scene) {
+    
+  for (let i = 0; i < yBounds; i ++) {
+    
+    let iFondo = '';
+    
+    if (i % 2 === 0) {iFondo = '01';} else {iFondo = '23';}
+    
+    scene.add.image(WIDTH / 2, HEIGHT / 2 + i * HEIGHT, 'fondo' + iFondo[0]);
+    scene.add.image(WIDTH / 2 + WIDTH, HEIGHT / 2 + i * HEIGHT, 'fondo' + iFondo[1]);
+  }
+}
+
+// ================================================================
 function getSettings_json(scene) {
 
   const data = scene.cache.json.get('settings');
@@ -59,8 +73,34 @@ function getSettings_json(scene) {
   });
 }
 
+// =================================================================================
+function centrar_txt(texto, anchoScreen) {
+  
+  console.log(texto.width);
+  return Math.floor(anchoScreen / 2 - texto.width / 2);
+}
+
+// =================================================================================
+function suma_puntos(puntos) {
+  
+  const bonus = Settings.getPuntos() + puntos.getData('puntos');
+  Settings.setPuntos(bonus);
+  console.log(bonus, Settings.getPuntos());
+}
+
+// =================================================================================
+function restar_vida() {
+
+  const actualizar = Settings.getVidas() - 1;
+  Settings.setVidas(actualizar);
+}
+
 export {
     crear_nuevoBarril,
     imagen_grupoBarriles,
-    getSettings_json
+    imagenes_fondo,
+    getSettings_json,
+    centrar_txt,
+    suma_puntos,
+    restar_vida
 };
