@@ -14,6 +14,7 @@ import {
   crear_nuevoBarril,
   imagen_grupoBarriles,
   imagenes_fondo,
+  revivir_jugador,
   getSettings_json
 } from '../functions/functions.js';
 
@@ -95,6 +96,9 @@ export class Game extends Phaser.Scene {
     // --------------------------------------------------------------------
     this.physics.add.collider(this.jugador.get(), this.plataforma.get(), () => {return}, (jugador, plataforma) => {
 
+      // Si esta en modo Dies
+      if (jugador.getData('jugadorDies')) return false;
+
       // Para que no colisione con la plataforma 'con la cabeza' al saltar
       if (jugador.body.velocity.y < 0) return false;
 
@@ -126,10 +130,16 @@ export class Game extends Phaser.Scene {
 
       this.array_barril.forEach(barril => {
 
-        console.log(this.jugador.get().x, barril.get().x);
+        // console.log(this.jugador.get().x, barril.get().x);
   
         this.physics.add.overlap(this.jugador.get(), barril.get(), (jugador, barril) => {
-          console.log(jugador, barril, 'eh');
+
+          revivir_jugador(jugador);
+        
+        }, (jugador) => {
+
+          if (jugador.getData('disableBody') || jugador.alpha < 1) return false;
+          return true;
         });
       });
     }

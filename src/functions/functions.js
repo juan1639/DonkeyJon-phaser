@@ -45,6 +45,26 @@ function imagenes_fondo(WIDTH, HEIGHT, yBounds, scene) {
 }
 
 // ================================================================
+function revivir_jugador(jugador) {
+
+  // console.log(jugador, barril, 'colision');
+  jugador.setData('jugadorDies', true).setData('disableBody', true);
+  jugador.setCollideWorldBounds(false);
+  jugador.setData('saveX', jugador.x);
+  jugador.setData('saveY', jugador.y);
+  jugador.anims.play('dies', true);
+
+  setTimeout(() => {
+    jugador.setData('jugadorDies', false).setData('disableBody', false);
+    jugador.setAlpha(0.5).setCollideWorldBounds(true);
+    jugador.x = jugador.getData('saveX');
+    jugador.y = jugador.getData('saveY');
+  }, 4800);
+
+  setTimeout(() => jugador.setAlpha(1), 8400);
+}
+
+// ================================================================
 function getSettings_json(scene) {
 
   const data = scene.cache.json.get('settings');
@@ -99,6 +119,7 @@ export {
     crear_nuevoBarril,
     imagen_grupoBarriles,
     imagenes_fondo,
+    revivir_jugador,
     getSettings_json,
     centrar_txt,
     suma_puntos,

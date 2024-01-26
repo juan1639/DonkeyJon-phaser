@@ -14,14 +14,17 @@ export class Jugador {
         this.jugador.setData('vel-x', 300);
         this.jugador.setData('vel-escalera', 200);
         this.jugador.setData('vel-salto', 640);
+        this.jugador.setData('jugadorDies', false).setData('disableBody', false);
+        this.jugador.setData('saveX', 0).setData('saveY', this.relatedScene.sys.game.config.height * 3 - 200);
 
-        this.jugador.setAngle(0).setCollideWorldBounds(true);
+        this.jugador.setAngle(0).setAlpha(1).setCollideWorldBounds(true);
         // this.jugador.setBounce(0.2);
 
         const datosAnim = [
             ['left', 9, 10],
             ['right', 9, 10],
-            ['stairs', 5, 6]
+            ['stairs', 5, 6],
+            ['dies', 0, 4]
         ];
 
         for (let i = 0; i < datosAnim.length; i ++) {
@@ -62,7 +65,11 @@ export class Jugador {
     }
 
     update() {
-        
+
+        if (this.jugador.y > this.relatedScene.sys.game.config.height * 9) console.log('eeeh');
+        if (this.jugador.getData('jugadorDies')) return;
+
+        // ----------------------------------------------------------------
         if (this.controles.left.isDown) {
             this.jugador.setFlipX(true);
             this.jugador.setVelocityX(-this.jugador.getData('vel-x'));
