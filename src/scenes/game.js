@@ -76,10 +76,12 @@ export class Game extends Phaser.Scene {
 
     // this.pointer_showXY(this.mouse_showXY);
 
+    this.crear_nuevaColisionBarril();
     crear_nuevoBarril(this);
 
     this.jugador.update();
     this.enemigo.update();
+
     this.array_barril.forEach(barril => barril.update());
 
     this.marcador.update(this.jugador.get().x, this.jugador.get().y);
@@ -90,13 +92,21 @@ export class Game extends Phaser.Scene {
 
     this.physics.add.collider(this.grupoBarriles, this.plataforma.get());
 
-    this.physics.add.collider(this.jugador.get(), this.plataforma.get(), () => {return}, (jugador) => {
+    // --------------------------------------------------------------------
+    this.physics.add.collider(this.jugador.get(), this.plataforma.get(), () => {return}, (jugador, plataforma) => {
 
+      // Para que no colisione con la plataforma 'con la cabeza' al saltar
       if (jugador.body.velocity.y < 0) return false;
+
+      // Para que se caiga de la plataforma mas o menos a la mitad de jugador.body.width
+      if (jugador.body.velocity.y >= 0 && jugador.x - Math.floor(jugador.body.width / 3.5) > plataforma.x) return false;
+      if (jugador.body.velocity.y >= 0 && jugador.x + Math.floor(jugador.body.width / 1.8) < plataforma.x) return false;
+
       return true;
       
     }, this);
-    
+
+    // --------------------------------------------------------------------
     this.physics.add.collider(this.enemigo.get(), this.plataforma.get(), (enemigo, plataforma) => {
 
       //console.log(plataforma.getData('index'), plataforma.getData('ultima'));
@@ -107,6 +117,22 @@ export class Game extends Phaser.Scene {
         enemigo.setFlip(enemigo.body.velocity.x < 0 ? true : false);
       }
     }, null, this);
+  }
+
+  // ================================================================
+  crear_nuevaColisionBarril() {
+
+    if (this.crearNuevoBarril) {
+
+      this.array_barril.forEach(barril => {
+
+        console.log(this.jugador.get().x, barril.get().x);
+  
+        this.physics.add.overlap(this.jugador.get(), barril.get(), (jugador, barril) => {
+          console.log(jugador, barril, 'eh');
+        });
+      });
+    }
   }
 
   // ================================================================

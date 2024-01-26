@@ -1,12 +1,6 @@
-import { Plataforma } from "./plataforma.js";
 
 // =======================================================================
 export class Jugador {
-
-    static XY_INI = [0, Math.floor(Plataforma.HEIGHT * 3) - 200];
-    static VEL_X = 300;
-    static VEL_ESCALERA = 200;
-    static VEL_SALTO = 640;
 
     // ------------------------------------------------------------
     constructor(scene) {
@@ -15,38 +9,31 @@ export class Jugador {
 
     create() {
 
-        this.jugador = this.relatedScene.physics.add.sprite(Jugador.XY_INI[0], Jugador.XY_INI[1], 'jugador');
+        this.jugador = this.relatedScene.physics.add.sprite(0, this.relatedScene.sys.game.config.height * 3 - 200, 'jugador');
 
-        this.jugador.setData('vel-x', Jugador.VEL_X);
-        this.jugador.setData('vel-escalera', Jugador.VEL_ESCALERA);
-        this.jugador.setData('vel-salto', Jugador.VEL_SALTO);
+        this.jugador.setData('vel-x', 300);
+        this.jugador.setData('vel-escalera', 200);
+        this.jugador.setData('vel-salto', 640);
 
         this.jugador.setAngle(0).setCollideWorldBounds(true);
         // this.jugador.setBounce(0.2);
-        
-        this.relatedScene.anims.create({
-            key: 'left', 
-            frames: this.relatedScene.anims.generateFrameNumbers('jugador', {start: 9, end: 10}),
-            frameRate: 10,
-            yoyo: true,
-            repeat: -1
-        });
 
-        this.relatedScene.anims.create({
-            key: 'right', 
-            frames: this.relatedScene.anims.generateFrameNumbers('jugador', {start: 9, end: 10}),
-            frameRate: 10,
-            yoyo: true,
-            repeat: -1
-        });
+        const datosAnim = [
+            ['left', 9, 10],
+            ['right', 9, 10],
+            ['stairs', 5, 6]
+        ];
 
-        this.relatedScene.anims.create({
-            key: 'stairs', 
-            frames: this.relatedScene.anims.generateFrameNumbers('jugador', {start: 5, end: 6}),
-            frameRate: 10,
-            yoyo: true,
-            repeat: -1
-        });
+        for (let i = 0; i < datosAnim.length; i ++) {
+
+            this.relatedScene.anims.create({
+                key: datosAnim[i][0], 
+                frames: this.relatedScene.anims.generateFrameNumbers('jugador', {start: datosAnim[i][1], end: datosAnim[i][2]}),
+                frameRate: 10,
+                yoyo: true,
+                repeat: -1
+            });
+        }
 
         this.relatedScene.anims.create({
             key: 'turn',

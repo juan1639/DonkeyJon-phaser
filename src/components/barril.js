@@ -21,7 +21,7 @@ export class Barril {
         this.barril.setData('acel', 130);
         this.barril.setData('id', index);
 
-        this.barril.setCollideWorldBounds(true).setBounceY(0.5).setAngle(120).setActive(false);
+        this.barril.setCollideWorldBounds(true).setBounceY(0.5).setAngle(120).setActive(true);
 
         this.relatedScene.physics.add.collider(this.barril, plataforma.get(), (barril, plataforma) => {
 
@@ -42,13 +42,15 @@ export class Barril {
               enemigo.anims.play('enemy-left', true);
               this.relatedScene.crearNuevoBarril = true;
             }, 1000);//3000
-        }, null, this);
         
+        }, null, this);
+
         console.log(this.barril);
         console.log(this.barril.getData('rotacion'));
     }
     
     update() {
+
         if (this.barril.getData('activo')) this.barril.rotation += 0.1 * this.barril.getData('rotacion');
         // console.log(this.barril.x);
     }
