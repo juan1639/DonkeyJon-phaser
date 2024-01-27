@@ -9,7 +9,7 @@ export class Jugador {
 
     create() {
 
-        this.jugador = this.relatedScene.physics.add.sprite(0, this.relatedScene.sys.game.config.height * 3 - 200, 'jugador');
+        this.jugador = this.relatedScene.physics.add.sprite(300, this.relatedScene.sys.game.config.height * 3 - 200, 'jugador');
 
         this.jugador.setData('vel-x', 300);
         this.jugador.setData('vel-escalera', 200);
@@ -48,7 +48,7 @@ export class Jugador {
 
         this.relatedScene.physics.add.overlap(this.jugador, this.relatedScene.escalera.get(), (jugador, escalera) => {
 
-            if (this.controles.up.isDown) {
+            if (this.controles.up.isDown || this.relatedScene.crucetaup.isDown) {
                 
                 jugador.setVelocityY(-this.jugador.getData('vel-escalera'));
                 jugador.anims.play('stairs', true);
@@ -70,22 +70,22 @@ export class Jugador {
         if (this.jugador.getData('jugadorDies')) return;
 
         // ----------------------------------------------------------------
-        if (this.controles.left.isDown) {
+        if (this.controles.left.isDown || this.relatedScene.crucetaleft.isDown) {
             this.jugador.setFlipX(true);
             this.jugador.setVelocityX(-this.jugador.getData('vel-x'));
             this.jugador.anims.play('left', true);
             
-        } else if (this.controles.right.isDown) {
+        } else if (this.controles.right.isDown || this.relatedScene.crucetaright.isDown) {
             this.jugador.setFlipX(false);
             this.jugador.setVelocityX(this.jugador.getData('vel-x'));
             this.jugador.anims.play('right', true);
             
-        } else if (!this.controles.up.isDown) {
+        } else if (!this.controles.up.isDown && !this.relatedScene.crucetaup.isDown) {
             this.jugador.setVelocityX(0);
             this.jugador.anims.play('turn');
         }
         
-        if ((this.controles.shift.isDown || this.controles.space.isDown) && this.jugador.body.touching.down && this.jugador.body.velocity.y === 0) {
+        if ((this.controles.shift.isDown || this.controles.space.isDown || this.relatedScene.botonsalto.isDown) && this.jugador.body.touching.down && this.jugador.body.velocity.y === 0) {
             this.jugador.setVelocityY(-this.jugador.getData('vel-salto'));
         }
     }

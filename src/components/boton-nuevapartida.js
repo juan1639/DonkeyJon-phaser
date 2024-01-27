@@ -20,7 +20,7 @@ export class BotonNuevaPartida {
 
     this.boton.on('pointerover', () => {
       // this.boton.setFrame(1);
-      this.boton.setScale(0.8);
+      this.boton.setScale(0.7);
     });
     this.boton.on('pointerout', () => {
       // this.boton.setFrame(0);
@@ -61,7 +61,7 @@ export class BotonSettings {
 
     this.boton.on('pointerover', () => {
       // this.boton.setFrame(1);
-      this.boton.setScale(0.8);
+      this.boton.setScale(0.6);
     });
     this.boton.on('pointerout', () => {
       // this.boton.setFrame(0);

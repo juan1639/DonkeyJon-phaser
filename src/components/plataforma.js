@@ -10,14 +10,14 @@ export class Plataforma {
     static SCALE = 1;
 
     static array_plataformas = [
-        [0, Plataforma.HEIGHT * 3 - 5, Plataforma.tileXY[0], -1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3],
+        [0, Plataforma.HEIGHT * 3 - 5, Plataforma.tileXY[0], -1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3],
         [0, Plataforma.HEIGHT * 3 - 300, Plataforma.tileXY[0], 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3],
         [200, Plataforma.HEIGHT * 3 - 600, Plataforma.tileXY[0], -1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3],
         [1350, Plataforma.HEIGHT * 2 - 200, Plataforma.tileXY[0], 1, 1, 3],
         [0, Plataforma.HEIGHT * 2 - 300, Plataforma.tileXY[0], 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3],
         [200, Plataforma.HEIGHT, Plataforma.tileXY[0], -1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3],
         [650, Plataforma.HEIGHT - 300, Plataforma.tileXY[0], 1, 1, 2, 2, 2, 2, 2, 2, 3],
-        [1400, Plataforma.HEIGHT - 250, Plataforma.tileXY[0], -1, 1, 2, 2, 3],
+        [1380, Plataforma.HEIGHT - 250, Plataforma.tileXY[0], -1, 1, 2, 2, 3],
         [0, Plataforma.HEIGHT - 200, Plataforma.tileXY[0], 1, 1, 2, 2, 2, 3],
     ];
 

@@ -3,12 +3,13 @@
 // 
 // -----------------------------------------------------------------------------------------
 import { loader } from './loader.js';
-import { Jugador } from '../components/jugador.js';
-import { Enemigo } from '../components/enemigo.js';
-import { Marcador } from '../components/marcador.js';
 import { Plataforma } from '../components/plataforma.js';
 import { Escalera } from '../components/escalera.js';
+import { Jugador } from '../components/jugador.js';
+import { Enemigo } from '../components/enemigo.js';
 import { Barril } from '../components/barril.js';
+import { Marcador } from '../components/marcador.js';
+import { BotonSalto, CrucetaDireccion } from '../components/botonycruceta.js';
 
 import {
   crear_nuevoBarril,
@@ -17,6 +18,8 @@ import {
   revivir_jugador,
   getSettings_json
 } from '../functions/functions.js';
+
+import { Settings } from './settings.js';
 
 // --------------------------------------------------------------
 export class Game extends Phaser.Scene {
@@ -36,6 +39,16 @@ export class Game extends Phaser.Scene {
     this.enemigo = new Enemigo(this);
     this.array_barril.push(new Barril(this));
     this.marcador = new Marcador(this);
+
+    const ancho = this.sys.game.config.width;
+    const alto = this.sys.game.config.height;
+
+    // this.botonfullscreen = new BotonFullScreen(this);
+    this.crucetaleft = new CrucetaDireccion(this, { id: 'cruceta-left', x: ancho * 0.4, y: alto * 0.44, ang: 0, scX: 2.5, scY: 2.1 });
+    this.crucetaright = new CrucetaDireccion(this, { id: 'cruceta-right', x: 0, y: alto * 0.44, ang: 0, scX: 2.5, scY: 2.1});
+    this.crucetaup = new CrucetaDireccion(this, { id: 'cruceta-left', x: ancho * 0.2, y: alto * 0.28, ang: 90, scX: 1.6, scY: 2.2 });
+    this.crucetadown = new CrucetaDireccion(this, { id: 'cruceta-left', x: ancho * 0.2, y: alto * 0.56, ang: 270, scX: 2.5, scY: 2.1 });
+    this.botonsalto = new BotonSalto(this, { id: 'boton-salto', x: ancho * 0.38, y: alto * 0.34, ang: 0, scX: 2.5, scY: 2.1 });
   }
 
   preload() {
@@ -51,8 +64,8 @@ export class Game extends Phaser.Scene {
     this.grupoBarriles = [];
     imagen_grupoBarriles(this);
 
-    this.cameras.main.setBounds(0, 0, Math.floor(this.sys.game.config.width * 2), Math.floor(this.sys.game.config.height * yBounds));
-    this.physics.world.setBounds(0, 0, Math.floor(this.sys.game.config.width * 2), Math.floor(this.sys.game.config.height * yBounds));
+    this.cameras.main.setBounds(0, 0, Math.floor(this.sys.game.config.width * 2), Math.floor(this.sys.game.config.height * yBounds) + 50);
+    this.physics.world.setBounds(0, 0, Math.floor(this.sys.game.config.width * 2), Math.floor(this.sys.game.config.height * yBounds) + 50);
 
     this.plataforma.create();
     this.escalera.create();
@@ -60,6 +73,12 @@ export class Game extends Phaser.Scene {
     this.enemigo.create();
     this.array_barril[this.barrilIndex].create(this.barrilIndex, this.plataforma, this.enemigo);
     this.marcador.create();
+
+    this.crucetaleft.create(this.jugador.get().x, this.jugador.get().y);
+    this.crucetaright.create(this.jugador.get().x, this.jugador.get().y);
+    this.crucetaup.create(this.jugador.get().x, this.jugador.get().y);
+    this.crucetadown.create(this.jugador.get().x, this.jugador.get().y);
+    this.botonsalto.create(this.jugador.get().x, this.jugador.get().y);
 
     this.mouse_showXY = {
       create: this.add.text(this.jugador.get().x, this.jugador.get().y - 100, '.', { fill: '#111' }),
@@ -86,6 +105,15 @@ export class Game extends Phaser.Scene {
     this.array_barril.forEach(barril => barril.update());
 
     this.marcador.update(this.jugador.get().x, this.jugador.get().y);
+
+    if (Settings.isBotonesYcruceta()) {
+
+      this.crucetaleft.update(this.jugador.get().x, this.jugador.get().y);
+      this.crucetaright.update(this.jugador.get().x, this.jugador.get().y);
+      this.crucetaup.update(this.jugador.get().x, this.jugador.get().y);
+      this.crucetadown.update(this.jugador.get().x, this.jugador.get().y);
+      this.botonsalto.update(this.jugador.get().x, this.jugador.get().y);
+    }
   }
 
   // ================================================================
@@ -136,9 +164,9 @@ export class Game extends Phaser.Scene {
 
           revivir_jugador(jugador);
         
-        }, (jugador) => {
+        }, (jugador, barril) => {
 
-          if (jugador.getData('disableBody') || jugador.alpha < 1) return false;
+          if (jugador.getData('disableBody') || jugador.alpha < 1 || jugador.y > barril.y + Math.floor(barril.body.height / 2)) return false;
           return true;
         });
       });

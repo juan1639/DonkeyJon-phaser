@@ -42,6 +42,9 @@ function imagenes_fondo(WIDTH, HEIGHT, yBounds, scene) {
     scene.add.image(WIDTH / 2, HEIGHT / 2 + i * HEIGHT, 'fondo' + iFondo[0]);
     scene.add.image(WIDTH / 2 + WIDTH, HEIGHT / 2 + i * HEIGHT, 'fondo' + iFondo[1]);
   }
+
+  scene.add.image(0, HEIGHT * 3, 'fondo2').setOrigin(0, 0);
+  scene.add.image(WIDTH, HEIGHT * 3, 'fondo1').setOrigin(0, 0);
 }
 
 // ================================================================
@@ -51,7 +54,7 @@ function revivir_jugador(jugador) {
   jugador.setData('jugadorDies', true).setData('disableBody', true);
   jugador.setCollideWorldBounds(false);
   jugador.setData('saveX', jugador.x);
-  jugador.setData('saveY', jugador.y);
+  jugador.setData('saveY', jugador.y - 99);
   jugador.anims.play('dies', true);
 
   setTimeout(() => {

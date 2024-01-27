@@ -69,15 +69,28 @@ export class MenuPrincipal extends Phaser.Scene {
             shadow: {
                 offsetX: 1,
                 offsetY: 1,
-                color: '#e81',
+                fill: '#ffa',
+                // color: '#e81',
                 blur: 15,
                 fill: true
             },
-            fill: '#ffa',
+            // fill: '#ffa',
+            color: '#e81',
             fontFamily: 'verdana, arial, sans-serif'
         });
 
         this.txt_titulo.setX(centrar_txt(this.txt_titulo, this.sys.game.config.width));
+
+        this.tweens.add({
+            targets: this.txt_titulo,
+            scale: 1.2,
+            x: 24,
+            ease: 'Ease',
+            yoyo: true,
+            hold: 900,
+            duration: 2000,
+            repeat: -1
+        });
 
         this.timeline = this.add.timeline([
             {

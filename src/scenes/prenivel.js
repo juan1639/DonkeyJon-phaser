@@ -88,14 +88,15 @@ export class PreNivel extends Phaser.Scene {
             fontFamily: 'verdana, arial, sans-serif'
         });
 
-        this.txt_titulo.setAlpha(0);
+        this.txt_titulo.setAlpha(1);
         this.txt_titulo.setX(centrar_txt(this.txt_titulo, this.sys.game.config.width));
 
         this.tweens.add({
             targets: this.txt_titulo,
-            alpha: 1,
-            yoyo: true,
-            duration: Math.floor(duracionThisScene / 2),
+            alpha: 0,
+            // yoyo: true,
+            ease: 'Sine.easeIn',
+            duration: Math.floor(duracionThisScene / 1),
             // repeat: 1
         });
 

@@ -1,3 +1,4 @@
+
 // ====================================================================================
 export class Settings {
 
@@ -5,7 +6,9 @@ export class Settings {
     static nivel = 1;
     static hi = 20000;
     static vidas = 3;
+    static botonesYcruceta = true;
 
+    // -----------------------------------------------
     static getPuntos() {
         return Settings.puntos;
     }
@@ -21,7 +24,12 @@ export class Settings {
     static getVidas() {
         return Settings.vidas;
     }
-    
+
+    static isBotonesYcruceta() {
+        return Settings.botonesYcruceta;
+    }
+
+    // -----------------------------------------------
     static setPuntos(ptos) {
         Settings.puntos = ptos;
     }
@@ -36,5 +44,9 @@ export class Settings {
 
     static setVidas(lifes) {
         Settings.vidas = lifes;
+    }
+
+    static setBotonesYcruceta(bool) {
+        Settings.botonesYcruceta = bool;
     }
 }
