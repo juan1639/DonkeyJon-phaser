@@ -15,7 +15,7 @@ export class Plataforma {
         [200, Plataforma.HEIGHT * 3 - 600, Plataforma.tileXY[0], -1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3],
         [1350, Plataforma.HEIGHT * 2 - 200, Plataforma.tileXY[0], 1, 1, 3],
         [0, Plataforma.HEIGHT * 2 - 300, Plataforma.tileXY[0], 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3],
-        [200, Plataforma.HEIGHT, Plataforma.tileXY[0], -1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3],
+        [200, Plataforma.HEIGHT, Plataforma.tileXY[0], -1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3],
         [650, Plataforma.HEIGHT - 300, Plataforma.tileXY[0], 1, 1, 2, 2, 2, 2, 2, 2, 3],
         [1380, Plataforma.HEIGHT - 250, Plataforma.tileXY[0], -1, 1, 2, 2, 3],
         [0, Plataforma.HEIGHT - 200, Plataforma.tileXY[0], 1, 1, 2, 2, 2, 3],
@@ -55,11 +55,25 @@ export class Plataforma {
             }));
         });
 
+        const trampas = [
+            [1, 9], [2, 6], [4, 12], [7, 2]
+        ];
+
         for (let i = 0; i < this.plataforma.length; i ++) {
 
-            this.plataforma[i].getChildren().forEach(tile => {
+            this.plataforma[i].getChildren().forEach((tile, index)=> {
                 // tile.setScale(0.5);
                 tile.body.setImmovable(true);
+                tile.setData('trampa', false);
+
+                trampas.forEach(trampa => {
+
+                    if (i === trampa[0] && index === trampa[1]) {
+                        tile.body.setImmovable(false);
+                        tile.setData('trampa', true);
+                    }
+                });
+
                 tile.body.setAllowGravity(false);
                 tile.setData('id', Plataforma.array_plataformas[i][3]);
                 tile.setData('index', i);

@@ -26,9 +26,13 @@ export class Barril {
         this.relatedScene.physics.add.collider(this.barril, plataforma.get(), (barril, plataforma) => {
 
             if (barril.getData('activo')) {
+                
                 barril.setAcceleration(barril.getData('acel') * plataforma.getData('id'));
                 barril.setData('rotacion', plataforma.getData('id'));
+
+                if (plataforma.getData('trampa')) plataforma.body.setAllowGravity(true);
             }
+        
         }, null, this.relatedScene);
 
         this.relatedScene.physics.add.collider(enemigo.get(), this.barril, (enemigo, barril) => {

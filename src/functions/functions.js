@@ -54,7 +54,7 @@ function revivir_jugador(jugador) {
   jugador.setData('jugadorDies', true).setData('disableBody', true);
   jugador.setCollideWorldBounds(false);
   jugador.setData('saveX', jugador.x);
-  jugador.setData('saveY', jugador.y - 99);
+  jugador.setData('saveY', jugador.y - 200);
   jugador.anims.play('dies', true);
 
   setTimeout(() => {

@@ -3,6 +3,7 @@
 // 
 // -----------------------------------------------------------------------------------------
 import { loader } from './loader.js';
+import { Settings } from './settings.js';
 import { Plataforma } from '../components/plataforma.js';
 import { Escalera } from '../components/escalera.js';
 import { Jugador } from '../components/jugador.js';
@@ -18,8 +19,6 @@ import {
   revivir_jugador,
   getSettings_json
 } from '../functions/functions.js';
-
-import { Settings } from './settings.js';
 
 // --------------------------------------------------------------
 export class Game extends Phaser.Scene {
@@ -122,7 +121,11 @@ export class Game extends Phaser.Scene {
     this.physics.add.collider(this.grupoBarriles, this.plataforma.get());
 
     // --------------------------------------------------------------------
-    this.physics.add.collider(this.jugador.get(), this.plataforma.get(), () => {return}, (jugador, plataforma) => {
+    this.physics.add.collider(this.jugador.get(), this.plataforma.get(), (jugador, plataforma) => {
+
+      if (plataforma.getData('trampa')) plataforma.body.setAllowGravity(true);
+    
+    }, (jugador, plataforma) => {
 
       // Si esta en modo Dies
       if (jugador.getData('jugadorDies')) return false;
@@ -131,7 +134,7 @@ export class Game extends Phaser.Scene {
       if (jugador.body.velocity.y < 0) return false;
 
       // Para que se caiga de la plataforma mas o menos a la mitad de jugador.body.width
-      if (jugador.body.velocity.y >= 0 && jugador.x - Math.floor(jugador.body.width / 3.5) > plataforma.x) return false;
+      if (jugador.body.velocity.y >= 0 && jugador.x - Math.floor(jugador.body.width / 2) > plataforma.x) return false;
       if (jugador.body.velocity.y >= 0 && jugador.x + Math.floor(jugador.body.width / 1.8) < plataforma.x) return false;
 
       return true;
