@@ -22,15 +22,14 @@ export function loader(scene) {
   scene.load.image('switch1', './src/img/switchRed_mid.png');
   scene.load.image('switch2', './src/img/switchRed_right.png');
 
-  scene.load.image('boton-fire-joystick', './src/img/boton-fire-joystick.png');
   scene.load.image('boton-nueva-partida', './src/img/boton-start.png');
   scene.load.image('boton-continuar', './src/img/boton-continuar.png');
   scene.load.image('boton-settings', './src/img/boton-config.png');
-  scene.load.image('boton-fullscreen', './src/img/boton-fullscreen.png');
+  scene.load.spritesheet('boton-fullscreen', './src/img/boton-fullscreen.png', {frameWidth: 64, frameHeight: 64});
 
   scene.load.image('cruceta-left', './src/img/left.png');
   scene.load.image('cruceta-right', './src/img/right.png');
-  scene.load.image('boton-salto', './src/img/boton-fire-joystick.png');
+  scene.load.image('boton-salto', './src/img/boton-salto-joystick.png');
 
   scene.load.spritesheet('jugador', './src/img/Ssheet_jugador.png', {frameWidth: 80, frameHeight: 110});
   scene.load.spritesheet('enemigo', './src/img/Ssheet_enemigo.png', {frameWidth: 80, frameHeight: 110});

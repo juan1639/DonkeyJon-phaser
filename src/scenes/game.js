@@ -29,6 +29,7 @@ export class Game extends Phaser.Scene {
   }
 
   init() {
+    
     this.array_barril = [];
     this.crearNuevoBarril = false;
     this.barrilIndex = 0;
@@ -42,20 +43,59 @@ export class Game extends Phaser.Scene {
     const ancho = this.sys.game.config.width;
     const alto = this.sys.game.config.height;
 
-    this.marcadorPtos = new Marcador(this, { x: 10, y: 0, size: 35, txt: ' Puntos: ', color: '#fff', id: 0 });
-    this.marcadorNivel = new Marcador(this, { x: Math.floor(ancho / 2), y: 0, size: 35, txt: ' Nivel: ', color: '#ff5', id: 1 });
-    this.marcadorHi = new Marcador(this, { x: Math.floor(ancho / 1.1), y: 0, size: 35, txt: ' Record: ', color: '#fff', id: 2 });
+    this.marcadorPtos = new Marcador(this, { x: 10, y: -99, size: 35, txt: ' Puntos: ', color: '#fff', id: 0 });
+    this.marcadorNivel = new Marcador(this, { x: Math.floor(ancho / 2), y: -99, size: 35, txt: ' Nivel: ', color: '#ff5', id: 1 });
+    this.marcadorHi = new Marcador(this, { x: Math.floor(ancho / 1.1), y: -99, size: 35, txt: ' Record: ', color: '#fff', id: 2 });
 
     this.botonfullscreen = new BotonFullScreen(this, {
-      id: 'boton-fullscreen', x: Math.floor(this.sys.game.config.width * 1.35), y: 22,
+      id: 'boton-fullscreen', x: Math.floor(this.sys.game.config.width * 1.35), y: -77,
       ang: 0, scX: 0.5, scY: 0.5 
     });
 
-    this.crucetaleft = new CrucetaDireccion(this, { id: 'cruceta-left', x: ancho * 0.4, y: alto * 0.44, ang: 0, scX: 2.5, scY: 2.1 });
-    this.crucetaright = new CrucetaDireccion(this, { id: 'cruceta-right', x: 0, y: alto * 0.44, ang: 0, scX: 2.5, scY: 2.1});
-    this.crucetaup = new CrucetaDireccion(this, { id: 'cruceta-left', x: ancho * 0.2, y: alto * 0.28, ang: 90, scX: 1.6, scY: 2.2 });
-    this.crucetadown = new CrucetaDireccion(this, { id: 'cruceta-left', x: ancho * 0.2, y: alto * 0.56, ang: 270, scX: 2.5, scY: 2.1 });
-    this.botonsalto = new BotonSalto(this, { id: 'boton-salto', x: ancho * 0.38, y: alto * 0.34, ang: 0, scX: 2.5, scY: 2.1 });
+    this.crucetaleft = new CrucetaDireccion(this, {
+      id: 'cruceta-left',
+      x: Settings.getCoorCruceta().x,
+      y: Settings.getCoorCruceta().y,
+      ang: 0,
+      scX: Settings.getCoorCruceta().sizeX,
+      scY: Settings.getCoorCruceta().sizeY
+    });
+
+    this.crucetaright = new CrucetaDireccion(this, {
+      id: 'cruceta-right',
+      x: Settings.getCoorCruceta().x + 340,
+      y: Settings.getCoorCruceta().y,
+      ang: 0,
+      scX: Settings.getCoorCruceta().sizeX,
+      scY: Settings.getCoorCruceta().sizeY
+    });
+
+    this.crucetaup = new CrucetaDireccion(this, {
+      id: 'cruceta-left',
+      x: Settings.getCoorCruceta().x + 175,
+      y: Settings.getCoorCruceta().y - 60,
+      ang: 90,
+      scX: Settings.getCoorCruceta().sizeX - 0.9,
+      scY: Settings.getCoorCruceta().sizeY + 0.1
+    });
+
+    this.crucetadown = new CrucetaDireccion(this, {
+      id: 'cruceta-left',
+      x: Settings.getCoorCruceta().x + 175,
+      y: Settings.getCoorCruceta().y + 100,
+      ang: 270,
+      scX: Settings.getCoorCruceta().sizeX + 1,
+      scY: Settings.getCoorCruceta().sizeY
+    });
+
+    this.botonsalto = new BotonSalto(this, {
+      id: 'boton-salto',
+      x: Settings.getCoorBotonSalto().x,
+      y: Settings.getCoorBotonSalto().y,
+      ang: 0,
+      scX: Settings.getCoorBotonSalto().sizeX,
+      scY: Settings.getCoorBotonSalto().sizeY
+    });
   }
 
   preload() {
@@ -72,18 +112,30 @@ export class Game extends Phaser.Scene {
     imagen_grupoBarriles(this);
 
     // --- El +50 es para que se vean mejor los botones mobile al comienzo del juego
-    this.cameras.main.setBounds(0, 0, Math.floor(this.sys.game.config.width * 2), Math.floor(this.sys.game.config.height * yBounds) + 50);
-    this.physics.world.setBounds(0, 0, Math.floor(this.sys.game.config.width * 2), Math.floor(this.sys.game.config.height * yBounds) + 50);
+    this.cameras.main.setBounds(
+      0, 0,
+      Math.floor(this.sys.game.config.width * 2), Math.floor(this.sys.game.config.height * yBounds) + 50
+    );
 
+    this.physics.world.setBounds(
+      0, 0,
+      Math.floor(this.sys.game.config.width * 2), Math.floor(this.sys.game.config.height * yBounds) + 50
+    );
+    
     this.mapa_viewEnemigo = this.cameras.add(0, 0, 120, 50).setZoom(0.3).setName('view-enemigo');
     this.mapa_viewEnemigo.scrollX = 150;
     this.mapa_viewEnemigo.scrollY = 280;
     console.log(this.mapa_viewEnemigo);
 
-    this.mapa_scores = this.cameras.add(120, 0, 680, 25).setZoom(0.6).setName('view-scores').setAlpha(0.6).setOrigin(0, 0);
+    this.mapa_scores = this.cameras.add(120, 0, 680, 25).setZoom(0.6).setName('view-scores').setAlpha(0.7).setOrigin(0, 0);
     this.mapa_scores.scrollX = 0;
-    this.mapa_scores.scrollY = 0;
+    this.mapa_scores.scrollY = -99;
     console.log(this.mapa_scores);
+
+    this.mapa_controles = this.cameras.add(0, 400, 800, 200).setZoom(0.9).setName('view-controls').setAlpha(0.7).setOrigin(0, 0);
+    this.mapa_controles.scrollX = 0;
+    this.mapa_controles.scrollY = 2370;
+    console.log(this.mapa_controles);
 
     // ---------------------------------------------------------------------
     this.plataforma.create();
@@ -98,11 +150,11 @@ export class Game extends Phaser.Scene {
     this.marcadorHi.create();
     this.botonfullscreen.create();
 
-    this.crucetaleft.create(this.jugador.get().x, this.jugador.get().y);
-    this.crucetaright.create(this.jugador.get().x, this.jugador.get().y);
-    this.crucetaup.create(this.jugador.get().x, this.jugador.get().y);
-    this.crucetadown.create(this.jugador.get().x, this.jugador.get().y);
-    this.botonsalto.create(this.jugador.get().x, this.jugador.get().y);
+    this.crucetaleft.create();
+    this.crucetaright.create();
+    this.crucetaup.create();
+    this.crucetadown.create();
+    this.botonsalto.create();
     
     this.mouse_showXY = {
       create: this.add.text(this.jugador.get().x, this.jugador.get().y - 100, '.', { fill: '#111' }),
@@ -127,15 +179,6 @@ export class Game extends Phaser.Scene {
     this.enemigo.update();
 
     this.array_barril.forEach(barril => barril.update());
-
-    if (Settings.isBotonesYcruceta()) {
-
-      this.crucetaleft.update(this.jugador.get().x, this.jugador.get().y);
-      this.crucetaright.update(this.jugador.get().x, this.jugador.get().y);
-      this.crucetaup.update(this.jugador.get().x, this.jugador.get().y);
-      this.crucetadown.update(this.jugador.get().x, this.jugador.get().y);
-      this.botonsalto.update(this.jugador.get().x, this.jugador.get().y);
-    }
   }
 
   // ================================================================
