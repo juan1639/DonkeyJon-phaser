@@ -43,58 +43,60 @@ export class Game extends Phaser.Scene {
     const ancho = this.sys.game.config.width;
     const alto = this.sys.game.config.height;
 
-    this.marcadorPtos = new Marcador(this, { x: 10, y: -99, size: 35, txt: ' Puntos: ', color: '#fff', id: 0 });
-    this.marcadorNivel = new Marcador(this, { x: Math.floor(ancho / 2), y: -99, size: 35, txt: ' Nivel: ', color: '#ff5', id: 1 });
-    this.marcadorHi = new Marcador(this, { x: Math.floor(ancho / 1.1), y: -99, size: 35, txt: ' Record: ', color: '#fff', id: 2 });
+    this.marcadorPtos = new Marcador(this, {
+      x: 10, y: -99, size: 35, txt: ' Puntos: ', color: '#fff', id: 0
+    });
+
+    this.marcadorNivel = new Marcador(this, {
+      x: Math.floor(ancho / 2), y: -99, size: 35, txt: ' Nivel: ', color: '#ff5', id: 1
+    });
+
+    this.marcadorHi = new Marcador(this, {
+      x: Math.floor(ancho / 1.1), y: -99, size: 35, txt: ' Record: ', color: '#fff', id: 2
+    });
 
     this.botonfullscreen = new BotonFullScreen(this, {
       id: 'boton-fullscreen', x: Math.floor(this.sys.game.config.width * 1.35), y: -77,
       ang: 0, scX: 0.5, scY: 0.5 
     });
 
+    var { xx, yy, sizeX, sizeY } = Settings.getCoorCruceta();
+    
     this.crucetaleft = new CrucetaDireccion(this, {
       id: 'cruceta-left',
-      x: Settings.getCoorCruceta().x,
-      y: Settings.getCoorCruceta().y,
+      x: xx, y: yy,
       ang: 0,
-      scX: Settings.getCoorCruceta().sizeX,
-      scY: Settings.getCoorCruceta().sizeY
+      scX: sizeX, scY: sizeY
     });
-
+    
     this.crucetaright = new CrucetaDireccion(this, {
       id: 'cruceta-right',
-      x: Settings.getCoorCruceta().x + 340,
-      y: Settings.getCoorCruceta().y,
+      x: xx + 340, y: yy,
       ang: 0,
-      scX: Settings.getCoorCruceta().sizeX,
-      scY: Settings.getCoorCruceta().sizeY
+      scX: sizeX, scY: sizeY
     });
-
+    
     this.crucetaup = new CrucetaDireccion(this, {
       id: 'cruceta-left',
-      x: Settings.getCoorCruceta().x + 175,
-      y: Settings.getCoorCruceta().y - 60,
+      x: xx + 175, y: yy - 80,
       ang: 90,
-      scX: Settings.getCoorCruceta().sizeX - 0.9,
-      scY: Settings.getCoorCruceta().sizeY + 0.1
+      scX: sizeX - 0.9, scY: sizeY + 0.1
     });
-
+    
     this.crucetadown = new CrucetaDireccion(this, {
       id: 'cruceta-left',
-      x: Settings.getCoorCruceta().x + 175,
-      y: Settings.getCoorCruceta().y + 100,
+      x: xx + 175, y: yy + 110,
       ang: 270,
-      scX: Settings.getCoorCruceta().sizeX + 1,
-      scY: Settings.getCoorCruceta().sizeY
+      scX: sizeX + 1, scY: sizeY
     });
+    
+    var { xx, yy, sizeX, sizeY } = Settings.getCoorBotonSalto();
 
     this.botonsalto = new BotonSalto(this, {
       id: 'boton-salto',
-      x: Settings.getCoorBotonSalto().x,
-      y: Settings.getCoorBotonSalto().y,
+      x: xx, y: yy,
       ang: 0,
-      scX: Settings.getCoorBotonSalto().sizeX,
-      scY: Settings.getCoorBotonSalto().sizeY
+      scX: sizeX, scY: sizeY
     });
   }
 
@@ -121,20 +123,26 @@ export class Game extends Phaser.Scene {
       0, 0,
       Math.floor(this.sys.game.config.width * 2), Math.floor(this.sys.game.config.height * yBounds) + 50
     );
+
+    var { x, y, ancho, alto, scrollX, scrollY } = Settings.getCameraEnemigo();
     
-    this.mapa_viewEnemigo = this.cameras.add(0, 0, 120, 50).setZoom(0.3).setName('view-enemigo');
-    this.mapa_viewEnemigo.scrollX = 150;
-    this.mapa_viewEnemigo.scrollY = 280;
+    this.mapa_viewEnemigo = this.cameras.add(x, y, ancho, alto).setZoom(0.3).setName('view-enemigo');
+    this.mapa_viewEnemigo.scrollX = scrollX;
+    this.mapa_viewEnemigo.scrollY = scrollY;
     console.log(this.mapa_viewEnemigo);
-
-    this.mapa_scores = this.cameras.add(120, 0, 680, 25).setZoom(0.6).setName('view-scores').setAlpha(0.7).setOrigin(0, 0);
-    this.mapa_scores.scrollX = 0;
-    this.mapa_scores.scrollY = -99;
+    
+    var { x, y, ancho, alto, scrollX, scrollY } = Settings.getCameraScores();
+    
+    this.mapa_scores = this.cameras.add(x, y, ancho, alto).setZoom(0.6).setName('view-scores').setAlpha(0.7).setOrigin(0, 0);
+    this.mapa_scores.scrollX = scrollX;
+    this.mapa_scores.scrollY =scrollY;
     console.log(this.mapa_scores);
+    
+    var { x, y, ancho, alto, scrollX, scrollY } = Settings.getCameraControles();
 
-    this.mapa_controles = this.cameras.add(0, 400, 800, 200).setZoom(0.9).setName('view-controls').setAlpha(0.7).setOrigin(0, 0);
-    this.mapa_controles.scrollX = 0;
-    this.mapa_controles.scrollY = 2370;
+    this.mapa_controles = this.cameras.add(x, y, ancho, alto).setZoom(0.9).setName('view-controls').setAlpha(0.7).setOrigin(0, 0);
+    this.mapa_controles.scrollX = scrollX;
+    this.mapa_controles.scrollY = scrollY;
     console.log(this.mapa_controles);
 
     // ---------------------------------------------------------------------

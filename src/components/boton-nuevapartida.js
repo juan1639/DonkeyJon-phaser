@@ -36,8 +36,8 @@ export class BotonNuevaPartida {
       angle: 359,
       ease: 'Elastic',
       yoyo: true,
-      hold: 900,
-      duration: 2000,
+      hold: 2000,
+      duration: 3000,
       repeat: -1
     });
   }

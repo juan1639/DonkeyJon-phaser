@@ -10,18 +10,45 @@ export class Settings {
     static botonesYcruceta = true;
 
     static coorCruceta = {
-        x: 60,
-        y: 2500,
+        xx: 60,
+        yy: 2500,
         sizeX: 2.5,
         sizeY: 2.1
-    }
+    };
 
     static coorBotonSalto = {
-        x: 780,
-        y: 2500,
+        xx: 780,
+        yy: 2460,
         sizeX: 2.5,
         sizeY: 2.1
-    }
+    };
+
+    static cameraEnemigo = {
+        x: 0,
+        y: 0,
+        ancho: 120,
+        alto: 50,
+        scrollX: 150,
+        scrollY: 280
+    };
+
+    static cameraScores = {
+        x: 120,
+        y: 0,
+        ancho: 680,
+        alto: 25,
+        scrollX: 0,
+        scrollY: -99
+    };
+
+    static cameraControles = {
+        x: 0,
+        y: 400,
+        ancho: 800,
+        alto: 220,
+        scrollX: 0,
+        scrollY: 2350
+    };
 
     // -----------------------------------------------
     static getPuntos() {
@@ -50,6 +77,18 @@ export class Settings {
 
     static getCoorBotonSalto() {
         return Settings.coorBotonSalto;
+    }
+
+    static getCameraEnemigo() {
+        return Settings.cameraEnemigo;
+    }
+
+    static getCameraScores() {
+        return Settings.cameraScores;
+    }
+
+    static getCameraControles() {
+        return Settings.cameraControles;
     }
 
     // -----------------------------------------------
