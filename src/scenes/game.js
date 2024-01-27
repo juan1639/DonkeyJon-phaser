@@ -11,6 +11,7 @@ import { Enemigo } from '../components/enemigo.js';
 import { Barril } from '../components/barril.js';
 import { Marcador } from '../components/marcador.js';
 import { BotonSalto, CrucetaDireccion } from '../components/botonycruceta.js';
+import { BotonFullScreen } from '../components/boton-nuevapartida.js';
 
 import {
   crear_nuevoBarril,
@@ -37,12 +38,19 @@ export class Game extends Phaser.Scene {
     this.jugador = new Jugador(this);
     this.enemigo = new Enemigo(this);
     this.array_barril.push(new Barril(this));
-    this.marcador = new Marcador(this);
 
     const ancho = this.sys.game.config.width;
     const alto = this.sys.game.config.height;
 
-    // this.botonfullscreen = new BotonFullScreen(this);
+    this.marcadorPtos = new Marcador(this, { x: 10, y: 0, size: 35, txt: ' Puntos: ', color: '#fff', id: 0 });
+    this.marcadorNivel = new Marcador(this, { x: Math.floor(ancho / 2), y: 0, size: 35, txt: ' Nivel: ', color: '#ff5', id: 1 });
+    this.marcadorHi = new Marcador(this, { x: Math.floor(ancho / 1.1), y: 0, size: 35, txt: ' Record: ', color: '#fff', id: 2 });
+
+    this.botonfullscreen = new BotonFullScreen(this, {
+      id: 'boton-fullscreen', x: Math.floor(this.sys.game.config.width * 1.35), y: 22,
+      ang: 0, scX: 0.5, scY: 0.5 
+    });
+
     this.crucetaleft = new CrucetaDireccion(this, { id: 'cruceta-left', x: ancho * 0.4, y: alto * 0.44, ang: 0, scX: 2.5, scY: 2.1 });
     this.crucetaright = new CrucetaDireccion(this, { id: 'cruceta-right', x: 0, y: alto * 0.44, ang: 0, scX: 2.5, scY: 2.1});
     this.crucetaup = new CrucetaDireccion(this, { id: 'cruceta-left', x: ancho * 0.2, y: alto * 0.28, ang: 90, scX: 1.6, scY: 2.2 });
@@ -63,22 +71,39 @@ export class Game extends Phaser.Scene {
     this.grupoBarriles = [];
     imagen_grupoBarriles(this);
 
+    // --- El +50 es para que se vean mejor los botones mobile al comienzo del juego
     this.cameras.main.setBounds(0, 0, Math.floor(this.sys.game.config.width * 2), Math.floor(this.sys.game.config.height * yBounds) + 50);
     this.physics.world.setBounds(0, 0, Math.floor(this.sys.game.config.width * 2), Math.floor(this.sys.game.config.height * yBounds) + 50);
 
+    this.mapa_viewEnemigo = this.cameras.add(0, 0, 120, 50).setZoom(0.3).setName('view-enemigo');
+    this.mapa_viewEnemigo.scrollX = 150;
+    this.mapa_viewEnemigo.scrollY = 280;
+    console.log(this.mapa_viewEnemigo);
+
+    this.mapa_scores = this.cameras.add(120, 0, 680, 25).setZoom(0.6).setName('view-scores').setAlpha(0.6).setOrigin(0, 0);
+    this.mapa_scores.scrollX = 0;
+    this.mapa_scores.scrollY = 0;
+    console.log(this.mapa_scores);
+
+    // ---------------------------------------------------------------------
     this.plataforma.create();
     this.escalera.create();
     this.jugador.create();
     this.enemigo.create();
     this.array_barril[this.barrilIndex].create(this.barrilIndex, this.plataforma, this.enemigo);
-    this.marcador.create();
+
+    // ---------------------------------------------------------------------
+    this.marcadorPtos.create();
+    this.marcadorNivel.create();
+    this.marcadorHi.create();
+    this.botonfullscreen.create();
 
     this.crucetaleft.create(this.jugador.get().x, this.jugador.get().y);
     this.crucetaright.create(this.jugador.get().x, this.jugador.get().y);
     this.crucetaup.create(this.jugador.get().x, this.jugador.get().y);
     this.crucetadown.create(this.jugador.get().x, this.jugador.get().y);
     this.botonsalto.create(this.jugador.get().x, this.jugador.get().y);
-
+    
     this.mouse_showXY = {
       create: this.add.text(this.jugador.get().x, this.jugador.get().y - 100, '.', { fill: '#111' }),
       show_mouseXY: true
@@ -102,8 +127,6 @@ export class Game extends Phaser.Scene {
     this.enemigo.update();
 
     this.array_barril.forEach(barril => barril.update());
-
-    this.marcador.update(this.jugador.get().x, this.jugador.get().y);
 
     if (Settings.isBotonesYcruceta()) {
 

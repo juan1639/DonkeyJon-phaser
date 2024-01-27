@@ -1,32 +1,28 @@
-import { Plataforma } from "./plataforma.js";
+import { Settings } from "../scenes/settings.js";
 
 // ===========================================================================
 export class Marcador {
 
-    constructor(scene) {
+    constructor(scene, datos) {
         this.relatedScene = scene;
+        this.datos = datos;
     }
 
     create() {
 
-        this.size = 20;
+        const { x, y, size, txt, color, id } = this.datos;
 
-        this.left = Math.floor(Plataforma.WIDTH / 2);
-        this.top = Math.floor(Plataforma.HEIGHT / 2);
-        
-        this.marcador = this.relatedScene.add.text(0, 0, ' Puntos: 0', { fontSize: this.size + 'px', fill: '#fff', fontFamily: 'verdana, arial, sans-serif' });
+        let texto = '';
+
+        if (id === 0) texto = `${txt}${Settings.getPuntos()}`;
+        if (id === 1) texto = `${txt}${Settings.getNivel()}`;
+        if (id === 2) texto = `${txt}${Settings.getRecord()}`;
+
+        this.marcador = this.relatedScene.add.text(x, y, texto, {
+            fontSize: size + 'px', fill: color, fontFamily: 'verdana, arial, sans-serif'
+        });
+
         console.log(this.marcador);
-    }
-
-    update(x, y) {
-
-        this.marcador.setX(x - this.left);
-        this.marcador.setY(y - this.top);
-
-        if (this.marcador.x < 0) this.marcador.setX(0);
-        if (this.marcador.x > 360) this.marcador.setX(360);
-        if (this.marcador.y < 0) this.marcador.setY(0);
-        if (this.marcador.y > 328) this.marcador.setY(328);
     }
 
     get() {
