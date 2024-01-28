@@ -1,5 +1,5 @@
 import { loader } from './loader.js';
-import { centrar_txt } from '../functions/functions.js';
+import { centrar_txt, play_sonidos } from '../functions/functions.js';
 import { Settings } from './settings.js';
 import { Plataforma } from '../components/plataforma.js';
 import { Enemigo } from '../components/enemigo.js';
@@ -24,41 +24,44 @@ export class MenuPrincipal extends Phaser.Scene {
         this.botoninicio = new BotonNuevaPartida(this);
         this.botonsettings = new BotonSettings(this);
     } 
-
+    
     preload() {
+        
         const txt = this.add.text(Math.floor(this.sys.game.config.width / 2), Math.floor(this.sys.game.config.height / 2), ' Cargando...', {
             fontSize: '50px',
             fill: '#ffa',
             fontFamily: 'verdana, arial, sans-serif'
         });
-
+        
         txt.setX(centrar_txt(txt, this.sys.game.config.width));
-
+        
         loader(this);
     }
     
     create() {
 
+        this.sonidoMarioTuberias = this.sound.add('mario-tuberias');
+
         const aparecerBoton = 3200;
-
+        
         // this.sonidoMusicaFondo = this.sound.add('sonidoMusicaFondo');
-
+        
         this.add.image(0, 0, 'fondo2').setOrigin(0, 0);
-
+        
         this.plataforma.create();
         this.enemigo.create();
-
+        
         this.physics.add.collider(this.enemigo.get(), this.plataforma.get(), (enemigo, plataforma) => {
 
             //console.log(plataforma.getData('index'), plataforma.getData('ultima'));
-      
+            
             if (plataforma.getData('index') !== plataforma.getData('ultima')) {
-      
-              enemigo.setVelocityX(enemigo.getData('vel-x') * plataforma.getData('id'));
-              enemigo.setFlip(enemigo.body.velocity.x < 0 ? true : false);
+                
+                enemigo.setVelocityX(enemigo.getData('vel-x') * plataforma.getData('id'));
+                enemigo.setFlip(enemigo.body.velocity.x < 0 ? true : false);
             }
         }, null, this);
-
+        
         this.size = 90;
         this.left = Math.floor(this.sys.game.config.width / 5.2);
         this.top = Math.floor(this.sys.game.config.height / 4.2);
@@ -78,9 +81,9 @@ export class MenuPrincipal extends Phaser.Scene {
             color: '#e81',
             fontFamily: 'verdana, arial, sans-serif'
         });
-
+        
         this.txt_titulo.setX(centrar_txt(this.txt_titulo, this.sys.game.config.width));
-
+        
         this.tweens.add({
             targets: this.txt_titulo,
             scale: 1.2,
@@ -91,21 +94,20 @@ export class MenuPrincipal extends Phaser.Scene {
             duration: 2000,
             repeat: -1
         });
-
+        
         this.timeline = this.add.timeline([
             {
-              at: aparecerBoton,
-              run: () => {
-                this.botoninicio.create('prenivel');
-                this.botonsettings.create('prenivel');
-              }
+                at: aparecerBoton,
+                run: () => {
+                    this.botoninicio.create('prenivel');
+                    this.botonsettings.create('prenivel');
+                }
             }
         ]);
         
         this.timeline.play();
 
-        // this.sonidoMusicaFondo.play();
-        // this.sonidoMusicaFondo.volume = 0.4;
+        play_sonidos(this.sonidoMarioTuberias, false, 0.8);
 
         console.log(this.txt_titulo);
     }

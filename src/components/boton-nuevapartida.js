@@ -1,3 +1,4 @@
+import { play_sonidos } from "../functions/functions.js";
 import { Settings } from "../scenes/settings.js";
 
 // ==================================================================================
@@ -9,6 +10,8 @@ export class BotonNuevaPartida {
   }
 
   create(siguienteScene) {
+
+    this.sonidoMenuSelect = this.relatedScene.sound.add('moneda-mario');
 
     const ancho = this.relatedScene.sys.game.config.width;
     const alto = this.relatedScene.sys.game.config.height;
@@ -27,7 +30,8 @@ export class BotonNuevaPartida {
       this.boton.setScale(0.6);
     });
     this.boton.on('pointerdown', () => {
-    //   if (siguienteScene === 'prenivel') this.relatedScene.sonidoMusicaFondo.pause();
+      if (siguienteScene === 'prenivel') this.relatedScene.sonidoMarioTuberias.pause();
+      play_sonidos(this.sonidoMenuSelect, false, 0.9);
       this.relatedScene.scene.start(siguienteScene);
     });
 

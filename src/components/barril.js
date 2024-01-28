@@ -1,3 +1,4 @@
+import { play_sonidos } from "../functions/functions.js";
 
 // =======================================================================
 export class Barril {
@@ -13,6 +14,8 @@ export class Barril {
     }
 
     create(index, plataforma, enemigo) {
+        
+        this.sonidoMetalPunch = this.relatedScene.sound.add('metal-punch');
 
         this.barril = this.relatedScene.physics.add.sprite(Barril.INI_X, Barril.INI_Y, 'barril2');
 
@@ -39,6 +42,7 @@ export class Barril {
 
             barril.setData('activo', true);
             enemigo.anims.play('enemy-kick', true);
+            play_sonidos(this.sonidoMetalPunch, false, 0.2);
       
             setTimeout(() => {
               enemigo.setFlip(true);
@@ -54,6 +58,8 @@ export class Barril {
     }
     
     update() {
+
+        if (this.barril.x <= 40 && this.barril.y >= this.relatedScene.sys.game.config.height * 3 - 100) this.barril.destroy();
 
         if (this.barril.getData('activo')) this.barril.rotation += 0.1 * this.barril.getData('rotacion');
         // console.log(this.barril.x);

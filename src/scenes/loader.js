@@ -33,4 +33,18 @@ export function loader(scene) {
 
   scene.load.spritesheet('jugador', './src/img/Ssheet_jugador.png', {frameWidth: 80, frameHeight: 110});
   scene.load.spritesheet('enemigo', './src/img/Ssheet_enemigo.png', {frameWidth: 80, frameHeight: 110});
+  
+  // -------------------------------------------------------------------------
+  scene.load.audio('musica-fondo', './src/audio/8-bit-arcade-1.mp3');
+  scene.load.audio('dieT1', './src/audio/dieThrow1.ogg');
+  scene.load.audio('dieT2', './src/audio/dieThrow2.ogg');
+  scene.load.audio('fireworks', './src/audio/fireworks.mp3');
+  scene.load.audio('salto', './src/audio/jumpbros.ogg');
+  scene.load.audio('mario-tuberias', './src/audio/mario-tuberias.ogg');
+  scene.load.audio('menu-select', './src/audio/menu-select.mp3');
+  scene.load.audio('metal-punch', './src/audio/metal-punch.mp3');
+  scene.load.audio('pacmanazules', './src/audio/pacmanazules.ogg');
+  scene.load.audio('moneda-mario', './src/audio/p-ping.mp3');
+  scene.load.audio('ough', './src/audio/ough.mp3');
+  scene.load.audio('umph', './src/audio/umph.mp3');
 }

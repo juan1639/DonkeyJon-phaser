@@ -17,8 +17,10 @@ import {
   crear_nuevoBarril,
   imagen_grupoBarriles,
   imagenes_fondo,
+  textos,
   revivir_jugador,
-  getSettings_json
+  getSettings_json,
+  play_sonidos
 } from '../functions/functions.js';
 
 // --------------------------------------------------------------
@@ -107,43 +109,18 @@ export class Game extends Phaser.Scene {
   create() {
     //getSettings_json(this);
 
+    this.sonidos_set();
+
+    // --------------------------------------------------------------------
     const yBounds = 3;
     imagenes_fondo(this.sys.game.config.width, this.sys.game.config.height, yBounds, this);
 
     this.grupoBarriles = [];
     imagen_grupoBarriles(this);
 
-    // --- El +50 es para que se vean mejor los botones mobile al comienzo del juego
-    this.cameras.main.setBounds(
-      0, 0,
-      Math.floor(this.sys.game.config.width * 2), Math.floor(this.sys.game.config.height * yBounds) + 50
-    );
-
-    this.physics.world.setBounds(
-      0, 0,
-      Math.floor(this.sys.game.config.width * 2), Math.floor(this.sys.game.config.height * yBounds) + 50
-    );
-
-    var { x, y, ancho, alto, scrollX, scrollY } = Settings.getCameraEnemigo();
-    
-    this.mapa_viewEnemigo = this.cameras.add(x, y, ancho, alto).setZoom(0.3).setName('view-enemigo');
-    this.mapa_viewEnemigo.scrollX = scrollX;
-    this.mapa_viewEnemigo.scrollY = scrollY;
-    console.log(this.mapa_viewEnemigo);
-    
-    var { x, y, ancho, alto, scrollX, scrollY } = Settings.getCameraScores();
-    
-    this.mapa_scores = this.cameras.add(x, y, ancho, alto).setZoom(0.6).setName('view-scores').setAlpha(0.7).setOrigin(0, 0);
-    this.mapa_scores.scrollX = scrollX;
-    this.mapa_scores.scrollY =scrollY;
-    console.log(this.mapa_scores);
-    
-    var { x, y, ancho, alto, scrollX, scrollY } = Settings.getCameraControles();
-
-    this.mapa_controles = this.cameras.add(x, y, ancho, alto).setZoom(0.9).setName('view-controls').setAlpha(0.7).setOrigin(0, 0);
-    this.mapa_controles.scrollX = scrollX;
-    this.mapa_controles.scrollY = scrollY;
-    console.log(this.mapa_controles);
+    // ---------------------------------------------------------------------
+    this.cameraMain_set(yBounds);
+    this.cameras_set();
 
     // ---------------------------------------------------------------------
     this.plataforma.create();
@@ -187,6 +164,55 @@ export class Game extends Phaser.Scene {
     this.enemigo.update();
 
     this.array_barril.forEach(barril => barril.update());
+  }
+
+  // ================================================================
+  cameras_set() {
+
+    var { x, y, ancho, alto, scrollX, scrollY } = Settings.getCameraEnemigo();
+    
+    this.mapa_viewEnemigo = this.cameras.add(x, y, ancho, alto).setZoom(0.3).setName('view-enemigo');
+    this.mapa_viewEnemigo.scrollX = scrollX;
+    this.mapa_viewEnemigo.scrollY = scrollY;
+    // console.log(this.mapa_viewEnemigo);
+
+    var { x, y, ancho, alto, scrollX, scrollY } = Settings.getCameraScores();
+    
+    this.mapa_scores = this.cameras.add(x, y, ancho, alto).setZoom(0.6).setName('view-scores').setAlpha(0.7).setOrigin(0, 0);
+    this.mapa_scores.scrollX = scrollX;
+    this.mapa_scores.scrollY =scrollY;
+    // console.log(this.mapa_scores);
+    
+    var { x, y, ancho, alto, scrollX, scrollY } = Settings.getCameraControles();
+
+    this.mapa_controles = this.cameras.add(x, y, ancho, alto).setZoom(0.9).setName('view-controls').setAlpha(0.7).setOrigin(0, 0);
+    this.mapa_controles.scrollX = scrollX;
+    this.mapa_controles.scrollY = scrollY;
+    // console.log(this.mapa_controles);
+  }
+
+  cameraMain_set(yBounds) {
+
+    // --- El +50 es para que se vean mejor los botones mobile al comienzo del juego
+    this.cameras.main.setBounds(
+      0, 0,
+      Math.floor(this.sys.game.config.width * 2), Math.floor(this.sys.game.config.height * yBounds) + 50
+    );
+
+    this.physics.world.setBounds(
+      0, 0,
+      Math.floor(this.sys.game.config.width * 2), Math.floor(this.sys.game.config.height * yBounds) + 50
+    );
+  }
+
+  sonidos_set() {
+
+    this.sonidoMusicaFondo = this.sound.add('musica-fondo');
+    play_sonidos(this.sonidoMusicaFondo, true, 0.7);
+
+    this.sonidoSalto = this.sound.add('salto');
+    this.sonidoOugh = this.sound.add('ough');
+    this.sonidoUmph = this.sound.add('umph');
   }
 
   // ================================================================
@@ -238,6 +264,25 @@ export class Game extends Phaser.Scene {
         // console.log(this.jugador.get().x, barril.get().x);
   
         this.physics.add.overlap(this.jugador.get(), barril.get(), (jugador, barril) => {
+
+          setTimeout(() => play_sonidos(this.sonidoUmph, false, 1.0), 700);
+          play_sonidos(this.sonidoOugh, false, 1.0);
+
+          this.txt1 = textos([
+            this.jugador.get().x - 110, this.jugador.get().y + 170,
+            ' Ouch! ', 70, 'bold', 1, 1, '#f31', 15, true, '#ffa', 'verdana, arial, sans-serif',
+            this.sys.game.config.width, 1
+          ],this);
+
+          this.tweens.add({
+            targets: this.txt1,
+            y: this.sys.game.config.height * 3 - 100,
+            scale: 1.2,
+            ease: 'easeOut',
+            duration: 1500
+          });
+
+          setTimeout(() => this.txt1.destroy(), 2000);
 
           revivir_jugador(jugador);
         

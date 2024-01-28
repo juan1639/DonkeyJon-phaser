@@ -1,3 +1,4 @@
+import { play_sonidos } from "../functions/functions.js";
 
 // =======================================================================
 export class Jugador {
@@ -87,6 +88,8 @@ export class Jugador {
         
         if ((this.controles.shift.isDown || this.controles.space.isDown || this.relatedScene.botonsalto.isDown) && this.jugador.body.touching.down && this.jugador.body.velocity.y === 0) {
             this.jugador.setVelocityY(-this.jugador.getData('vel-salto'));
+            play_sonidos(this.relatedScene.sonidoSalto, false, 0.9);
+
         }
     }
 
