@@ -64,7 +64,7 @@ function revivir_jugador(jugador) {
     jugador.y = jugador.getData('saveY');
   }, 4800);
 
-  setTimeout(() => jugador.setAlpha(1), 8400);
+  setTimeout(() => jugador.setAlpha(0.7), 8400);
 }
 
 // ================================================================

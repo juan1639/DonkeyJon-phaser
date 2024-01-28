@@ -9,6 +9,7 @@ import { Plataforma } from '../components/plataforma.js';
 import { Escalera } from '../components/escalera.js';
 import { Barril } from '../components/barril.js';
 import { Enemigo } from '../components/enemigo.js';
+import { Decorativos } from '../components/decorativos.js';
 // import { Marcador } from '../components/marcador.js';
 import { Settings } from './settings.js';
 
@@ -26,6 +27,7 @@ export class PreNivel extends Phaser.Scene {
         this.crearNuevoBarril = false;
         this.barrilIndex = 0;
 
+        this.decorativos = new Decorativos(this);
         this.plataforma = new Plataforma(this);
         this.escalera = new Escalera(this);
         this.array_barril.push(new Barril(this));
@@ -42,7 +44,8 @@ export class PreNivel extends Phaser.Scene {
 
         this.grupoBarriles = [];
         imagen_grupoBarriles(this);
-        
+
+        this.decorativos.create();
         this.plataforma.create();
         this.escalera.create();
         this.enemigo.create();

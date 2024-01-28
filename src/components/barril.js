@@ -47,7 +47,7 @@ export class Barril {
             setTimeout(() => {
               enemigo.setFlip(true);
               enemigo.setVelocityX(-enemigo.getData('vel-x'));
-              enemigo.anims.play('enemy-left', true);
+              enemigo.anims.play('enemy-left-right', true);
               this.relatedScene.crearNuevoBarril = true;
             }, 1000);//3000
         

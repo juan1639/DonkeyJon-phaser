@@ -116,7 +116,7 @@ export class MenuPrincipal extends Phaser.Scene {
 
         if (this.enemigo.get().y > 450 && this.enemigo.get().x < 200) {
 
-            this.enemigo.get().anims.play('enemy-left', false);
+            this.enemigo.get().anims.play('enemy-left-right', false);
             this.enemigo.get().setVelocityX(0).setFrame(3);
         }
     }

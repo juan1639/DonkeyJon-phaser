@@ -30,10 +30,20 @@ export function loader(scene) {
   scene.load.image('cruceta-left', './src/img/left.png');
   scene.load.image('cruceta-right', './src/img/right.png');
   scene.load.image('boton-salto', './src/img/boton-salto-joystick.png');
-
+  
   scene.load.spritesheet('jugador', './src/img/Ssheet_jugador.png', {frameWidth: 80, frameHeight: 110});
   scene.load.spritesheet('enemigo', './src/img/Ssheet_enemigo.png', {frameWidth: 80, frameHeight: 110});
   
+  scene.load.image('letrero-kenney', './src/img/Letrero_kenney.png');
+  scene.load.image('letrero-creditos', './src/img/Letrero_creditos.png');
+  scene.load.image('letrero-arlekin', './src/img/Letrero_Arlekin.png');
+  scene.load.image('letrero-imi', './src/img/Letrero_IMI.png');
+  scene.load.image('flecha-derecha', './src/img/signArrow_right.png');
+  scene.load.image('letrero-exit', './src/img/signExit.png');
+  scene.load.image('flecha-izquierda', './src/img/signArrow_left.png');
+  scene.load.image('flecha-upde', './src/img/signArrow_TR.png');
+  scene.load.image('flecha-arriba', './src/img/signArrow_up.png');
+
   // -------------------------------------------------------------------------
   scene.load.audio('musica-fondo', './src/audio/8-bit-arcade-1.mp3');
   scene.load.audio('dieT1', './src/audio/dieThrow1.ogg');

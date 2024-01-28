@@ -4,6 +4,7 @@
 // -----------------------------------------------------------------------------------------
 import { loader } from './loader.js';
 import { Settings } from './settings.js';
+import { Decorativos } from '../components/decorativos.js';
 import { Plataforma } from '../components/plataforma.js';
 import { Escalera } from '../components/escalera.js';
 import { Jugador } from '../components/jugador.js';
@@ -35,7 +36,8 @@ export class Game extends Phaser.Scene {
     this.array_barril = [];
     this.crearNuevoBarril = false;
     this.barrilIndex = 0;
-    
+
+    this.decorativos = new Decorativos(this);
     this.plataforma = new Plataforma(this);
     this.escalera = new Escalera(this);
     this.jugador = new Jugador(this);
@@ -123,6 +125,7 @@ export class Game extends Phaser.Scene {
     this.cameras_set();
 
     // ---------------------------------------------------------------------
+    this.decorativos.create();
     this.plataforma.create();
     this.escalera.create();
     this.jugador.create();
@@ -155,7 +158,7 @@ export class Game extends Phaser.Scene {
   // ================================================================
   update() {
 
-    // this.pointer_showXY(this.mouse_showXY);
+    this.pointer_showXY(this.mouse_showXY);
 
     this.crear_nuevaColisionBarril();
     crear_nuevoBarril(this);
@@ -269,14 +272,14 @@ export class Game extends Phaser.Scene {
           play_sonidos(this.sonidoOugh, false, 1.0);
 
           this.txt1 = textos([
-            this.jugador.get().x - 110, this.jugador.get().y + 170,
-            ' Ouch! ', 70, 'bold', 1, 1, '#f31', 15, true, '#ffa', 'verdana, arial, sans-serif',
+            this.jugador.get().x - 110, this.jugador.get().y + 120,
+            ' Ouch! ', 70, 'bold', 1, 1, '#ffa', 15, true, '#f31', 'verdana, arial, sans-serif',
             this.sys.game.config.width, 1
           ],this);
 
           this.tweens.add({
             targets: this.txt1,
-            y: this.sys.game.config.height * 3 - 100,
+            y: this.sys.game.config.height * 3 - 200,
             scale: 1.2,
             ease: 'easeOut',
             duration: 1500

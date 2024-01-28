@@ -71,6 +71,11 @@ export class Jugador {
         if (this.jugador.getData('jugadorDies')) return;
 
         // ----------------------------------------------------------------
+        if ((this.controles.shift.isDown || this.controles.space.isDown || this.relatedScene.botonsalto.isDown) && this.jugador.body.touching.down && this.jugador.body.velocity.y === 0) {
+            this.jugador.setVelocityY(-this.jugador.getData('vel-salto'));
+            play_sonidos(this.relatedScene.sonidoSalto, false, 0.9);
+        }
+        
         if (this.controles.left.isDown || this.relatedScene.crucetaleft.isDown) {
             this.jugador.setFlipX(true);
             this.jugador.setVelocityX(-this.jugador.getData('vel-x'));
@@ -84,12 +89,6 @@ export class Jugador {
         } else if (!this.controles.up.isDown && !this.relatedScene.crucetaup.isDown) {
             this.jugador.setVelocityX(0);
             this.jugador.anims.play('turn');
-        }
-        
-        if ((this.controles.shift.isDown || this.controles.space.isDown || this.relatedScene.botonsalto.isDown) && this.jugador.body.touching.down && this.jugador.body.velocity.y === 0) {
-            this.jugador.setVelocityY(-this.jugador.getData('vel-salto'));
-            play_sonidos(this.relatedScene.sonidoSalto, false, 0.9);
-
         }
     }
 

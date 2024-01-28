@@ -14,23 +14,12 @@ export class Enemigo {
         this.enemigo = this.relatedScene.physics.add.sprite(Enemigo.XY_INI[0], Enemigo.XY_INI[1], 'enemigo');
 
         this.enemigo.setData('vel-x', 120);//40
-        this.enemigo.setAngle(0);
         this.enemigo.setCollideWorldBounds(true);
-        this.enemigo.setFlip(false);
-        this.enemigo.setBounce(1, 0.3);
-        this.enemigo.setVelocityX(this.enemigo.getData('vel-x'));
+        this.enemigo.setAngle(0).setFlip(false).setBounce(1, 0.3).setVelocityX(this.enemigo.getData('vel-x'));
 
 
-        this.izquierda = this.relatedScene.anims.create({
-            key: 'enemy-left', 
-            frames: this.relatedScene.anims.generateFrameNumbers('enemigo', {start: 9, end: 10}),
-            frameRate: 10,
-            yoyo: true,
-            repeat: -1
-        });
-
-        this.derecha = this.relatedScene.anims.create({
-            key: 'enemy-right', 
+        this.relatedScene.anims.create({
+            key: 'enemy-left-right', 
             frames: this.relatedScene.anims.generateFrameNumbers('enemigo', {start: 9, end: 10}),
             frameRate: 10,
             yoyo: true,
@@ -50,7 +39,7 @@ export class Enemigo {
             msPerFrame: 2000
         });
 
-        this.enemigo.anims.play('enemy-right', true);
+        this.enemigo.anims.play('enemy-left-right', true);
 
         console.log(this.enemigo);
     }
