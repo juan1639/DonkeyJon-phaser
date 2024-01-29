@@ -1,3 +1,4 @@
+import { Settings } from "../scenes/settings.js";
 import { Barril } from "../components/barril.js";
 
 // ================================================================
@@ -64,7 +65,7 @@ function revivir_jugador(jugador) {
     jugador.y = jugador.getData('saveY');
   }, 4800);
 
-  setTimeout(() => jugador.setAlpha(0.7), 8400);
+  setTimeout(() => jugador.setAlpha(Settings.cheatInvisible), 8400);
 }
 
 // ================================================================
@@ -116,10 +117,21 @@ function textos(args, relatedScene) {
       fontFamily: args[11]
   });
 
-  if (args[2] === ' Ouch! ') return txt;
+  const noCentrar = [
+    ' Ouch! ',
+    ' Pulse agachar para realizar una accion '
+  ];
 
+  let salir = false;
+
+  noCentrar.forEach(nocentres => {
+    if (args[2] === nocentres) salir = true;
+  });
+
+  if (salir) return txt;
+
+  // ------ A partir de aqui centra el txt --------------
   txt.setX(centrar_txt(txt, args[12] * args[13]));
-  // this.txt_titulo.setX(centrar_txt(this.txt_titulo, this.sys.game.config.width));
 
   return txt;
 }

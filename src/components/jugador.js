@@ -10,7 +10,7 @@ export class Jugador {
 
     create() {
 
-        this.jugador = this.relatedScene.physics.add.sprite(300, this.relatedScene.sys.game.config.height * 3 - 200, 'jugador');
+        this.jugador = this.relatedScene.physics.add.sprite(200, this.relatedScene.sys.game.config.height * 3 - 200, 'jugador');
 
         this.jugador.setData('vel-x', 300);
         this.jugador.setData('vel-escalera', 200);
@@ -39,11 +39,19 @@ export class Jugador {
             });
         }
 
-        this.relatedScene.anims.create({
-            key: 'turn',
-            frames: [{key: 'jugador', frame: 0}],
-            frameRate: 20,
-        });
+        const datosAnim2 = [
+            ['turn', 0, 0],
+            ['agachar', 3, 3]
+        ];
+
+        for (let i = 0; i < datosAnim2.length; i ++) {
+
+            this.relatedScene.anims.create({
+                key: datosAnim2[i][0],
+                frames: [{key: 'jugador', frame: datosAnim2[i][1]}],
+                frameRate: 20,
+            });
+        }
 
         this.controles = this.relatedScene.input.keyboard.createCursorKeys();
 
@@ -85,7 +93,11 @@ export class Jugador {
             this.jugador.setFlipX(false);
             this.jugador.setVelocityX(this.jugador.getData('vel-x'));
             this.jugador.anims.play('right', true);
-            
+        
+        } else if (this.controles.down.isDown || this.relatedScene.crucetadown.isDown) {
+            this.jugador.setVelocityX(0);
+            this.jugador.anims.play('agachar', true);
+
         } else if (!this.controles.up.isDown && !this.relatedScene.crucetaup.isDown) {
             this.jugador.setVelocityX(0);
             this.jugador.anims.play('turn');

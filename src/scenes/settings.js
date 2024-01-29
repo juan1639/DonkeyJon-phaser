@@ -6,8 +6,11 @@ export class Settings {
     static nivel = 1;
     static hi = 20000;
     static vidas = 3;
+    static nivelSuperado = false;
 
     static botonesYcruceta = true;
+
+    static cheatInvisible = 1; // 1 normal, !== 1 cheat
 
     static coorCruceta = {
         xx: 60,
@@ -43,7 +46,7 @@ export class Settings {
 
     static cameraControles = {
         x: 0,
-        y: 400,
+        y: 375,
         ancho: 800,
         alto: 220,
         scrollX: 0,
@@ -67,8 +70,16 @@ export class Settings {
         return Settings.vidas;
     }
 
+    static isNivelSuperado() {
+        return Settings.nivelSuperado;
+    }
+
     static isBotonesYcruceta() {
         return Settings.botonesYcruceta;
+    }
+
+    static getCheatInvisible() {
+        return Settings.cheatInvisible;
     }
 
     static getCoorCruceta() {
@@ -108,8 +119,16 @@ export class Settings {
         Settings.vidas = lifes;
     }
 
+    static setNivelSuperado(superado) {
+        Settings.nivelSuperado = superado;
+    }
+
     static setBotonesYcruceta(bool) {
         Settings.botonesYcruceta = bool;
+    }
+
+    static setCheatInvisible(ceroauno) {
+        Settings.cheatInvisible = ceroauno;
     }
 
     static setCoorCruceta(coorCruceta) {

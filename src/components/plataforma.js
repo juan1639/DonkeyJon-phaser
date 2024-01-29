@@ -17,7 +17,7 @@ export class Plataforma {
         [0, Plataforma.HEIGHT * 2 - 300, Plataforma.tileXY[0], 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3],
         [200, Plataforma.HEIGHT, Plataforma.tileXY[0], -1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3],
         [650, Plataforma.HEIGHT - 300, Plataforma.tileXY[0], 1, 1, 2, 2, 2, 2, 2, 2, 3],
-        [1380, Plataforma.HEIGHT - 250, Plataforma.tileXY[0], -1, 1, 2, 2, 3],
+        [1310, Plataforma.HEIGHT - 250, Plataforma.tileXY[0], -1, 1, 2, 2, 2, 3],
         [0, Plataforma.HEIGHT - 200, Plataforma.tileXY[0], 1, 1, 2, 2, 2, 3],
     ];
 

@@ -1,3 +1,4 @@
+import { Settings } from "../scenes/settings.js";
 
 // =======================================================================
 export class Enemigo {
@@ -39,6 +40,12 @@ export class Enemigo {
             msPerFrame: 2000
         });
 
+        this.relatedScene.anims.create({
+            key: 'enemy-fall',
+            frames: [{key: 'enemigo', frame: 2}],
+            frameRate: 20
+        });
+
         this.enemigo.anims.play('enemy-left-right', true);
 
         console.log(this.enemigo);
@@ -46,8 +53,9 @@ export class Enemigo {
 
     update() {
 
+        if (Settings.isNivelSuperado()) this.enemigo.anims.play('enemy-fall');
+        if (this.enemigo.y > this.relatedScene.sys.game.config.height * 3 - 200) this.enemigo.disableBody(true, true);
         if (this.enemigo.x <= this.enemigo.body.width * this.enemigo.originX) this.enemigo.setFlip(false);
-
     }
 
     get() {

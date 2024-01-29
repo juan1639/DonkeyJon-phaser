@@ -53,7 +53,7 @@ export function loader(scene) {
   scene.load.audio('mario-tuberias', './src/audio/mario-tuberias.ogg');
   scene.load.audio('menu-select', './src/audio/menu-select.mp3');
   scene.load.audio('metal-punch', './src/audio/metal-punch.mp3');
-  scene.load.audio('pacmanazules', './src/audio/pacmanazules.ogg');
+  scene.load.audio('pacmanazules', './src/audio/pacmaneatinghost.ogg');
   scene.load.audio('moneda-mario', './src/audio/p-ping.mp3');
   scene.load.audio('ough', './src/audio/ough.mp3');
   scene.load.audio('umph', './src/audio/umph.mp3');

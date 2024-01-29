@@ -5,6 +5,7 @@
 import { loader } from './loader.js';
 import { Settings } from './settings.js';
 import { Decorativos } from '../components/decorativos.js';
+import { Switchs } from '../components/switchs.js';
 import { Plataforma } from '../components/plataforma.js';
 import { Escalera } from '../components/escalera.js';
 import { Jugador } from '../components/jugador.js';
@@ -32,12 +33,17 @@ export class Game extends Phaser.Scene {
   }
 
   init() {
+
+    this.txtObj = {
+      txtSwitch: null
+    };
     
     this.array_barril = [];
     this.crearNuevoBarril = false;
     this.barrilIndex = 0;
 
     this.decorativos = new Decorativos(this);
+    this.switch = new Switchs(this);
     this.plataforma = new Plataforma(this);
     this.escalera = new Escalera(this);
     this.jugador = new Jugador(this);
@@ -126,6 +132,7 @@ export class Game extends Phaser.Scene {
 
     // ---------------------------------------------------------------------
     this.decorativos.create();
+    this.switch.create();
     this.plataforma.create();
     this.escalera.create();
     this.jugador.create();
@@ -158,7 +165,7 @@ export class Game extends Phaser.Scene {
   // ================================================================
   update() {
 
-    this.pointer_showXY(this.mouse_showXY);
+    // this.pointer_showXY(this.mouse_showXY);
 
     this.crear_nuevaColisionBarril();
     crear_nuevoBarril(this);
@@ -194,6 +201,7 @@ export class Game extends Phaser.Scene {
     // console.log(this.mapa_controles);
   }
 
+  // ----------------------------------------------------------------
   cameraMain_set(yBounds) {
 
     // --- El +50 es para que se vean mejor los botones mobile al comienzo del juego
@@ -208,6 +216,7 @@ export class Game extends Phaser.Scene {
     );
   }
 
+  // ================================================================
   sonidos_set() {
 
     this.sonidoMusicaFondo = this.sound.add('musica-fondo');
@@ -216,6 +225,7 @@ export class Game extends Phaser.Scene {
     this.sonidoSalto = this.sound.add('salto');
     this.sonidoOugh = this.sound.add('ough');
     this.sonidoUmph = this.sound.add('umph');
+    this.sonidoSwitch = this.sound.add('pacmanazules');
   }
 
   // ================================================================
@@ -254,6 +264,44 @@ export class Game extends Phaser.Scene {
         enemigo.setVelocityX(enemigo.getData('vel-x') * plataforma.getData('id'));
         enemigo.setFlip(enemigo.body.velocity.x < 0 ? true : false);
       }
+    
+    }, () => {
+
+      if (Settings.isNivelSuperado()) return false;
+      return true;
+    
+    }, this);
+
+    // --------------------------------------------------------------------
+    this.physics.add.collider(this.jugador.get(), this.switch.get(), (jugador, sw) => {
+
+      // console.log('colision-switch');
+      if (!this.txtObj.txtSwitch) {
+
+        this.txtObj.txtSwitch = textos([
+          this.jugador.get().x - 350, this.jugador.get().y - 100,
+          ' Pulse agachar para realizar una accion ', 30, 'bold', 1, 1, '111', 15, true, '#cd1', 'verdana, arial, sans-serif',
+          this.sys.game.config.width, 1
+        ],this);
+
+        setTimeout(() => {
+          this.txtObj.txtSwitch.destroy();
+          this.txtObj.txtSwitch = null;
+        }, 2000);
+      }
+
+      if ((this.jugador.controles.down.isDown || this.crucetadown.isDown) && !this.switch.pausa.pausa) {
+
+        this.switch.array_changes.forEach(cambiar => {
+
+          if (sw.getData('key') === cambiar[0]) {
+            sw.disableBody(true, true);
+            this.switch.changeItem(cambiar[0], sw.x, sw.y);
+            this.switch.pausaChange();
+            play_sonidos(this.sonidoSwitch, false, 0.9);
+          }
+        });
+      }
     }, null, this);
   }
 
@@ -280,6 +328,7 @@ export class Game extends Phaser.Scene {
           this.tweens.add({
             targets: this.txt1,
             y: this.sys.game.config.height * 3 - 200,
+            x: this.jugador.get().x,
             scale: 1.2,
             ease: 'easeOut',
             duration: 1500
