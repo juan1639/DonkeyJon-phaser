@@ -20,7 +20,6 @@ import {
   crear_nuevoBarril,
   imagen_grupoBarriles,
   imagenes_fondo,
-  textos,
   revivir_jugador,
   getSettings_json,
   play_sonidos
@@ -52,7 +51,7 @@ export class Game extends Phaser.Scene {
     this.txtObj = {
       txtSwitch: new Textos(this),
       bool: false,
-      duracion: 2000
+      duracion: 4000
     };
 
     const ancho = this.sys.game.config.width;
@@ -72,7 +71,7 @@ export class Game extends Phaser.Scene {
 
     this.botonfullscreen = new BotonFullScreen(this, {
       id: 'boton-fullscreen', x: Math.floor(this.sys.game.config.width * 1.35), y: -77,
-      ang: 0, scX: 0.5, scY: 0.5 
+      ang: 0, scX: 0.6, scY: 0.6 
     });
 
     var { xx, yy, sizeX, sizeY } = Settings.getCoorCruceta();
@@ -231,6 +230,7 @@ export class Game extends Phaser.Scene {
     this.sonidoOugh = this.sound.add('ough');
     this.sonidoUmph = this.sound.add('umph');
     this.sonidoSwitch = this.sound.add('pacmanazules');
+    this.sonidoLevelUp = this.sound.add('level-up');
   }
 
   // ================================================================
@@ -281,16 +281,17 @@ export class Game extends Phaser.Scene {
     this.physics.add.collider(this.jugador.get(), this.switch.get(), (jugador, sw) => {
 
       // console.log('colision-switch');
-      const left = this.jugador.get().x - 350;
+      const left = this.jugador.get().x - 240;
       const top = this.jugador.get().y - 100;
       const screenW = this.sys.game.config.width;
 
-      if (!this.txtObj.bool) {
+      if (!this.txtObj.bool && !Settings.isNivelSuperado()) {
+        console.log('texto creado');
 
         this.txtObj.txtSwitch.create({
-          x: left, y: top, texto: ' Pulse agachar para realizar una accion ',
-          size: 30, style: 'bold', offx: 1, offy: 1, color: 'ff9', blr: 15,
-          fillShadow: true, fll: '#f72', family: 'verdana, arial, sans-serif',
+          x: left, y: top, texto: ' Pulse agachar para \n realizar una accion ',
+          size: 30, style: 'bold', offx: 1, offy: 1, color: '#ff9', blr: 7,
+          fillShadow: true, fll: '#fe2', family: 'verdana, arial, sans-serif',
           screenWidth: screenW, multip: 2
         });
 
@@ -315,6 +316,39 @@ export class Game extends Phaser.Scene {
         });
       }
     }, null, this);
+
+    // --------------------------------------------------------------------
+    this.physics.add.overlap(this.jugador.get(), this.enemigo.get(), (jugador, enemigo) => {
+
+      const left = enemigo.x - 50;
+      const top = enemigo.y - 200;
+      const screenW = this.sys.game.config.width;
+
+      if (!this.txtObj.bool && !Settings.isNivelSuperado()) {
+
+        this.txtObj.txtSwitch.create({
+          x: left, y: top, texto: ' Fuera de aqui! \n cacho subnormal! ',
+          size: 55, style: 'bold', offx: 1, offy: 1, color: '#ffa', blr: 7,
+          fillShadow: true, fll: '#e61', family: 'verdana, arial, sans-serif',
+          screenWidth: screenW, multip: 2
+        });
+
+        this.txtObj.bool = true;
+      }
+
+      revivir_jugador(jugador);
+
+      setTimeout(() => {
+        this.txtObj.txtSwitch.get().destroy();
+        this.txtObj.bool = false;
+      }, this.txtObj.duracion);
+    
+    }, (jugador, enemigo) => {
+
+      if (jugador.getData('disableBody') || jugador.alpha < 1 || Settings.isNivelSuperado()) return false;
+
+      return true;
+    });
   }
 
   // ================================================================
@@ -347,7 +381,13 @@ export class Game extends Phaser.Scene {
         
         }, (jugador, barril) => {
 
-          if (jugador.getData('disableBody') || jugador.alpha < 1 || jugador.y > barril.y + Math.floor(barril.body.height / 2)) return false;
+          if (
+            jugador.getData('disableBody') ||
+            jugador.alpha < 1 ||
+            Settings.isNivelSuperado() ||
+            jugador.y > barril.y + Math.floor(barril.body.height / 2)
+          ) return false;
+
           return true;
         });
       });

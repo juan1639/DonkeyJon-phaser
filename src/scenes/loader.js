@@ -51,6 +51,7 @@ export function loader(scene) {
   scene.load.audio('fireworks', './src/audio/fireworks.mp3');
   scene.load.audio('salto', './src/audio/jumpbros.ogg');
   scene.load.audio('mario-tuberias', './src/audio/mario-tuberias.ogg');
+  scene.load.audio('level-up', './src/audio/levelup.mp3');
   scene.load.audio('menu-select', './src/audio/menu-select.mp3');
   scene.load.audio('metal-punch', './src/audio/metal-punch.mp3');
   scene.load.audio('pacmanazules', './src/audio/pacmaneatinghost.ogg');

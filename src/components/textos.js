@@ -39,12 +39,13 @@ export class Textos {
     crear_tweens(texto) {
 
         const array_tweens = [
-            ' Ouch! '
+            ' Ouch! ',
+            ' Fuera de aqui! \n cacho subnormal! '
         ];
 
         array_tweens.forEach(tween => {
 
-            if (tween === texto) {
+            if (tween.slice(0, 5) === texto.slice(0, 5)) {
 
                 this.relatedScene.tweens.add({
                     targets: this.txt,
@@ -59,7 +60,8 @@ export class Textos {
 
         // ----------------------------------------------
         const array_tweens2 = [
-            ' DonkeyJon '
+            ' DonkeyJon ',
+            ' Nivel Superado! '
         ];
 
         array_tweens2.forEach(tween => {
@@ -84,7 +86,8 @@ export class Textos {
 
         const centrarTxt = [
             ' DonkeyJon ',
-            ' Nivel '
+            ' Nivel ',
+            ' Nivel Superado! '
         ];
 
         centrarTxt.forEach(centra => {

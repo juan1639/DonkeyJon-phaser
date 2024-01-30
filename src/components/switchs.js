@@ -1,4 +1,4 @@
-import { Settings } from "../scenes/settings.js";
+import { nivel_superado } from "../functions/functions.js";
 
 // =============================================================================
 export class Switchs {
@@ -98,7 +98,8 @@ export class Switchs {
 
                 // console.log(this.relatedScene.plataforma.get());
                 this.relatedScene.enemigo.get().anims.play('enemy-fall');
-                Settings.setNivelSuperado(true);
+                nivel_superado(this.relatedScene);
+
                 const nro_plataformas = this.relatedScene.plataforma.get().length;
 
                 this.relatedScene.plataforma.get().forEach((plataf, index) => {

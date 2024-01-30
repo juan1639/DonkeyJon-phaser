@@ -1,16 +1,18 @@
 import { Settings } from "../scenes/settings.js";
 import { Barril } from "../components/barril.js";
+import { Textos } from "../components/textos.js";
 
 // ================================================================
 function crear_nuevoBarril(scene) {
 
-    if (scene.crearNuevoBarril) {
+    if (scene.crearNuevoBarril && !Settings.isNivelSuperado()) {
 
       scene.crearNuevoBarril = false;
       scene.barrilIndex ++;
 
       scene.array_barril.push(new Barril(scene));
       scene.array_barril[scene.barrilIndex].create(scene.barrilIndex, scene.plataforma, scene.enemigo);
+      console.log(scene.array_barril);
     }
 }
 
@@ -51,11 +53,13 @@ function imagenes_fondo(WIDTH, HEIGHT, yBounds, scene) {
 // ================================================================
 function revivir_jugador(jugador) {
 
+  const {cheatInvisible, duracionInvisible, duracionDie} = Settings.invisible;
+
   // console.log(jugador, barril, 'colision');
   jugador.setData('jugadorDies', true).setData('disableBody', true);
   jugador.setCollideWorldBounds(false);
   jugador.setData('saveX', jugador.x);
-  jugador.setData('saveY', jugador.y - 200);
+  jugador.setData('saveY', jugador.y - 270);
   jugador.anims.play('dies', true);
 
   setTimeout(() => {
@@ -63,9 +67,38 @@ function revivir_jugador(jugador) {
     jugador.setAlpha(0.5).setCollideWorldBounds(true);
     jugador.x = jugador.getData('saveX');
     jugador.y = jugador.getData('saveY');
-  }, 4800);
+  }, duracionDie);
 
-  setTimeout(() => jugador.setAlpha(Settings.cheatInvisible), 8400);
+  setTimeout(() => jugador.setAlpha(cheatInvisible), duracionInvisible);
+}
+
+// ================================================================
+function nivel_superado(scene) {
+
+  if (Settings.isNivelSuperado()) return;
+
+  console.log('nivel superado!');
+  Settings.setNivelSuperado(true);
+
+  const txt1 = new Textos(scene);
+
+  const left = scene.jugador.get().x - 110;
+  const top = scene.jugador.get().y - 140;
+  const screenW = scene.sys.game.config.width;
+
+  txt1.create({
+    x: left, y: top, texto: ' Nivel Superado! ', size: 75, style: 'bold',
+    oofx: 1, offy: 1, col: '#ffa', blr: 15, fillShadow: true, fll: '#fa2',
+    family: 'verdana, arial, sans-serif', screenWidth: screenW, multip: 1
+  });
+
+  play_sonidos(scene.sonidoLevelUp, false, 0.9);
+  scene.sonidoMusicaFondo.volume = 0.1;
+
+  setTimeout(() => {
+    txt1.get().destroy();
+    scene.sonidoMusicaFondo.volume = 0.7;
+  }, Settings.invisible.duracionInvisible * 2);
 }
 
 // ================================================================
@@ -95,45 +128,6 @@ function getSettings_json(scene) {
       }
     });
   });
-}
-
-// =================================================================================
-function textos(args, relatedScene) {
-
-  const left = Math.floor(args[0]);
-  const top = Math.floor(args[1]);
-  
-  const txt = relatedScene.add.text(left, top, args[2], {
-      fontSize: args[3] + 'px',
-      fontStyle: args[4],
-      shadow: {
-          offsetX: args[5],
-          offsetY: args[6],
-          color: args[7],
-          blur: args[8],
-          fill: args[9]
-      },
-      fill: args[10],
-      fontFamily: args[11]
-  });
-
-  const noCentrar = [
-    ' Ouch! ',
-    ' Pulse agachar para realizar una accion '
-  ];
-
-  let salir = false;
-
-  noCentrar.forEach(nocentres => {
-    if (args[2] === nocentres) salir = true;
-  });
-
-  if (salir) return txt;
-
-  // ------ A partir de aqui centra el txt --------------
-  txt.setX(centrar_txt(txt, args[12] * args[13]));
-
-  return txt;
 }
 
 // =================================================================================
@@ -171,8 +165,8 @@ export {
     imagen_grupoBarriles,
     imagenes_fondo,
     revivir_jugador,
+    nivel_superado,
     getSettings_json,
-    textos,
     centrar_txt,
     suma_puntos,
     restar_vida,

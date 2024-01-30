@@ -1,4 +1,5 @@
 import { play_sonidos } from "../functions/functions.js";
+import { Settings } from "../scenes/settings.js";
 
 // =======================================================================
 export class Jugador {
@@ -25,7 +26,8 @@ export class Jugador {
             ['left', 9, 10],
             ['right', 9, 10],
             ['stairs', 5, 6],
-            ['dies', 0, 4]
+            ['dies', 0, 4],
+            ['superado', 7, 8]
         ];
 
         for (let i = 0; i < datosAnim.length; i ++) {
@@ -75,8 +77,22 @@ export class Jugador {
 
     update() {
 
-        if (this.jugador.y > this.relatedScene.sys.game.config.height * 9) console.log('eeeh');
+        if (this.jugador.y > this.relatedScene.sys.game.config.height * 7) {
+
+            this.jugador.setY(this.relatedScene.sys.game.config.height * 7);
+        }
+        
         if (this.jugador.getData('jugadorDies')) return;
+
+        if (Settings.isNivelSuperado()) {
+
+            if (this.jugador.body.touching.down) {
+                this.jugador.setVelocityY(-this.jugador.getData('vel-salto'));
+                this.jugador.anims.play('superado');
+            }
+
+            return;
+        }
 
         // ----------------------------------------------------------------
         if ((this.controles.shift.isDown || this.controles.space.isDown || this.relatedScene.botonsalto.isDown) && this.jugador.body.touching.down && this.jugador.body.velocity.y === 0) {

@@ -2,6 +2,11 @@
 // ====================================================================================
 export class Settings {
 
+    static screen = {
+        width: 800,
+        height: 550
+    };
+
     static puntos = 0;
     static nivel = 1;
     static hi = 20000;
@@ -10,7 +15,11 @@ export class Settings {
 
     static botonesYcruceta = true;
 
-    static cheatInvisible = 1; // 1 normal, !== 1 cheat
+    static invisible = {
+        cheatInvisible: 1,
+        duracionInvisible: 8300,
+        duracionDie: 4800
+    };
 
     static coorCruceta = {
         xx: 60,
@@ -54,6 +63,10 @@ export class Settings {
     };
 
     // -----------------------------------------------
+    static getScreen() {
+        return Settings.screen;
+    }
+
     static getPuntos() {
         return Settings.puntos;
     }
@@ -78,8 +91,8 @@ export class Settings {
         return Settings.botonesYcruceta;
     }
 
-    static getCheatInvisible() {
-        return Settings.cheatInvisible;
+    static getInvisible() {
+        return Settings.invisible;
     }
 
     static getCoorCruceta() {
@@ -127,8 +140,8 @@ export class Settings {
         Settings.botonesYcruceta = bool;
     }
 
-    static setCheatInvisible(ceroauno) {
-        Settings.cheatInvisible = ceroauno;
+    static setInvisible(dataObj) {
+        Settings.invisible = dataObj;
     }
 
     static setCoorCruceta(coorCruceta) {
