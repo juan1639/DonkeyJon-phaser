@@ -10,6 +10,7 @@ import { Escalera } from '../components/escalera.js';
 import { Barril } from '../components/barril.js';
 import { Enemigo } from '../components/enemigo.js';
 import { Decorativos } from '../components/decorativos.js';
+import { Textos } from '../components/textos.js';
 // import { Marcador } from '../components/marcador.js';
 import { Settings } from './settings.js';
 
@@ -32,12 +33,11 @@ export class PreNivel extends Phaser.Scene {
         this.escalera = new Escalera(this);
         this.array_barril.push(new Barril(this));
         this.enemigo = new Enemigo(this);
+        this.txt = new Textos(this);
         // this.marcador = new Marcador(this);
     }
 
     create() {
-        
-        // this.sonidoGalaxian = this.sound.add('sonidoGalaxian');
 
         const yBounds = 3;
         imagenes_fondo(this.sys.game.config.width, this.sys.game.config.height, yBounds, this);
@@ -73,29 +73,20 @@ export class PreNivel extends Phaser.Scene {
         // -----------------------------------------------------------
         const duracionThisScene = 5900;
 
-        this.size = 70;
-        this.left = Math.floor(this.sys.game.config.width / 3.2);
-        this.top = Math.floor(this.sys.game.config.height / 3);
-        
-        this.txt_titulo = this.add.text(this.left, this.top, ' Nivel ' + Settings.getNivel(), {
-            fontSize: this.size + 'px',
-            fontStyle: 'bold',
-            shadow: {
-                offsetX: 1,
-                offsetY: 1,
-                color: '#e81',
-                blur: 15,
-                fill: true
-            },
-            fill: '#ff9',
-            fontFamily: 'verdana, arial, sans-serif'
-        });
+        const left = Math.floor(this.sys.game.config.width / 3.2);
+        const top = Math.floor(this.sys.game.config.height / 3);
 
-        this.txt_titulo.setAlpha(1);
-        this.txt_titulo.setX(centrar_txt(this.txt_titulo, this.sys.game.config.width));
+        this.txt.create({
+            x: left, y: top, texto: ' Nivel ' + Settings.getNivel(),
+            size: 70, style: 'bold', oofx: 1, offy: 1, col: '#e81', blr: 15,
+            fillShadow: true, fll: '#ff9', family: 'verdana, arial, sans-serif',
+            screenWidth: this.sys.game.config.width, multip: 1
+        });
+        
+        this.txt.get().setAlpha(1);
 
         this.tweens.add({
-            targets: this.txt_titulo,
+            targets: this.txt.get(),
             alpha: 0,
             // yoyo: true,
             ease: 'Sine.easeIn',
@@ -104,7 +95,7 @@ export class PreNivel extends Phaser.Scene {
         });
 
         this.tweens.add({
-            targets: this.txt_titulo,
+            targets: this.txt.get(),
             y: 1200,
             duration: Math.floor(duracionThisScene),
             // repeat: 1
@@ -121,8 +112,6 @@ export class PreNivel extends Phaser.Scene {
         ]);
 
         this.timeline.play();
-        // this.sonidoGalaxian.play();
-        // this.sonidoGalaxian.volume = 0.5;
     }
 
     update() {

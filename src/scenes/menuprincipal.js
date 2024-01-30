@@ -1,4 +1,5 @@
 import { loader } from './loader.js';
+import { Textos } from '../components/textos.js';
 import { centrar_txt, play_sonidos } from '../functions/functions.js';
 import { Settings } from './settings.js';
 import { Plataforma } from '../components/plataforma.js';
@@ -23,15 +24,19 @@ export class MenuPrincipal extends Phaser.Scene {
         this.enemigo = new Enemigo(this);
         this.botoninicio = new BotonNuevaPartida(this);
         this.botonsettings = new BotonSettings(this);
+        this.txt = new Textos(this);
     } 
     
     preload() {
         
-        const txt = this.add.text(Math.floor(this.sys.game.config.width / 2), Math.floor(this.sys.game.config.height / 2), ' Cargando...', {
-            fontSize: '50px',
-            fill: '#ffa',
-            fontFamily: 'verdana, arial, sans-serif'
-        });
+        const txt = this.add.text(
+            Math.floor(this.sys.game.config.width / 2), Math.floor(this.sys.game.config.height / 2),
+            ' Cargando...', {
+                fontSize: '50px',
+                fill: '#ffa',
+                fontFamily: 'verdana, arial, sans-serif'
+            }
+        );
         
         txt.setX(centrar_txt(txt, this.sys.game.config.width));
         
@@ -43,9 +48,7 @@ export class MenuPrincipal extends Phaser.Scene {
         this.sonidoMarioTuberias = this.sound.add('mario-tuberias');
 
         const aparecerBoton = 3200;
-        
-        // this.sonidoMusicaFondo = this.sound.add('sonidoMusicaFondo');
-        
+
         this.add.image(0, 0, 'fondo2').setOrigin(0, 0);
         
         this.plataforma.create();
@@ -61,38 +64,16 @@ export class MenuPrincipal extends Phaser.Scene {
                 enemigo.setFlip(enemigo.body.velocity.x < 0 ? true : false);
             }
         }, null, this);
-        
-        this.size = 90;
-        this.left = Math.floor(this.sys.game.config.width / 5.2);
-        this.top = Math.floor(this.sys.game.config.height / 4.2);
-        
-        this.txt_titulo = this.add.text(this.left, this.top, ' DonkeyJon ', {
-            fontSize: this.size + 'px',
-            fontStyle: 'bold',
-            shadow: {
-                offsetX: 1,
-                offsetY: 1,
-                fill: '#ffa',
-                // color: '#e81',
-                blur: 15,
-                fill: true
-            },
-            // fill: '#ffa',
-            color: '#e81',
-            fontFamily: 'verdana, arial, sans-serif'
-        });
-        
-        this.txt_titulo.setX(centrar_txt(this.txt_titulo, this.sys.game.config.width));
-        
-        this.tweens.add({
-            targets: this.txt_titulo,
-            scale: 1.2,
-            x: 24,
-            ease: 'Ease',
-            yoyo: true,
-            hold: 900,
-            duration: 2000,
-            repeat: -1
+
+        // -----------------------------------------------------------
+        const left = Math.floor(this.sys.game.config.width / 5.2);
+        const top = Math.floor(this.sys.game.config.height / 4.2);
+
+        this.txt.create({
+            x: left, y: top, texto: ' DonkeyJon ',
+            size: 90, style: 'bold', oofx: 1, offy: 1, col: '#fff', blr: 15,
+            fillShadow: true, fll: '#e81', family: 'verdana, arial, sans-serif',
+            screenWidth: this.sys.game.config.width, multip: 1
         });
         
         this.timeline = this.add.timeline([
@@ -109,7 +90,7 @@ export class MenuPrincipal extends Phaser.Scene {
 
         play_sonidos(this.sonidoMarioTuberias, false, 0.8);
 
-        console.log(this.txt_titulo);
+        console.log(this.txt);
     }
 
     update() {

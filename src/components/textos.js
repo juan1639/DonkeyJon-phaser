@@ -56,16 +56,39 @@ export class Textos {
                 });
             }
         });
+
+        // ----------------------------------------------
+        const array_tweens2 = [
+            ' DonkeyJon '
+        ];
+
+        array_tweens2.forEach(tween => {
+
+            if (tween === texto) {
+
+                this.relatedScene.tweens.add({
+                    targets: this.txt,
+                    scale: 1.2,
+                    x: 24,
+                    ease: 'Ease',
+                    yoyo: true,
+                    hold: 900,
+                    duration: 2000,
+                    repeat: -1
+                });
+            }
+        });
     }
 
     centrar(texto, screenWidth, multip) {
 
         const centrarTxt = [
-            ' prueba '
+            ' DonkeyJon ',
+            ' Nivel '
         ];
 
         centrarTxt.forEach(centra => {
-            if (texto === centra) this.txt.setX(centrar_txt(this.txt, screenWidth * multip));
+            if (texto.slice(0, 5) === centra.slice(0, 5)) this.txt.setX(centrar_txt(this.txt, screenWidth * multip));
         });
     }
 
