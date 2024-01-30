@@ -12,6 +12,7 @@ import { Jugador } from '../components/jugador.js';
 import { Enemigo } from '../components/enemigo.js';
 import { Barril } from '../components/barril.js';
 import { Marcador } from '../components/marcador.js';
+import { Textos } from '../components/textos.js';
 import { BotonSalto, CrucetaDireccion } from '../components/botonycruceta.js';
 import { BotonFullScreen } from '../components/boton-nuevapartida.js';
 
@@ -34,10 +35,6 @@ export class Game extends Phaser.Scene {
 
   init() {
 
-    this.txtObj = {
-      txtSwitch: null
-    };
-    
     this.array_barril = [];
     this.crearNuevoBarril = false;
     this.barrilIndex = 0;
@@ -49,6 +46,14 @@ export class Game extends Phaser.Scene {
     this.jugador = new Jugador(this);
     this.enemigo = new Enemigo(this);
     this.array_barril.push(new Barril(this));
+
+    this.txt1 = new Textos(this);
+
+    this.txtObj = {
+      txtSwitch: new Textos(this),
+      bool: false,
+      duracion: 2000
+    };
 
     const ancho = this.sys.game.config.width;
     const alto = this.sys.game.config.height;
@@ -276,19 +281,26 @@ export class Game extends Phaser.Scene {
     this.physics.add.collider(this.jugador.get(), this.switch.get(), (jugador, sw) => {
 
       // console.log('colision-switch');
-      if (!this.txtObj.txtSwitch) {
+      const left = this.jugador.get().x - 350;
+      const top = this.jugador.get().y - 100;
+      const screenW = this.sys.game.config.width;
 
-        this.txtObj.txtSwitch = textos([
-          this.jugador.get().x - 350, this.jugador.get().y - 100,
-          ' Pulse agachar para realizar una accion ', 30, 'bold', 1, 1, '111', 15, true, '#cd1', 'verdana, arial, sans-serif',
-          this.sys.game.config.width, 1
-        ],this);
+      if (!this.txtObj.bool) {
 
-        setTimeout(() => {
-          this.txtObj.txtSwitch.destroy();
-          this.txtObj.txtSwitch = null;
-        }, 2000);
+        this.txtObj.txtSwitch.create({
+          x: left, y: top, texto: ' Pulse agachar para realizar una accion ',
+          size: 30, style: 'bold', offx: 1, offy: 1, color: 'ff9', blr: 15,
+          fillShadow: true, fll: '#f72', family: 'verdana, arial, sans-serif',
+          screenWidth: screenW, multip: 2
+        });
+
+        this.txtObj.bool = true;
       }
+
+      setTimeout(() => {
+        this.txtObj.txtSwitch.get().destroy();
+        this.txtObj.bool = false;
+      }, this.txtObj.duracion);
 
       if ((this.jugador.controles.down.isDown || this.crucetadown.isDown) && !this.switch.pausa.pausa) {
 
@@ -319,22 +331,17 @@ export class Game extends Phaser.Scene {
           setTimeout(() => play_sonidos(this.sonidoUmph, false, 1.0), 700);
           play_sonidos(this.sonidoOugh, false, 1.0);
 
-          this.txt1 = textos([
-            this.jugador.get().x - 110, this.jugador.get().y + 120,
-            ' Ouch! ', 70, 'bold', 1, 1, '#ffa', 15, true, '#f31', 'verdana, arial, sans-serif',
-            this.sys.game.config.width, 1
-          ],this);
+          const left = this.jugador.get().x - 110;
+          const top = this.jugador.get().y + 120;
+          const screenW = this.sys.game.config.width;
 
-          this.tweens.add({
-            targets: this.txt1,
-            y: this.sys.game.config.height * 3 - 200,
-            x: this.jugador.get().x,
-            scale: 1.2,
-            ease: 'easeOut',
-            duration: 1500
+          this.txt1.create({
+            x: left, y: top, texto: ' Ouch! ', size: 70, style: 'bold',
+            oofx: 1, offy: 1, col: '#ffa', blr: 15, fillShadow: true, fll: '#f31',
+            family: 'verdana, arial, sans-serif', screenWidth: screenW, multip: 2
           });
 
-          setTimeout(() => this.txt1.destroy(), 2000);
+          setTimeout(() => this.txt1.get().destroy(), this.txtObj.duracion);
 
           revivir_jugador(jugador);
         
