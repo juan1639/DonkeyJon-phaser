@@ -1,4 +1,5 @@
 import { play_sonidos } from "../functions/functions.js";
+import { Settings } from "../scenes/settings.js";
 
 // =======================================================================
 export class Barril {
@@ -42,7 +43,7 @@ export class Barril {
 
             barril.setData('activo', true);
             enemigo.anims.play('enemy-kick', true);
-            play_sonidos(this.sonidoMetalPunch, false, 0.2);
+            play_sonidos(this.sonidoMetalPunch, false, 0.3);
       
             setTimeout(() => {
               enemigo.setFlip(true);
@@ -51,7 +52,12 @@ export class Barril {
               this.relatedScene.crearNuevoBarril = true;
             }, 1000);//3000
         
-        }, null, this);
+        }, () => {
+
+            if (Settings.isNivelSuperado()) return false;
+            return true;
+        
+        }, this);
 
         console.log(this.barril);
         console.log(this.barril.getData('rotacion'));
