@@ -65,11 +65,34 @@ function revivir_jugador(jugador) {
   setTimeout(() => {
     jugador.setData('jugadorDies', false).setData('disableBody', false);
     jugador.setAlpha(0.5).setCollideWorldBounds(true);
-    jugador.x = jugador.getData('saveX');
-    jugador.y = jugador.getData('saveY');
+    jugador.setX(jugador.getData('saveX'));
+    jugador.setY(jugador.getData('saveY'));
   }, duracionDie);
 
   setTimeout(() => jugador.setAlpha(cheatInvisible), duracionInvisible);
+}
+
+// ================================================================
+function revivir_pajaro(pajaro, scene) {
+
+  const {duracionDie} = Settings.invisible;
+
+  pajaro.setCollideWorldBounds(false);
+  pajaro.setVelocityY(pajaro.getData('vel-y') * 3);
+  
+  scene.tweens.add({
+    targets: pajaro,
+    angle: 359,
+    ease: 'easeOut',
+    repeat: 2
+  });
+
+  setTimeout(() => {
+    pajaro.setCollideWorldBounds(true);
+    pajaro.setVelocityY(pajaro.getData('vel-y'));
+    pajaro.setX(Phaser.Math.Between(100, 1500));
+    pajaro.setY(Phaser.Math.Between(500, 900));
+  }, duracionDie);
 }
 
 // ================================================================
@@ -165,6 +188,7 @@ export {
     imagen_grupoBarriles,
     imagenes_fondo,
     revivir_jugador,
+    revivir_pajaro,
     nivel_superado,
     getSettings_json,
     centrar_txt,

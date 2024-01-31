@@ -33,6 +33,7 @@ export function loader(scene) {
   
   scene.load.spritesheet('jugador', './src/img/Ssheet_jugador.png', {frameWidth: 80, frameHeight: 110});
   scene.load.spritesheet('enemigo', './src/img/Ssheet_enemigo.png', {frameWidth: 80, frameHeight: 110});
+  scene.load.spritesheet('pajaro', './src/img/bird64x72.png', {frameWidth: 64, frameHeight: 72});
   
   scene.load.image('letrero-kenney', './src/img/Letrero_kenney.png');
   scene.load.image('letrero-creditos', './src/img/Letrero_creditos.png');

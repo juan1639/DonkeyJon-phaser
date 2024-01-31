@@ -9,9 +9,19 @@ export class Settings {
 
     static puntos = 0;
     static nivel = 1;
-    static hi = 20000;
+    static hi = 5000;
     static vidas = 3;
     static nivelSuperado = false;
+
+    static dificultadProgresiva = [
+        [2000, 60],
+        [1500, 90],
+        [1000, 120],
+        [800, 140],
+        [600, 160],
+        [500, 170],
+        [400, 160]
+    ];
 
     static botonesYcruceta = true;
 
@@ -85,6 +95,10 @@ export class Settings {
 
     static isNivelSuperado() {
         return Settings.nivelSuperado;
+    }
+
+    static getDificultadProgresiva() {
+        return Settings.dificultadProgresiva;
     }
 
     static isBotonesYcruceta() {

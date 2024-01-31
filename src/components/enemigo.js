@@ -14,7 +14,7 @@ export class Enemigo {
 
         this.enemigo = this.relatedScene.physics.add.sprite(Enemigo.XY_INI[0], Enemigo.XY_INI[1], 'enemigo');
 
-        this.enemigo.setData('vel-x', 120);//40
+        this.enemigo.setData('vel-x', this.establecer_dificultad());
         this.enemigo.setCollideWorldBounds(true);
         this.enemigo.setAngle(0).setFlip(false).setBounce(1, 0.3).setVelocityX(this.enemigo.getData('vel-x'));
 
@@ -56,6 +56,13 @@ export class Enemigo {
         if (Settings.isNivelSuperado()) this.enemigo.anims.play('enemy-fall');
         if (this.enemigo.y > this.relatedScene.sys.game.config.height * 3 - 200) this.enemigo.disableBody(true, true);
         if (this.enemigo.x <= this.enemigo.body.width * this.enemigo.originX) this.enemigo.setFlip(false);
+    }
+
+    establecer_dificultad() {
+
+        if (Settings.getNivel() < 7) return Settings.getDificultadProgresiva()[Settings.getNivel()][1];
+
+        return 170;
     }
 
     get() {

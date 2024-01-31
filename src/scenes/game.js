@@ -10,6 +10,7 @@ import { Plataforma } from '../components/plataforma.js';
 import { Escalera } from '../components/escalera.js';
 import { Jugador } from '../components/jugador.js';
 import { Enemigo } from '../components/enemigo.js';
+import { Pajaro } from '../components/pajaro.js';
 import { Barril } from '../components/barril.js';
 import { Marcador } from '../components/marcador.js';
 import { Textos } from '../components/textos.js';
@@ -21,6 +22,7 @@ import {
   imagen_grupoBarriles,
   imagenes_fondo,
   revivir_jugador,
+  revivir_pajaro,
   getSettings_json,
   play_sonidos
 } from '../functions/functions.js';
@@ -45,6 +47,7 @@ export class Game extends Phaser.Scene {
     this.jugador = new Jugador(this);
     this.enemigo = new Enemigo(this);
     this.array_barril.push(new Barril(this));
+    this.pajaro = new Pajaro(this);
 
     this.txt1 = new Textos(this);
 
@@ -142,6 +145,7 @@ export class Game extends Phaser.Scene {
     this.jugador.create();
     this.enemigo.create();
     this.array_barril[this.barrilIndex].create(this.barrilIndex, this.plataforma, this.enemigo);
+    this.pajaro.create();
 
     // ---------------------------------------------------------------------
     this.marcadorPtos.create();
@@ -176,6 +180,7 @@ export class Game extends Phaser.Scene {
 
     this.jugador.update();
     this.enemigo.update();
+    this.pajaro.update();
 
     this.array_barril.forEach(barril => barril.update());
   }
@@ -211,13 +216,14 @@ export class Game extends Phaser.Scene {
     // --- El +50 es para que se vean mejor los botones mobile al comienzo del juego
     this.cameras.main.setBounds(
       0, 0,
-      Math.floor(this.sys.game.config.width * 2), Math.floor(this.sys.game.config.height * yBounds) + 50
+      Math.floor(this.sys.game.config.width * 2), Math.floor(this.sys.game.config.height * yBounds)
     );
 
     this.physics.world.setBounds(
       0, 0,
-      Math.floor(this.sys.game.config.width * 2), Math.floor(this.sys.game.config.height * yBounds) + 50
+      Math.floor(this.sys.game.config.width * 2), Math.floor(this.sys.game.config.height * yBounds)
     );
+    console.log(this.physics.world);
   }
 
   // ================================================================
@@ -242,6 +248,7 @@ export class Game extends Phaser.Scene {
     this.collider_enemigo_plataforma();
     this.overlap_jugador_switch();
     this.overlap_jugador_enemigo();
+    this.overlap_jugador_pajaro();
   }
 
   // ================================================================
@@ -385,6 +392,9 @@ export class Game extends Phaser.Scene {
 
     this.physics.add.overlap(this.jugador.get(), this.enemigo.get(), (jugador, enemigo) => {
 
+      setTimeout(() => play_sonidos(this.sonidoUmph, false, 1.0), 700);
+      play_sonidos(this.sonidoOugh, false, 1.0);
+
       const left = enemigo.x - 50;
       const top = enemigo.y - 200;
       const screenW = this.sys.game.config.width;
@@ -409,6 +419,37 @@ export class Game extends Phaser.Scene {
       }, this.txtObj.duracion);
     
     }, (jugador, enemigo) => {
+
+      if (jugador.getData('disableBody') || jugador.alpha < 1 || Settings.isNivelSuperado()) return false;
+
+      return true;
+    });
+  }
+
+  // ================================================================
+  overlap_jugador_pajaro() {
+
+    this.physics.add.overlap(this.jugador.get(), this.pajaro.get(), (jugador, pajaro) => {
+
+      setTimeout(() => play_sonidos(this.sonidoUmph, false, 1.0), 700);
+      play_sonidos(this.sonidoOugh, false, 1.0);
+
+      const left = this.jugador.get().x - 110;
+      const top = this.jugador.get().y + 120;
+      const screenW = this.sys.game.config.width;
+
+      this.txt1.create({
+        x: left, y: top, texto: ' Ouch! ', size: 70, style: 'bold',
+        oofx: 1, offy: 1, col: '#ffa', blr: 15, fillShadow: true, fll: '#f31',
+        family: 'verdana, arial, sans-serif', screenWidth: screenW, multip: 2
+      });
+
+      revivir_jugador(jugador);
+      revivir_pajaro(pajaro, this);
+
+      setTimeout(() => this.txt1.get().destroy(), this.txtObj.duracion);
+    
+    }, (jugador, pajaro) => {
 
       if (jugador.getData('disableBody') || jugador.alpha < 1 || Settings.isNivelSuperado()) return false;
 

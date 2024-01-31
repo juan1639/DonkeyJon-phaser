@@ -77,9 +77,9 @@ export class Jugador {
 
     update() {
 
-        if (this.jugador.y > this.relatedScene.sys.game.config.height * 7) {
+        if (this.jugador.y > this.relatedScene.sys.game.config.height * 4) {
 
-            this.jugador.setY(this.relatedScene.sys.game.config.height * 7);
+            this.jugador.setY(this.relatedScene.sys.game.config.height * 4);
         }
         
         if (this.jugador.getData('jugadorDies')) return;

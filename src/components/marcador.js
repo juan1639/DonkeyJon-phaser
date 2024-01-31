@@ -25,6 +25,11 @@ export class Marcador {
         console.log(this.marcador);
     }
 
+    update(txt, valor) {
+
+        this.marcador.setText(`${txt}${valor}`);
+    }
+
     get() {
         return this.marcador;
     }

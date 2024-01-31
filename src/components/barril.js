@@ -50,7 +50,7 @@ export class Barril {
               enemigo.setVelocityX(-enemigo.getData('vel-x'));
               enemigo.anims.play('enemy-left-right', true);
               this.relatedScene.crearNuevoBarril = true;
-            }, 1000);//3000
+            }, this.establecer_dificultad());
         
         }, () => {
 
@@ -65,10 +65,22 @@ export class Barril {
     
     update() {
 
-        if (this.barril.x <= 40 && this.barril.y >= this.relatedScene.sys.game.config.height * 3 - 100) this.barril.destroy();
+        if (this.barril.x <= 40 && this.barril.y >= this.relatedScene.sys.game.config.height * 3 - 100 && this.barril.active) {
+
+            this.barril.destroy();
+            Settings.setPuntos(Settings.getPuntos() + 100);
+            this.relatedScene.marcadorPtos.update(' Puntos: ', Settings.getPuntos());
+        }
 
         if (this.barril.getData('activo')) this.barril.rotation += 0.1 * this.barril.getData('rotacion');
         // console.log(this.barril.x);
+    }
+
+    establecer_dificultad() {
+
+        if (Settings.getNivel() < 7) return Settings.getDificultadProgresiva()[Settings.getNivel()][0];
+
+        return 500;
     }
 
     get() {
