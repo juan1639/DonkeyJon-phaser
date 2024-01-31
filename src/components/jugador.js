@@ -125,3 +125,34 @@ export class Jugador {
     }
 }
 
+// =======================================================================
+export class JugadorShowVidas {
+
+    // ------------------------------------------------------------
+    constructor(scene, args) {
+        this.relatedScene = scene;
+        this.args = args;
+    }
+
+    create() {
+
+        const { xx, yy, scX, scY } = this.args;
+
+        this.jugadorSV = this.relatedScene.add.group({
+            key: 'jugador',
+            setXY: { x: xx, y: yy, stepX: scX},
+            repeat: Settings.getVidas() - 1
+        });
+
+        this.jugadorSV.children.iterate(vida => {
+            vida.setScale(0.40, 0.50);
+            vida.setAlpha(1);
+        });
+
+        console.log(this.jugadorSV);
+    }
+
+    get() {
+        return this.jugadorSV;
+    }
+}

@@ -30,7 +30,11 @@ export class BotonNuevaPartida {
       this.boton.setScale(0.6);
     });
     this.boton.on('pointerdown', () => {
-      if (siguienteScene === 'prenivel') this.relatedScene.sonidoMarioTuberias.pause();
+
+      if (siguienteScene === 'prenivel' && Settings.getNivel() <= 1) {
+        this.relatedScene.sonidoMarioTuberias.pause();
+      }
+
       play_sonidos(this.sonidoMenuSelect, false, 0.9);
       this.relatedScene.scene.start(siguienteScene);
     });

@@ -1,4 +1,4 @@
-import { nivel_superado } from "../functions/functions.js";
+import { nivel_superado, play_sonidos } from "../functions/functions.js";
 
 // =============================================================================
 export class Switchs {
@@ -97,6 +97,7 @@ export class Switchs {
             setTimeout(() => {
 
                 // console.log(this.relatedScene.plataforma.get());
+                play_sonidos(this.relatedScene.sonidoGritoCaer, false, 0.8);
                 this.relatedScene.enemigo.get().anims.play('enemy-fall');
                 nivel_superado(this.relatedScene);
 

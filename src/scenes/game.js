@@ -8,7 +8,7 @@ import { Decorativos } from '../components/decorativos.js';
 import { Switchs } from '../components/switchs.js';
 import { Plataforma } from '../components/plataforma.js';
 import { Escalera } from '../components/escalera.js';
-import { Jugador } from '../components/jugador.js';
+import { Jugador, JugadorShowVidas } from '../components/jugador.js';
 import { Enemigo } from '../components/enemigo.js';
 import { Pajaro } from '../components/pajaro.js';
 import { Barril } from '../components/barril.js';
@@ -36,6 +36,7 @@ export class Game extends Phaser.Scene {
 
   init() {
 
+    Settings.setNivelSuperado(false);
     this.array_barril = [];
     this.crearNuevoBarril = false;
     this.barrilIndex = 0;
@@ -49,6 +50,13 @@ export class Game extends Phaser.Scene {
     this.array_barril.push(new Barril(this));
     this.pajaro = new Pajaro(this);
 
+    const ancho = this.sys.game.config.width;
+    const alto = this.sys.game.config.height;
+
+    this.jugadorSV = new JugadorShowVidas(this, {
+      xx: Math.floor(ancho / 1.3), yy: -85, scX: 25, scY: 28
+    });
+
     this.txt1 = new Textos(this);
 
     this.txtObj = {
@@ -56,9 +64,6 @@ export class Game extends Phaser.Scene {
       bool: false,
       duracion: 4000
     };
-
-    const ancho = this.sys.game.config.width;
-    const alto = this.sys.game.config.height;
 
     this.marcadorPtos = new Marcador(this, {
       x: 10, y: -99, size: 35, txt: ' Puntos: ', color: '#fff', id: 0
@@ -151,6 +156,7 @@ export class Game extends Phaser.Scene {
     this.marcadorPtos.create();
     this.marcadorNivel.create();
     this.marcadorHi.create();
+    this.jugadorSV.create();
     this.botonfullscreen.create();
 
     this.crucetaleft.create();
@@ -183,6 +189,8 @@ export class Game extends Phaser.Scene {
     this.pajaro.update();
 
     this.array_barril.forEach(barril => barril.update());
+
+    if (Settings.getVidas() < 0) this.scene.start('menuprincipal');
   }
 
   // ================================================================
@@ -230,13 +238,14 @@ export class Game extends Phaser.Scene {
   sonidos_set() {
 
     this.sonidoMusicaFondo = this.sound.add('musica-fondo');
-    play_sonidos(this.sonidoMusicaFondo, true, 0.7);
+    if (!this.sonidoMusicaFondo.isPlaying) play_sonidos(this.sonidoMusicaFondo, true, 0.7);
 
     this.sonidoSalto = this.sound.add('salto');
     this.sonidoOugh = this.sound.add('ough');
     this.sonidoUmph = this.sound.add('umph');
     this.sonidoSwitch = this.sound.add('pacmanazules');
     this.sonidoLevelUp = this.sound.add('level-up');
+    this.sonidoGritoCaer = this.sound.add('grito-caer');
   }
 
   // ================================================================
@@ -278,6 +287,7 @@ export class Game extends Phaser.Scene {
           setTimeout(() => this.txt1.get().destroy(), this.txtObj.duracion);
 
           revivir_jugador(jugador);
+          if (Settings.getVidas() >= 0) this.jugadorSV.get().getChildren()[Settings.getVidas()].setVisible(false);
         
         }, (jugador, barril) => {
 
@@ -412,6 +422,7 @@ export class Game extends Phaser.Scene {
       }
 
       revivir_jugador(jugador);
+      if (Settings.getVidas() >= 0) this.jugadorSV.get().getChildren()[Settings.getVidas()].setVisible(false);
 
       setTimeout(() => {
         this.txtObj.txtSwitch.get().destroy();
@@ -445,6 +456,8 @@ export class Game extends Phaser.Scene {
       });
 
       revivir_jugador(jugador);
+      if (Settings.getVidas() >= 0) this.jugadorSV.get().getChildren()[Settings.getVidas()].setVisible(false);
+
       revivir_pajaro(pajaro, this);
 
       setTimeout(() => this.txt1.get().destroy(), this.txtObj.duracion);

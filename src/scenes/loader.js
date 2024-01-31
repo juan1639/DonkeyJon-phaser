@@ -59,4 +59,6 @@ export function loader(scene) {
   scene.load.audio('moneda-mario', './src/audio/p-ping.mp3');
   scene.load.audio('ough', './src/audio/ough.mp3');
   scene.load.audio('umph', './src/audio/umph.mp3');
+  scene.load.audio('grito-caer', './src/audio/scream1.mp3');
+  scene.load.audio('oh-no', './src/audio/oh-no.mp3');
 }

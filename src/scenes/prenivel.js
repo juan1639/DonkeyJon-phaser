@@ -24,6 +24,8 @@ export class PreNivel extends Phaser.Scene {
 
     init() {
 
+        Settings.setNivelSuperado(false);
+
         this.array_barril = [];
         this.crearNuevoBarril = false;
         this.barrilIndex = 0;

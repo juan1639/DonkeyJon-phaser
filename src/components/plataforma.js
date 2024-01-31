@@ -56,7 +56,10 @@ export class Plataforma {
         });
 
         const trampas = [
-            [1, 9], [2, 6], [4, 12], [7, 2]
+            [1, 9 + Phaser.Math.Between(-1, 1)],
+            [2, 6 + Phaser.Math.Between(-1, 1)],
+            [4, 12 + Phaser.Math.Between(-1, 1)],
+            [7, 2 + Phaser.Math.Between(-1, 1)]
         ];
 
         for (let i = 0; i < this.plataforma.length; i ++) {

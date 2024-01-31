@@ -19,6 +19,7 @@ export class MenuPrincipal extends Phaser.Scene {
         Settings.setPuntos(0);
         Settings.setNivel(1);
         Settings.setVidas(3);
+        Settings.setNivelSuperado(false);
 
         this.plataforma = new Plataforma(this);
         this.enemigo = new Enemigo(this);

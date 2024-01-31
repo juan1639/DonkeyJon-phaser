@@ -56,10 +56,12 @@ function revivir_jugador(jugador) {
   const {cheatInvisible, duracionInvisible, duracionDie} = Settings.invisible;
 
   // console.log(jugador, barril, 'colision');
+  restar_vida();
+    
   jugador.setData('jugadorDies', true).setData('disableBody', true);
   jugador.setCollideWorldBounds(false);
   jugador.setData('saveX', jugador.x);
-  jugador.setData('saveY', jugador.y - 270);
+  jugador.setData('saveY', jugador.y - 250);
   jugador.anims.play('dies', true);
 
   setTimeout(() => {
@@ -92,6 +94,12 @@ function revivir_pajaro(pajaro, scene) {
     pajaro.setVelocityY(pajaro.getData('vel-y'));
     pajaro.setX(Phaser.Math.Between(100, 1500));
     pajaro.setY(Phaser.Math.Between(500, 900));
+
+    if (pajaro.body.velocity.x > 0) {
+      pajaro.setFlipX(true);
+    } else {
+      pajaro.setFlipX(false);
+    }
   }, duracionDie);
 }
 
@@ -118,10 +126,28 @@ function nivel_superado(scene) {
   play_sonidos(scene.sonidoLevelUp, false, 0.9);
   scene.sonidoMusicaFondo.volume = 0.1;
 
-  setTimeout(() => {
+  scene.add.timeline([
+    {
+        at: Settings.invisible.duracionDie,
+        run: () => {
+          txt1.get().destroy();
+          scene.sonidoMusicaFondo.volume = 0.7;
+        }
+    },
+    {
+      at: Settings.invisible.duracionInvisible,
+        run: () => {
+          scene.sonidoMusicaFondo.pause();
+          Settings.setNivel(Settings.getNivel() + 1);
+          scene.scene.start('congratulations');
+        }
+    }
+  ]).play();
+
+  /* setTimeout(() => {
     txt1.get().destroy();
     scene.sonidoMusicaFondo.volume = 0.7;
-  }, Settings.invisible.duracionInvisible * 2);
+  }, Settings.invisible.duracionInvisible * 2); */
 }
 
 // ================================================================
