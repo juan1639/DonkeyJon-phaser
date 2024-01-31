@@ -61,4 +61,6 @@ export function loader(scene) {
   scene.load.audio('umph', './src/audio/umph.mp3');
   scene.load.audio('grito-caer', './src/audio/scream1.mp3');
   scene.load.audio('oh-no', './src/audio/oh-no.mp3');
+  scene.load.audio('gameover', './src/audio/gameover.mp3');
+  scene.load.audio('gameover-retro', './src/audio/gameoveretro.ogg');
 }

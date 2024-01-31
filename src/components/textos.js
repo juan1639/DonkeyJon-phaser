@@ -61,7 +61,8 @@ export class Textos {
         // ----------------------------------------------
         const array_tweens2 = [
             ' DonkeyJon ',
-            ' Nivel Superado! '
+            ' Nivel Superado! ',
+            ' Siguiente Nivel '
         ];
 
         array_tweens2.forEach(tween => {
@@ -87,7 +88,9 @@ export class Textos {
         const centrarTxt = [
             ' DonkeyJon ',
             ' Nivel ',
-            ' Nivel Superado! '
+            ' Nivel Superado! ',
+            ' Game Over ',
+            ' Siguiente Nivel '
         ];
 
         centrarTxt.forEach(centra => {

@@ -82,7 +82,7 @@ export class Jugador {
             this.jugador.setY(this.relatedScene.sys.game.config.height * 4);
         }
         
-        if (this.jugador.getData('jugadorDies')) return;
+        if (this.jugador.getData('jugadorDies') || Settings.getVidas() < 0) return;
 
         if (Settings.isNivelSuperado()) {
 

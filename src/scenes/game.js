@@ -189,8 +189,6 @@ export class Game extends Phaser.Scene {
     this.pajaro.update();
 
     this.array_barril.forEach(barril => barril.update());
-
-    if (Settings.getVidas() < 0) this.scene.start('menuprincipal');
   }
 
   // ================================================================
@@ -286,15 +284,15 @@ export class Game extends Phaser.Scene {
 
           setTimeout(() => this.txt1.get().destroy(), this.txtObj.duracion);
 
-          revivir_jugador(jugador);
-          if (Settings.getVidas() >= 0) this.jugadorSV.get().getChildren()[Settings.getVidas()].setVisible(false);
-        
+          revivir_jugador(jugador, this);
+                
         }, (jugador, barril) => {
 
           if (
             jugador.getData('disableBody') ||
             jugador.alpha < 1 ||
             Settings.isNivelSuperado() ||
+            Settings.getVidas() < 0 ||
             jugador.y > barril.y + Math.floor(barril.body.height / 2)
           ) return false;
 
@@ -365,7 +363,7 @@ export class Game extends Phaser.Scene {
         this.txtObj.txtSwitch.create({
           x: left, y: top, texto: ' Pulse agachar para \n realizar una accion ',
           size: 30, style: 'bold', offx: 1, offy: 1, color: '#ff9', blr: 7,
-          fillShadow: true, fll: '#fe2', family: 'verdana, arial, sans-serif',
+          fillShadow: true, fll: '#c62', family: 'verdana, arial, sans-serif',
           screenWidth: screenW, multip: 2
         });
 
@@ -421,8 +419,7 @@ export class Game extends Phaser.Scene {
         this.txtObj.bool = true;
       }
 
-      revivir_jugador(jugador);
-      if (Settings.getVidas() >= 0) this.jugadorSV.get().getChildren()[Settings.getVidas()].setVisible(false);
+      revivir_jugador(jugador, this);
 
       setTimeout(() => {
         this.txtObj.txtSwitch.get().destroy();
@@ -431,7 +428,12 @@ export class Game extends Phaser.Scene {
     
     }, (jugador, enemigo) => {
 
-      if (jugador.getData('disableBody') || jugador.alpha < 1 || Settings.isNivelSuperado()) return false;
+      if (
+        jugador.getData('disableBody') ||
+        jugador.alpha < 1 ||
+        Settings.isNivelSuperado() ||
+        Settings.getVidas() < 0
+      ) return false;
 
       return true;
     });
@@ -455,16 +457,19 @@ export class Game extends Phaser.Scene {
         family: 'verdana, arial, sans-serif', screenWidth: screenW, multip: 2
       });
 
-      revivir_jugador(jugador);
-      if (Settings.getVidas() >= 0) this.jugadorSV.get().getChildren()[Settings.getVidas()].setVisible(false);
-
+      revivir_jugador(jugador, this);
       revivir_pajaro(pajaro, this);
 
       setTimeout(() => this.txt1.get().destroy(), this.txtObj.duracion);
     
     }, (jugador, pajaro) => {
 
-      if (jugador.getData('disableBody') || jugador.alpha < 1 || Settings.isNivelSuperado()) return false;
+      if (
+        jugador.getData('disableBody') ||
+        jugador.alpha < 1 ||
+        Settings.getVidas() < 0 ||
+        Settings.isNivelSuperado()
+      ) return false;
 
       return true;
     });

@@ -51,27 +51,51 @@ function imagenes_fondo(WIDTH, HEIGHT, yBounds, scene) {
 }
 
 // ================================================================
-function revivir_jugador(jugador) {
+function revivir_jugador(jugador, scene) {
 
   const {cheatInvisible, duracionInvisible, duracionDie} = Settings.invisible;
 
-  // console.log(jugador, barril, 'colision');
   restar_vida();
-    
+  if (Settings.getVidas() >= 0) scene.jugadorSV.get().getChildren()[Settings.getVidas()].setVisible(false);
+
   jugador.setData('jugadorDies', true).setData('disableBody', true);
   jugador.setCollideWorldBounds(false);
   jugador.setData('saveX', jugador.x);
   jugador.setData('saveY', jugador.y - 250);
   jugador.anims.play('dies', true);
 
-  setTimeout(() => {
-    jugador.setData('jugadorDies', false).setData('disableBody', false);
-    jugador.setAlpha(0.5).setCollideWorldBounds(true);
-    jugador.setX(jugador.getData('saveX'));
-    jugador.setY(jugador.getData('saveY'));
-  }, duracionDie);
-
-  setTimeout(() => jugador.setAlpha(cheatInvisible), duracionInvisible);
+  scene.add.timeline([
+    {
+      at: duracionDie,
+      run: () => {
+        jugador.setData('jugadorDies', false).setData('disableBody', false);
+        jugador.setAlpha(0.5).setCollideWorldBounds(true);
+        jugador.setX(jugador.getData('saveX'));
+        jugador.setY(jugador.getData('saveY'));
+        
+        if (Settings.getVidas() < 0) jugador.setAlpha(0);
+      }
+    },
+    {
+      at: duracionInvisible,
+      run: () => {
+        if (Settings.getVidas() < 0) {
+          jugador.setAlpha(0);
+        } else {
+          jugador.setAlpha(cheatInvisible);
+        }
+      }
+    },
+    {
+      at: 10500,
+      run: () => {
+        if (Settings.getVidas() < 0) {
+          scene.sonidoMusicaFondo.pause();
+          scene.scene.start('gameover');
+        }
+      }
+    }
+  ]).play();
 }
 
 // ================================================================
@@ -128,26 +152,21 @@ function nivel_superado(scene) {
 
   scene.add.timeline([
     {
-        at: Settings.invisible.duracionDie,
-        run: () => {
-          txt1.get().destroy();
-          scene.sonidoMusicaFondo.volume = 0.7;
-        }
+      at: Settings.invisible.duracionDie,
+      run: () => {
+        txt1.get().destroy();
+        scene.sonidoMusicaFondo.volume = 0.7;
+      }
     },
     {
       at: Settings.invisible.duracionInvisible,
-        run: () => {
-          scene.sonidoMusicaFondo.pause();
-          Settings.setNivel(Settings.getNivel() + 1);
-          scene.scene.start('congratulations');
-        }
+      run: () => {
+        scene.sonidoMusicaFondo.pause();
+        Settings.setNivel(Settings.getNivel() + 1);
+        scene.scene.start('congratulations');
+      }
     }
   ]).play();
-
-  /* setTimeout(() => {
-    txt1.get().destroy();
-    scene.sonidoMusicaFondo.volume = 0.7;
-  }, Settings.invisible.duracionInvisible * 2); */
 }
 
 // ================================================================
