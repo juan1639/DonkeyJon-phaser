@@ -21,6 +21,11 @@ import {
   crear_nuevoBarril,
   imagen_grupoBarriles,
   imagenes_fondo,
+  collider_jugador_plataforma,
+  collider_enemigo_plataforma,
+  overlap_jugador_switch,
+  overlap_jugador_enemigo,
+  overlap_jugador_pajaro,
   revivir_jugador,
   revivir_pajaro,
   getSettings_json,
@@ -250,12 +255,11 @@ export class Game extends Phaser.Scene {
   crear_colliders() {
 
     this.physics.add.collider(this.grupoBarriles, this.plataforma.get());
-
-    this.collider_jugador_plataforma();
-    this.collider_enemigo_plataforma();
-    this.overlap_jugador_switch();
-    this.overlap_jugador_enemigo();
-    this.overlap_jugador_pajaro();
+    collider_jugador_plataforma(this);
+    collider_enemigo_plataforma(this);
+    overlap_jugador_switch(this);
+    overlap_jugador_enemigo(this);
+    overlap_jugador_pajaro(this);
   }
 
   // ================================================================
@@ -300,179 +304,6 @@ export class Game extends Phaser.Scene {
         });
       });
     }
-  }
-
-  // ================================================================
-  collider_jugador_plataforma() {
-
-    this.physics.add.collider(this.jugador.get(), this.plataforma.get(), (jugador, plataforma) => {
-
-      if (plataforma.getData('trampa')) plataforma.body.setAllowGravity(true);
-    
-    }, (jugador, plataforma) => {
-
-      // Si esta en modo Dies
-      if (jugador.getData('jugadorDies')) return false;
-
-      // Para que no colisione con la plataforma 'con la cabeza' al saltar
-      if (jugador.body.velocity.y < 0) return false;
-
-      // Para que se caiga de la plataforma mas o menos a la mitad de jugador.body.width
-      if (jugador.body.velocity.y >= 0 && jugador.x - Math.floor(jugador.body.width / 2) > plataforma.x) return false;
-      if (jugador.body.velocity.y >= 0 && jugador.x + Math.floor(jugador.body.width / 1.8) < plataforma.x) return false;
-
-      return true;
-      
-    }, this);
-  }
-
-  // ================================================================
-  collider_enemigo_plataforma() {
-
-    this.physics.add.collider(this.enemigo.get(), this.plataforma.get(), (enemigo, plataforma) => {
-
-      //console.log(plataforma.getData('index'), plataforma.getData('ultima'));
-
-      if (plataforma.getData('index') !== plataforma.getData('ultima')) {
-
-        enemigo.setVelocityX(enemigo.getData('vel-x') * plataforma.getData('id'));
-        enemigo.setFlip(enemigo.body.velocity.x < 0 ? true : false);
-      }
-    
-    }, () => {
-
-      if (Settings.isNivelSuperado()) return false;
-      return true;
-    
-    }, this);
-  }
-
-  // ================================================================
-  overlap_jugador_switch() {
-
-    this.physics.add.overlap(this.jugador.get(), this.switch.get(), (jugador, sw) => {
-
-      // console.log('colision-switch');
-      const left = this.jugador.get().x - 240;
-      const top = this.jugador.get().y - 100;
-      const screenW = this.sys.game.config.width;
-
-      if (!this.txtObj.bool && !Settings.isNivelSuperado()) {
-        console.log('texto creado');
-
-        this.txtObj.txtSwitch.create({
-          x: left, y: top, texto: ' Pulse agachar para \n realizar una accion ',
-          size: 30, style: 'bold', offx: 1, offy: 1, color: '#ff9', blr: 7,
-          fillShadow: true, fll: '#c62', family: 'verdana, arial, sans-serif',
-          screenWidth: screenW, multip: 2
-        });
-
-        this.txtObj.bool = true;
-      }
-
-      setTimeout(() => {
-        this.txtObj.txtSwitch.get().destroy();
-        this.txtObj.bool = false;
-      }, this.txtObj.duracion);
-
-      if ((this.jugador.controles.down.isDown || this.crucetadown.isDown) && !this.switch.pausa.pausa) {
-
-        this.switch.array_changes.forEach(cambiar => {
-
-          if (sw.getData('key') === cambiar[0]) {
-            sw.disableBody(true, true);
-            this.switch.changeItem(cambiar[0], sw.x, sw.y);
-            this.switch.pausaChange();
-            play_sonidos(this.sonidoSwitch, false, 0.9);
-          }
-        });
-      }
-    }, (jugador, sw) => {
-
-      if (jugador.getData('disableBody')) return false;
-      return true;
-
-    }, this);
-  }
-
-  // ================================================================
-  overlap_jugador_enemigo() {
-
-    this.physics.add.overlap(this.jugador.get(), this.enemigo.get(), (jugador, enemigo) => {
-
-      setTimeout(() => play_sonidos(this.sonidoUmph, false, 1.0), 700);
-      play_sonidos(this.sonidoOugh, false, 1.0);
-
-      const left = enemigo.x - 50;
-      const top = enemigo.y - 200;
-      const screenW = this.sys.game.config.width;
-
-      if (!this.txtObj.bool && !Settings.isNivelSuperado()) {
-
-        this.txtObj.txtSwitch.create({
-          x: left, y: top, texto: ' Fuera de aqui! \n cacho subnormal! ',
-          size: 55, style: 'bold', offx: 1, offy: 1, color: '#ffa', blr: 7,
-          fillShadow: true, fll: '#e61', family: 'verdana, arial, sans-serif',
-          screenWidth: screenW, multip: 2
-        });
-
-        this.txtObj.bool = true;
-      }
-
-      revivir_jugador(jugador, this);
-
-      setTimeout(() => {
-        this.txtObj.txtSwitch.get().destroy();
-        this.txtObj.bool = false;
-      }, this.txtObj.duracion);
-    
-    }, (jugador, enemigo) => {
-
-      if (
-        jugador.getData('disableBody') ||
-        jugador.alpha < 1 ||
-        Settings.isNivelSuperado() ||
-        Settings.getVidas() < 0
-      ) return false;
-
-      return true;
-    });
-  }
-
-  // ================================================================
-  overlap_jugador_pajaro() {
-
-    this.physics.add.overlap(this.jugador.get(), this.pajaro.get(), (jugador, pajaro) => {
-
-      setTimeout(() => play_sonidos(this.sonidoUmph, false, 1.0), 700);
-      play_sonidos(this.sonidoOugh, false, 1.0);
-
-      const left = this.jugador.get().x - 110;
-      const top = this.jugador.get().y + 120;
-      const screenW = this.sys.game.config.width;
-
-      this.txt1.create({
-        x: left, y: top, texto: ' Ouch! ', size: 70, style: 'bold',
-        oofx: 1, offy: 1, col: '#ffa', blr: 15, fillShadow: true, fll: '#f31',
-        family: 'verdana, arial, sans-serif', screenWidth: screenW, multip: 2
-      });
-
-      revivir_jugador(jugador, this);
-      revivir_pajaro(pajaro, this);
-
-      setTimeout(() => this.txt1.get().destroy(), this.txtObj.duracion);
-    
-    }, (jugador, pajaro) => {
-
-      if (
-        jugador.getData('disableBody') ||
-        jugador.alpha < 1 ||
-        Settings.getVidas() < 0 ||
-        Settings.isNivelSuperado()
-      ) return false;
-
-      return true;
-    });
   }
 
   // ================================================================

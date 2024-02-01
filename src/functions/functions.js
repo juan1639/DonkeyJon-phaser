@@ -51,6 +51,177 @@ function imagenes_fondo(WIDTH, HEIGHT, yBounds, scene) {
 }
 
 // ================================================================
+function collider_jugador_plataforma(scene) {
+
+  scene.physics.add.collider(scene.jugador.get(), scene.plataforma.get(), (jugador, plataforma) => {
+
+    if (plataforma.getData('trampa')) plataforma.body.setAllowGravity(true);
+  
+  }, (jugador, plataforma) => {
+
+    // Si esta en modo Dies
+    if (jugador.getData('jugadorDies')) return false;
+
+    // Para que no colisione con la plataforma 'con la cabeza' al saltar
+    if (jugador.body.velocity.y < 0) return false;
+
+    // Para que se caiga de la plataforma mas o menos a la mitad de jugador.body.width
+    if (jugador.body.velocity.y >= 0 && jugador.x - Math.floor(jugador.body.width / 2) > plataforma.x) return false;
+    if (jugador.body.velocity.y >= 0 && jugador.x + Math.floor(jugador.body.width / 1.8) < plataforma.x) return false;
+
+    return true;
+  });
+}
+
+// ================================================================
+function collider_enemigo_plataforma(scene) {
+
+  scene.physics.add.collider(scene.enemigo.get(), scene.plataforma.get(), (enemigo, plataforma) => {
+
+    //console.log(plataforma.getData('index'), plataforma.getData('ultima'));
+
+    if (plataforma.getData('index') !== plataforma.getData('ultima')) {
+
+      enemigo.setVelocityX(enemigo.getData('vel-x') * plataforma.getData('id'));
+      enemigo.setFlip(enemigo.body.velocity.x < 0 ? true : false);
+    }
+  
+  }, () => {
+
+    if (Settings.isNivelSuperado()) return false;
+    return true;
+  });
+}
+
+// ================================================================
+function overlap_jugador_switch(scene) {
+
+  scene.physics.add.overlap(scene.jugador.get(), scene.switch.get(), (jugador, sw) => {
+
+    // console.log('colision-switch');
+    const left = scene.jugador.get().x - 240;
+    const top = scene.jugador.get().y - 100;
+    const screenW = scene.sys.game.config.width;
+
+    if (!scene.txtObj.bool && !Settings.isNivelSuperado()) {
+      console.log('texto creado');
+
+      scene.txtObj.txtSwitch.create({
+        x: left, y: top, texto: ' Pulse agachar para \n realizar una accion ',
+        size: 30, style: 'bold', offx: 1, offy: 1, color: '#ff9', blr: 7,
+        fillShadow: true, fll: '#c62', family: 'verdana, arial, sans-serif',
+        screenWidth: screenW, multip: 2
+      });
+
+      scene.txtObj.bool = true;
+    }
+
+    setTimeout(() => {
+      scene.txtObj.txtSwitch.get().destroy();
+      scene.txtObj.bool = false;
+    }, scene.txtObj.duracion);
+
+    if ((scene.jugador.controles.down.isDown || scene.crucetadown.isDown) && !scene.switch.pausa.pausa) {
+
+      scene.switch.array_changes.forEach(cambiar => {
+
+        if (sw.getData('key') === cambiar[0]) {
+          sw.disableBody(true, true);
+          scene.switch.changeItem(cambiar[0], sw.x, sw.y);
+          scene.switch.pausaChange();
+          play_sonidos(scene.sonidoSwitch, false, 0.9);
+        }
+      });
+    }
+  }, (jugador, sw) => {
+
+    if (jugador.getData('disableBody')) return false;
+    return true;
+
+  });
+}
+
+// ================================================================
+function overlap_jugador_enemigo(scene) {
+
+  scene.physics.add.overlap(scene.jugador.get(), scene.enemigo.get(), (jugador, enemigo) => {
+
+    setTimeout(() => play_sonidos(scene.sonidoUmph, false, 1.0), 700);
+    play_sonidos(scene.sonidoOugh, false, 1.0);
+
+    const left = enemigo.x - 50;
+    const top = enemigo.y - 200;
+    const screenW = scene.sys.game.config.width;
+
+    if (!scene.txtObj.bool && !Settings.isNivelSuperado()) {
+
+      scene.txtObj.txtSwitch.create({
+        x: left, y: top, texto: ' Fuera de aqui! \n cacho subnormal! ',
+        size: 55, style: 'bold', offx: 1, offy: 1, color: '#ffa', blr: 7,
+        fillShadow: true, fll: '#e61', family: 'verdana, arial, sans-serif',
+        screenWidth: screenW, multip: 2
+      });
+
+      scene.txtObj.bool = true;
+    }
+
+    revivir_jugador(jugador, scene);
+
+    setTimeout(() => {
+      scene.txtObj.txtSwitch.get().destroy();
+      scene.txtObj.bool = false;
+    }, scene.txtObj.duracion);
+  
+  }, (jugador, enemigo) => {
+
+    if (
+      jugador.getData('disableBody') ||
+      jugador.alpha < 1 ||
+      Settings.isNivelSuperado() ||
+      Settings.getVidas() < 0
+    ) return false;
+
+    return true;
+  });
+}
+
+// ================================================================
+function overlap_jugador_pajaro(scene) {
+
+  scene.physics.add.overlap(scene.jugador.get(), scene.pajaro.get(), (jugador, pajaro) => {
+
+    setTimeout(() => play_sonidos(scene.sonidoUmph, false, 1.0), 700);
+    play_sonidos(scene.sonidoOugh, false, 1.0);
+
+    const left = scene.jugador.get().x - 110;
+    const top = scene.jugador.get().y + 120;
+    const screenW = scene.sys.game.config.width;
+
+    scene.txt1.create({
+      x: left, y: top, texto: ' Ouch! ', size: 70, style: 'bold',
+      oofx: 1, offy: 1, col: '#ffa', blr: 15, fillShadow: true, fll: '#f31',
+      family: 'verdana, arial, sans-serif', screenWidth: screenW, multip: 2
+    });
+
+    revivir_jugador(jugador, scene);
+    revivir_pajaro(pajaro, scene);
+
+    setTimeout(() => scene.txt1.get().destroy(), scene.txtObj.duracion);
+  
+  }, (jugador, pajaro) => {
+
+    if (
+      jugador.getData('disableBody') ||
+      jugador.alpha < 1 ||
+      Settings.getVidas() < 0 ||
+      Settings.isNivelSuperado()
+    ) return false;
+
+    return true;
+  });
+}
+
+// ================================================================
 function revivir_jugador(jugador, scene) {
 
   const {cheatInvisible, duracionInvisible, duracionDie} = Settings.invisible;
@@ -232,6 +403,11 @@ export {
     crear_nuevoBarril,
     imagen_grupoBarriles,
     imagenes_fondo,
+    collider_jugador_plataforma,
+    collider_enemigo_plataforma,
+    overlap_jugador_switch,
+    overlap_jugador_enemigo,
+    overlap_jugador_pajaro,
     revivir_jugador,
     revivir_pajaro,
     nivel_superado,
