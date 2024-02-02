@@ -128,6 +128,7 @@ export class Game extends Phaser.Scene {
   }
 
   preload() {
+    
     loader(this);
   }
 

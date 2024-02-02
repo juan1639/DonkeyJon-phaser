@@ -17,8 +17,7 @@ export class Enemigo {
         this.enemigo.setData('vel-x', this.establecer_dificultad());
         this.enemigo.setCollideWorldBounds(true);
         this.enemigo.setAngle(0).setFlip(false).setBounce(1, 0.3).setVelocityX(this.enemigo.getData('vel-x'));
-
-
+        
         this.relatedScene.anims.create({
             key: 'enemy-left-right', 
             frames: this.relatedScene.anims.generateFrameNumbers('enemigo', {start: 9, end: 10}),

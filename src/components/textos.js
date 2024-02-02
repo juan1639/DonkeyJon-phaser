@@ -90,7 +90,8 @@ export class Textos {
             ' Nivel ',
             ' Nivel Superado! ',
             ' Game Over ',
-            ' Siguiente Nivel '
+            ' Siguiente Nivel ',
+            ' Menu Config '
         ];
 
         centrarTxt.forEach(centra => {

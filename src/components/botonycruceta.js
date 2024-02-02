@@ -19,6 +19,7 @@ export class CrucetaDireccion {
         this.boton = this.relatedScene.add.image(this.direccion.x, this.direccion.y, this.direccion.id).setInteractive();
         this.boton.setScale(this.direccion.scX, this.direccion.scY).setAngle(this.direccion.ang).setDepth(4);
         this.boton.setX(this.direccion.x).setY(this.direccion.y);
+        this.boton.setData('on', true);
 
         this.isDown = false;
     
@@ -38,6 +39,8 @@ export class CrucetaDireccion {
         this.boton.on('pointerup', () => {
             this.isDown = false;
         });
+
+        console.log(this.boton);
     }
 
     update(x, y) {
@@ -49,6 +52,10 @@ export class CrucetaDireccion {
 
         if (x > limit_le && x < limit_ri) this.boton.setX(x - this.direccion.x);
         if (y > limit_up && y < limit_do) this.boton.setY(y + this.direccion.y);
+    }
+
+    get() {
+        return this.boton;
     }
 }
 
@@ -68,7 +75,8 @@ export class BotonSalto {
         this.boton = this.relatedScene.add.image(this.direccion.x, this.direccion.y, this.direccion.id).setInteractive();
         this.boton.setScale(this.direccion.scX, this.direccion.scY).setAngle(this.direccion.ang).setDepth(4);
         this.boton.setX(this.direccion.x).setY(this.direccion.y);
-
+        this.boton.setData('on', true);
+        
         this.isDown = false;
     
         this.boton.on('pointerover', () => {
@@ -87,5 +95,9 @@ export class BotonSalto {
         this.boton.on('pointerup', () => {
             this.isDown = false;
         });
+    }
+
+    get() {
+        return this.boton;
     }
 }

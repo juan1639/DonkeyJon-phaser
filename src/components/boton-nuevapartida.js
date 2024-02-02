@@ -76,7 +76,7 @@ export class BotonSettings {
       this.boton.setScale(0.5);
     });
     this.boton.on('pointerdown', () => {
-      if (siguienteScene === 'prenivel') this.relatedScene.sonidoMusicaFondo.pause();
+      if (siguienteScene === 'prenivel') this.relatedScene.sonidoMarioTuberias.pause();
       this.relatedScene.scene.start(siguienteScene);
     });
 

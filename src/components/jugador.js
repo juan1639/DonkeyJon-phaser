@@ -95,28 +95,71 @@ export class Jugador {
         }
 
         // ----------------------------------------------------------------
-        if ((this.controles.shift.isDown || this.controles.space.isDown || this.relatedScene.botonsalto.isDown) && this.jugador.body.touching.down && this.jugador.body.velocity.y === 0) {
+        if ((this.controles.space.isDown || this.relatedScene.botonsalto.isDown) && this.jugador.body.velocity.y === 0) {
+
             this.jugador.setVelocityY(-this.jugador.getData('vel-salto'));
             play_sonidos(this.relatedScene.sonidoSalto, false, 0.9);
         }
+
+        this.controlesMobile_on_off();
         
         if (this.controles.left.isDown || this.relatedScene.crucetaleft.isDown) {
+
             this.jugador.setFlipX(true);
             this.jugador.setVelocityX(-this.jugador.getData('vel-x'));
             this.jugador.anims.play('left', true);
             
         } else if (this.controles.right.isDown || this.relatedScene.crucetaright.isDown) {
+
             this.jugador.setFlipX(false);
             this.jugador.setVelocityX(this.jugador.getData('vel-x'));
             this.jugador.anims.play('right', true);
         
         } else if (this.controles.down.isDown || this.relatedScene.crucetadown.isDown) {
+
             this.jugador.setVelocityX(0);
             this.jugador.anims.play('agachar', true);
 
         } else if (!this.controles.up.isDown && !this.relatedScene.crucetaup.isDown) {
+
             this.jugador.setVelocityX(0);
             this.jugador.anims.play('turn');
+        }
+    }
+
+    controlesMobile_on_off() {
+
+        if (this.controles.shift.isDown && this.relatedScene.crucetaleft.get().getData('on')) {
+
+            this.relatedScene.add.timeline([
+                {
+                    at: 150,
+                    run: () => {
+                        this.relatedScene.crucetaleft.get().setVisible(false).setData('on', false);
+                        this.relatedScene.crucetaright.get().setVisible(false);
+                        this.relatedScene.crucetaup.get().setVisible(false);
+                        this.relatedScene.crucetadown.get().setVisible(false);
+                        this.relatedScene.botonsalto.get().setVisible(false);
+                        play_sonidos(this.relatedScene.sonidoSwitch, false, 0.9);
+                    }
+                }
+            ]).play();
+        
+        } else if (this.controles.shift.isDown && !this.relatedScene.crucetaleft.get().getData('on')) {
+
+            this.relatedScene.add.timeline([
+                {
+                    at: 150,
+                    run: () => {
+                        this.relatedScene.crucetaleft.get().setVisible(true).setData('on', true);
+                        this.relatedScene.crucetaright.get().setVisible(true);
+                        this.relatedScene.crucetaup.get().setVisible(true);
+                        this.relatedScene.crucetadown.get().setVisible(true);
+                        this.relatedScene.botonsalto.get().setVisible(true);
+                        play_sonidos(this.relatedScene.sonidoSwitch, false, 0.9);
+                    }
+                }
+            ]).play();
         }
     }
 
