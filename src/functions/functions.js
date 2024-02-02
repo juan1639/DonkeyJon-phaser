@@ -217,7 +217,14 @@ function overlap_jugador_pajaro(scene) {
       Settings.isNivelSuperado()
     ) return false;
 
-    return true;
+    if (
+      jugador.x + jugador.body.width / 4 > pajaro.x - pajaro.body.width / 2 &&
+      jugador.x - jugador.body.width / 4 < pajaro.x + pajaro.body.width / 2 &&
+      jugador.y + jugador.body.height / 4 > pajaro.y - pajaro.body.height / 2 &&
+      jugador.y - jugador.body.height / 4 < pajaro.y + pajaro.body.height / 2
+    ) return true;
+
+    return false;
   });
 }
 

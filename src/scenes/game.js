@@ -297,11 +297,17 @@ export class Game extends Phaser.Scene {
             jugador.getData('disableBody') ||
             jugador.alpha < 1 ||
             Settings.isNivelSuperado() ||
-            Settings.getVidas() < 0 ||
-            jugador.y > barril.y + Math.floor(barril.body.height / 2)
+            Settings.getVidas() < 0
           ) return false;
 
-          return true;
+          if (
+            jugador.x + jugador.body.width / 4 > barril.x - barril.body.width / 2 &&
+            jugador.x - jugador.body.width / 4 < barril.x + barril.body.width / 2 &&
+            jugador.y + jugador.body.height / 4 > barril.y - barril.body.height / 2 &&
+            jugador.y - jugador.body.height / 4 < barril.y + barril.body.height / 2
+          ) return true;
+
+          return false;
         });
       });
     }
