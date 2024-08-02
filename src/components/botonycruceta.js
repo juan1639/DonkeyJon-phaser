@@ -62,7 +62,6 @@ export class CrucetaDireccion {
 // ==================================================================================
 export class BotonSalto {
 
-    // --------------------------------------------------------
     constructor(scene, direccion) {
         this.relatedScene = scene;
         this.direccion = direccion;

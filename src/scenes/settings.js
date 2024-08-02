@@ -34,15 +34,15 @@ export class Settings {
     static coorCruceta = {
         xx: 60,
         yy: 2500,
-        sizeX: 2.5,
-        sizeY: 2.1
+        sizeX: 1,
+        sizeY: 1
     };
 
     static coorBotonSalto = {
         xx: 780,
         yy: 2460,
-        sizeX: 2.5,
-        sizeY: 2.1
+        sizeX: 0.6,
+        sizeY: 1.4
     };
 
     static cameraEnemigo = {

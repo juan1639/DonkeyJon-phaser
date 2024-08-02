@@ -79,7 +79,7 @@ export class PreNivel extends Phaser.Scene {
         const top = Math.floor(this.sys.game.config.height / 3);
 
         this.txt.create({
-            x: left, y: top, texto: ' Nivel ' + Settings.getNivel(),
+            x: left, y: top, texto: ' Level ' + Settings.getNivel(),
             size: 70, style: 'bold', oofx: 1, offy: 1, col: '#e81', blr: 15,
             fillShadow: true, fll: '#ff9', family: 'verdana, arial, sans-serif',
             screenWidth: this.sys.game.config.width, multip: 1

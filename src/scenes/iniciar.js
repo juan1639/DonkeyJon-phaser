@@ -17,11 +17,11 @@ export class Iniciar extends Phaser.Scene {
 
     create() {
 
-        const left = Math.floor(Iniciar.WIDTH / 6.2);
+        const left = Math.floor(Iniciar.WIDTH / 4);
         const top = Math.floor(Iniciar.HEIGHT / 3);
 
         this.txt.create({
-            x: left, y: top, texto: ' Toque pantalla o haga \n \n click para comenzar... ',
+            x: left, y: top, texto: ' Touch screen or  \n \n  click to start... ',
             size: 50, style: '500', oofx: 1, offy: 1, col: '#fff', blr: 7,
             fillShadow: true, fll: '#ffa', family: 'verdana, arial, sans-serif',
             screenWidth: Iniciar.WIDTH, multip: 1

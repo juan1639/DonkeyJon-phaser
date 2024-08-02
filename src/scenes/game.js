@@ -71,11 +71,11 @@ export class Game extends Phaser.Scene {
     };
 
     this.marcadorPtos = new Marcador(this, {
-      x: 10, y: -99, size: 35, txt: ' Puntos: ', color: '#fff', id: 0
+      x: 10, y: -99, size: 35, txt: ' Score: ', color: '#fff', id: 0
     });
 
     this.marcadorNivel = new Marcador(this, {
-      x: Math.floor(ancho / 2), y: -99, size: 35, txt: ' Nivel: ', color: '#ff5', id: 1
+      x: Math.floor(ancho / 2), y: -99, size: 35, txt: ' Level: ', color: '#ff5', id: 1
     });
 
     this.marcadorHi = new Marcador(this, {
@@ -90,31 +90,31 @@ export class Game extends Phaser.Scene {
     var { xx, yy, sizeX, sizeY } = Settings.getCoorCruceta();
     
     this.crucetaleft = new CrucetaDireccion(this, {
-      id: 'cruceta-left',
+      id: 'cruceta',
       x: xx, y: yy,
-      ang: 0,
+      ang: 270,
       scX: sizeX, scY: sizeY
     });
     
     this.crucetaright = new CrucetaDireccion(this, {
-      id: 'cruceta-right',
-      x: xx + 340, y: yy,
-      ang: 0,
+      id: 'cruceta',
+      x: xx + 290, y: yy,
+      ang: 90,
       scX: sizeX, scY: sizeY
     });
     
     this.crucetaup = new CrucetaDireccion(this, {
-      id: 'cruceta-left',
-      x: xx + 175, y: yy - 80,
-      ang: 90,
-      scX: sizeX - 0.9, scY: sizeY + 0.1
+      id: 'cruceta',
+      x: xx + 145, y: yy - 90,
+      ang: 0,
+      scX: sizeX, scY: sizeY
     });
     
     this.crucetadown = new CrucetaDireccion(this, {
-      id: 'cruceta-left',
-      x: xx + 175, y: yy + 110,
-      ang: 270,
-      scX: sizeX + 1, scY: sizeY
+      id: 'cruceta',
+      x: xx + 145, y: yy + 45,
+      ang: 180,
+      scX: sizeX, scY: sizeY
     });
     
     var { xx, yy, sizeX, sizeY } = Settings.getCoorBotonSalto();
@@ -209,7 +209,7 @@ export class Game extends Phaser.Scene {
 
     var { x, y, ancho, alto, scrollX, scrollY } = Settings.getCameraScores();
     
-    this.mapa_scores = this.cameras.add(x, y, ancho, alto).setZoom(0.6).setName('view-scores').setAlpha(0.7).setOrigin(0, 0);
+    this.mapa_scores = this.cameras.add(x, y, ancho, alto).setZoom(0.6).setName('view-scores').setAlpha(0.9).setOrigin(0, 0);
     this.mapa_scores.scrollX = scrollX;
     this.mapa_scores.scrollY =scrollY;
     // console.log(this.mapa_scores);

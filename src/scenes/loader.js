@@ -27,9 +27,12 @@ export function loader(scene) {
   scene.load.image('boton-settings', './src/img/boton-config.png');
   scene.load.spritesheet('boton-fullscreen', './src/img/boton-fullscreen.png', {frameWidth: 64, frameHeight: 64});
 
-  scene.load.image('cruceta-left', './src/img/left.png');
-  scene.load.image('cruceta-right', './src/img/right.png');
-  scene.load.image('boton-salto', './src/img/boton-salto-joystick.png');
+  scene.load.image('cruceta', './src/img/cruceta-up.png');
+  scene.load.image('boton-salto', './src/img/ui-1.png');
+
+  //scene.load.image('cruceta-left', './src/img/left.png');
+  //scene.load.image('cruceta-right', './src/img/right.png');
+  //scene.load.image('boton-salto', './src/img/boton-salto-joystick.png');
   
   scene.load.spritesheet('jugador', './src/img/Ssheet_jugador.png', {frameWidth: 80, frameHeight: 110});
   scene.load.spritesheet('enemigo', './src/img/Ssheet_enemigo.png', {frameWidth: 80, frameHeight: 110});

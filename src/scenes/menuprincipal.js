@@ -9,7 +9,6 @@ import { BotonNuevaPartida, BotonSettings } from '../components/boton-nuevaparti
 // =================================================================================
 export class MenuPrincipal extends Phaser.Scene {
 
-    // -------------------------------------------------
     constructor() {
         super({ key: 'menuprincipal' });
     }
@@ -21,18 +20,38 @@ export class MenuPrincipal extends Phaser.Scene {
         Settings.setVidas(3);
         Settings.setNivelSuperado(false);
 
+        const widthScreen = this.sys.game.config.width;
+        const heightScreen = this.sys.game.config.height;
+
         this.plataforma = new Plataforma(this);
         this.enemigo = new Enemigo(this);
         this.botoninicio = new BotonNuevaPartida(this);
         this.botonsettings = new BotonSettings(this);
         this.txt = new Textos(this);
+
+        this.add.rectangle(
+            Math.floor(widthScreen / 2), Math.floor(heightScreen / 2),
+            Math.floor(widthScreen / 1.5), Math.floor(heightScreen / 12)
+        ).setStrokeStyle(1, 0xffee88);
+
+        const bar = this.add.rectangle(
+            Math.floor(widthScreen / 2) - Math.floor(widthScreen / 3) + 4,
+            Math.floor(heightScreen / 2),
+            4,
+            Math.floor(heightScreen / 14),
+            0xff9911
+        );
+
+        this.load.on('progress', (progress) => {
+            bar.width = (Math.floor(widthScreen / 1.52) * progress);
+        });
     } 
     
     preload() {
         
         const txt = this.add.text(
-            Math.floor(this.sys.game.config.width / 2), Math.floor(this.sys.game.config.height / 2),
-            ' Cargando...', {
+            Math.floor(this.sys.game.config.width / 2), Math.floor(this.sys.game.config.height / 4),
+            ' Loading...', {
                 fontSize: '50px',
                 fill: '#ffa',
                 fontFamily: 'verdana, arial, sans-serif'
